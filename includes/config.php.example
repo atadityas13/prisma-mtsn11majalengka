@@ -1,0 +1,39 @@
+<?php
+/**
+ * PRISMA Configuration File (Example Template)
+ * Rename this file to config.php and fill in your credentials
+ */
+
+// Error Reporting
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Timezone
+date_default_timezone_set('Asia/Jakarta');
+
+// Database Configuration
+define('DB_HOST', 'localhost');
+define('DB_NAME', 'your_database_name');
+define('DB_USER', 'your_username');
+define('DB_PASS', 'your_password');
+
+// Base URL (Auto-detected if using installer)
+define('BASE_URL', 'http://localhost/prisma-mtsn11majalengka/');
+
+// Application Constants
+define('APP_NAME', 'PRISMA');
+define('SCHOOL_NAME', 'MTsN 11 Majalengka');
+define('DEFAULT_YEAR', '2025/2026');
+
+// Session Start
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Vendor Autoload
+require_once __DIR__ . '/../vendor/autoload.php';
+
+// Helper functions
+function base_url($path = '') {
+    return BASE_URL . ltrim($path, '/');
+}

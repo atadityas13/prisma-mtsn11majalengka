@@ -1,0 +1,15 @@
+# PRISMA Git Ignore
+# Ignore sensitive configuration
+includes/config.php
+install.lock
+
+# Ignore dependencies
+vendor/
+composer.lock
+
+# Ignore temporary/uploads
+ajax/temp_uploads/
+
+# OS files
+.DS_Store
+Thumbs.db
