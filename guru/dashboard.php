@@ -119,29 +119,25 @@ $jadwal = $db->resultSet();
                 <?php else: ?>
                     <div class="row">
                         <?php foreach ($jadwal as $j): ?>
-                            <div class="col-md-6 col-lg-4 mb-3">
-                                <div class="card h-100 border-primary">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center mb-3">
-                                            <div class="avatar bg-label-primary me-3">
-                                                <i class="bx bx-calendar bx-sm"></i>
-                                            </div>
-                                            <div>
-                                                <h6 class="card-title mb-0"><?= date('d/m/Y', strtotime($j['tanggal'])) ?></h6>
-                                                <small class="text-muted">Tanggal Ujian</small>
-                                            </div>
+                            <div class="col-md-6 col-lg-4 mb-4">
+                                <div class="card h-100 shadow-sm">
+                                    <div class="card-body text-center">
+                                        <div class="py-4 mb-3 rounded-3 bg-primary bg-opacity-10">
+                                            <i class="bx bx-calendar bx-lg text-primary"></i>
+                                        </div>
+                                        <h5 class="card-title mb-2">Jadwal Ujian</h5>
+                                        <p class="text-muted mb-1">Tanggal</p>
+                                        <h3 class="fw-bold mb-3"><?= date('d/m/Y', strtotime($j['tanggal'])) ?></h3>
+                                        <div class="mb-2">
+                                            <span class="d-block text-muted">Waktu</span>
+                                            <strong><?= $j['jam_mulai'] ?> - <?= $j['jam_selesai'] ?></strong>
                                         </div>
                                         <div class="mb-2">
-                                            <i class="bx bx-time-five me-1"></i>
-                                            <span class="fw-medium"><?= $j['jam_mulai'] ?> - <?= $j['jam_selesai'] ?></span>
-                                        </div>
-                                        <div class="mb-2">
-                                            <i class="bx bx-building me-1"></i>
-                                            <span class="fw-medium"><?= htmlspecialchars($j['ruangan']) ?></span>
+                                            <span class="d-block text-muted">Ruangan</span>
+                                            <strong><?= htmlspecialchars($j['ruangan']) ?></strong>
                                         </div>
                                         <?php if (!empty($j['keterangan'])): ?>
-                                            <div class="mb-0">
-                                                <i class="bx bx-info-circle me-1"></i>
+                                            <div class="mt-3">
                                                 <small class="text-muted"><?= htmlspecialchars($j['keterangan']) ?></small>
                                             </div>
                                         <?php endif; ?>
