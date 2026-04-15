@@ -102,15 +102,36 @@ $siswas = $db->resultSet();
             text-decoration: underline;
         }
 
-        .info-table {
-            width: 100%;
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 6px 24px;
             margin-bottom: 15px;
-            border-collapse: collapse;
         }
 
-        .info-table td {
-            padding: 3px 0;
-            vertical-align: top;
+        .info-group {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            gap: 0 6px;
+        }
+
+        .info-label {
+            min-width: 110px;
+            font-weight: 600;
+        }
+
+        .info-separator {
+            width: 10px;
+        }
+
+        .info-value {
+            flex: 1 1 calc(100% - 120px);
+            min-width: 0;
+        }
+
+        .info-value strong {
+            white-space: nowrap;
         }
 
         table.data-table {
@@ -123,13 +144,14 @@ $siswas = $db->resultSet();
         table.data-table th,
         table.data-table td {
             border: 1px solid #000;
-            padding: 5px 6px;
+            padding: 4px 5px;
             text-align: center;
             word-break: break-word;
+            line-height: 1.2;
         }
 
         table.data-table td {
-            height: 25px;
+            min-height: 18px;
         }
 
         table.data-table th:first-child,
@@ -149,9 +171,14 @@ $siswas = $db->resultSet();
             width: 15%;
         }
 
+        table.data-table th:nth-last-child(2),
+        table.data-table td:nth-last-child(2) {
+            width: 60px;
+        }
+
         table.data-table th:last-child,
         table.data-table td:last-child {
-            width: 100px;
+            width: 120px;
         }
 
         /* Space for handwriting */
@@ -230,24 +257,28 @@ $siswas = $db->resultSet();
             <h4>BORANG PENILAIAN UJIAN PRAKTIK</h4>
         </div>
 
-        <table class="info-table">
-            <tr>
-                <td width="120">Mata Pelajaran</td>
-                <td width="15">:</td>
-                <td width="300"><strong><?= htmlspecialchars($ploting['nama_mapel']) ?></strong></td>
-                <td width="100">Guru Penguji</td>
-                <td width="15">:</td>
-                <td><strong><?= htmlspecialchars($ploting['nama_guru']) ?></strong></td>
-            </tr>
-            <tr>
-                <td>Tahun Ajaran</td>
-                <td>:</td>
-                <td><?= DEFAULT_YEAR ?></td>
-                <td>Tanggal</td>
-                <td>:</td>
-                <td>.......................... 2026</td>
-            </tr>
-        </table>
+        <div class="info-grid">
+            <div class="info-group">
+                <span class="info-label">Mata Pelajaran</span>
+                <span class="info-separator">:</span>
+                <span class="info-value"><strong><?= htmlspecialchars($ploting['nama_mapel']) ?></strong></span>
+            </div>
+            <div class="info-group">
+                <span class="info-label">Guru Penguji</span>
+                <span class="info-separator">:</span>
+                <span class="info-value"><strong><?= htmlspecialchars($ploting['nama_guru']) ?></strong></span>
+            </div>
+            <div class="info-group">
+                <span class="info-label">Tahun Ajaran</span>
+                <span class="info-separator">:</span>
+                <span class="info-value"><?= DEFAULT_YEAR ?></span>
+            </div>
+            <div class="info-group">
+                <span class="info-label">Tanggal</span>
+                <span class="info-separator">:</span>
+                <span class="info-value">.......................... 2026</span>
+            </div>
+        </div>
 
         <table class="data-table">
             <thead>
@@ -255,7 +286,8 @@ $siswas = $db->resultSet();
                     <th rowspan="2" width="30">No</th>
                     <th rowspan="2">Nama Siswa</th>
                     <th colspan="<?= count($aspeks) > 0 ? count($aspeks) : 3 ?>">Aspek Penilaian</th>
-                    <th rowspan="2" width="100">Nilai Akhir</th>
+                    <th rowspan="2" width="60">Nilai Akhir</th>
+                    <th rowspan="2" width="120">Keterangan</th>
                 </tr>
                 <tr>
                     <?php if (count($aspeks) > 0): ?>
@@ -283,6 +315,7 @@ $siswas = $db->resultSet();
                                 <td></td>
                                 <td></td>
                             <?php endif; ?>
+                            <td></td>
                             <td></td>
                         </tr>
                     <?php endforeach; ?>
