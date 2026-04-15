@@ -80,11 +80,16 @@ $bulan_map = ['','Januari','Februari','Maret','April','Mei','Juni',
         .info-label { width: 130px; }
 
         /* ── Tabel Hadir ── */
-        table.hadir { width: 100%; border-collapse: collapse; font-size: 10pt; }
-        table.hadir th, table.hadir td { border: 1px solid #000; padding: 5px 7px; vertical-align: middle; }
+        table.hadir { width: 100%; border-collapse: collapse; font-size: 10pt; table-layout: fixed; }
+        table.hadir th, table.hadir td { border: 1px solid #000; padding: 5px 7px; vertical-align: middle; word-wrap: break-word; }
         table.hadir thead th { background: #f0f0f0; text-align: center; font-weight: 700; }
         table.hadir tbody td.center { text-align: center; }
         table.hadir tbody tr { height: 32px; } /* ruang tanda tangan */
+        table.hadir th:nth-child(2), table.hadir td:nth-child(2) { white-space: nowrap; }
+        table.hadir th:nth-child(3), table.hadir td:nth-child(3) { width: auto; }
+        table.hadir th:nth-child(2) { width: 100px; }
+        table.hadir th:nth-child(4) { width: 55px; }
+        table.hadir th:nth-child(5) { width: 90px; }
 
         /* ── TTD ── */
         .ttd { margin-top: 24px; display: flex; justify-content: space-between; }
@@ -204,7 +209,7 @@ $bulan_map = ['','Januari','Februari','Maret','April','Mei','Juni',
         <thead>
             <tr>
                 <th style="width:32px;">No</th>
-                <th style="width:70px;">No. Peserta</th>
+                <th style="width:100px;">No. Peserta</th>
                 <th>Nama Siswa</th>
                 <th style="width:55px;">Kelas</th>
                 <th style="width:90px;">Tanda Tangan</th>

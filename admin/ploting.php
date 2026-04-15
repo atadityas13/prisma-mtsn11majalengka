@@ -56,7 +56,9 @@ $stats_per_mapel = $db->resultSet();
                 <div class="card border-0 shadow-sm h-100">
                     <div class="card-body pb-2">
                         <div class="d-flex justify-content-between align-items-start mb-2">
-                            <span class="badge bg-label-info"><?= htmlspecialchars($stat['nama_mapel']) ?></span>
+                            <span class="badge bg-label-info text-wrap" style="white-space: normal; word-break: break-word; max-width: 160px;">
+                                <?= htmlspecialchars($stat['nama_mapel']) ?>
+                            </span>
                             <small class="text-muted"><?= $pct ?>%</small>
                         </div>
                         <div class="progress mb-2" style="height:6px;">
