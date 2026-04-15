@@ -50,6 +50,7 @@ $hari_map = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
         .kop img { height: 75px; }
         .kop-text { flex: 1; text-align: center; line-height: 1.4; }
         .kop-text h3 { font-size: 13pt; text-transform: uppercase; }
+        .kop-text h4 { font-size: 10pt; text-transform: uppercase; }
         .kop-text h2 { font-size: 15pt; font-weight: 900; text-transform: uppercase; }
         .kop-text p  { font-size: 9pt; }
 
