@@ -68,7 +68,7 @@ $hari_map = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
 
         /* ── Tanda Tangan ── */
         .ttd { margin-top: 30px; display: flex; justify-content: flex-end; }
-        .ttd-box { width: 260px; text-align: center; }
+        .ttd-box { width: 260px; text-align: left; }
         .ttd-box .ttd-space { height: 65px; }
         .ttd-box p { margin: 2px 0; font-size: 10.5pt; }
 
@@ -106,7 +106,7 @@ $hari_map = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
         <img src="<?= base_url('assets/img/logo-kemenag.png') ?>" alt="Logo Kemenag">
         <div class="kop-text">
             <h3>Kementerian Agama Republik Indonesia</h3>
-            <h3>Kantor Kementerian Agama Kabupaten Majalengka</h3>
+            <h4>Kantor Kementerian Agama Kabupaten Majalengka</h4>
             <h2><?= SCHOOL_NAME ?></h2>
             <p>Kp. Sindanghurip Desa Maniis Kec. Cingambul Kab. Majalengka<br>
                Telp. (0233) 3600020 &nbsp;|&nbsp; email: mtsn11majalengka@gmail.com</p>
@@ -166,10 +166,10 @@ $hari_map = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
     <div class="ttd">
         <div class="ttd-box">
             <p>Cingambul, <?= date('d') ?> <?= ['', 'Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'][(int)date('m')] ?> <?= date('Y') ?></p>
-            <p>Kepala Madrasah,</p>
+            <p>Plt. Kepala Madrasah,</p>
             <div class="ttd-space"></div>
-            <p><strong><u>.................................................</u></strong></p>
-            <p>NIP. ..........................................</p>
+            <p><strong><u>H. Dede Apip Mustopa, S.Ag.</u></strong></p>
+            <p>NIP. 196801171992031002<p>
         </div>
     </div>
 </div>

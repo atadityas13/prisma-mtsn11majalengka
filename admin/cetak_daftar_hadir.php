@@ -251,8 +251,8 @@ $bulan_map = ['','Januari','Februari','Maret','April','Mei','Juni',
             <p>Mengetahui,</p>
             <p>Plt. Kepala Madrasah</p>
             <div class="ttd-space"></div>
-            <p><strong><u>.................................................</u></strong></p>
-            <p>NIP. ..........................................</p>
+            <p><strong><u>H. Dede Apip Mustopa, S.Ag.</u></strong></p>
+            <p>NIP. 196801171992031002</p>
         </div>
         <div class="ttd-box" style="text-align:left;">
             <p>Cingambul, <?= $tgl_obj->format('d') . ' ' . $bulan_map[(int)$tgl_obj->format('m')] . ' ' . $tgl_obj->format('Y') ?></p>
