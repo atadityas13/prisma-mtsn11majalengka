@@ -18,6 +18,21 @@ $db->query("SELECT * FROM aspek_penilaian WHERE mapel_id = :mid ORDER BY id ASC"
 $db->bind(':mid', $mapel_id);
 $aspeks = $db->resultSet();
 
+// Fetch scheduled date for this guru/mapel
+$db->query("SELECT pp.id as ploting_id, j.tanggal as jadwal_tanggal
+            FROM ploting_penguji pp
+            LEFT JOIN jadwal_praktik j ON j.ploting_id = pp.id
+            WHERE pp.guru_id = :gid AND pp.mapel_id = :mid
+            LIMIT 1");
+$db->bind(':gid', $guru_id);
+$db->bind(':mid', $mapel_id);
+$ploting_jadwal = $db->single();
+$jadwal_tanggal = $ploting_jadwal['jadwal_tanggal'] ?? null;
+$jadwal_tanggal_formatted = '';
+if ($jadwal_tanggal) {
+    $jadwal_tanggal_formatted = (new DateTime($jadwal_tanggal))->format('d/m/Y');
+}
+
 // Fetch Students assigned to this guru via ploting_siswa
 $db->query("SELECT s.* FROM siswa s
             JOIN ploting_siswa ps  ON ps.siswa_id = s.id
@@ -277,7 +292,7 @@ $siswas = $db->resultSet();
                 <div class="info-item">
                     <span class="info-label">Tanggal</span>
                     <span class="info-separator">:</span>
-                    <span class="info-value">.......................... <?= date('Y') ?></span>
+                    <span class="info-value"><?= $jadwal_tanggal_formatted ? htmlspecialchars($jadwal_tanggal_formatted) : '.......................... ' . date('Y') ?></span>
                 </div>
             </div>
         </div>
@@ -346,7 +361,7 @@ $siswas = $db->resultSet();
         <div class="footer">
             <div class="sig-container">
                 <div class="sig-box">
-                    <p>Cingambul, .......................... <?= date('Y') ?>
+                    <p>Cingambul, <?= $jadwal_tanggal_formatted ? htmlspecialchars($jadwal_tanggal_formatted) : date('d/m/Y') ?>
                     </p>
                     <p>Penguji,</p>
                     <div style="height: 70px;"></div>

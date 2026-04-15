@@ -8,16 +8,23 @@ $db = new Database();
 $ploting_id = $_GET['ploting_id'] ?? '';
 
 // Fetch Ploting Info
-$db->query("SELECT pp.id as ploting_id, pp.mapel_id, g.nama_lengkap as nama_guru, g.nip, m.nama_mapel
+$db->query("SELECT pp.id as ploting_id, pp.mapel_id, g.nama_lengkap as nama_guru, g.nip, m.nama_mapel, j.tanggal as jadwal_tanggal
             FROM ploting_penguji pp
             JOIN guru g ON pp.guru_id = g.id
             JOIN mapel m ON pp.mapel_id = m.id
+            LEFT JOIN jadwal_praktik j ON j.ploting_id = pp.id
             WHERE pp.id = :pid");
 $db->bind(':pid', $ploting_id);
 $ploting = $db->single();
 
 if (!$ploting) {
     die('Ploting tidak ditemukan.');
+}
+
+$jadwal_tanggal = $ploting['jadwal_tanggal'] ?? null;
+$jadwal_tanggal_formatted = '';
+if ($jadwal_tanggal) {
+    $jadwal_tanggal_formatted = (new DateTime($jadwal_tanggal))->format('d/m/Y');
 }
 
 // Fetch Aspects for this Mapel
@@ -352,11 +359,11 @@ $siswas = $db->resultSet();
         <div class="footer">
             <div class="sig-container">
                 <div class="sig-box">
-                    <p>Cingambul, .......................... <?= date('Y') ?></p>
+                    <p>Cingambul, <?= $jadwal_tanggal_formatted ? htmlspecialchars($jadwal_tanggal_formatted) : date('d/m/Y') ?></p>
                     <p>Penguji,</p>
                     <div style="height: 70px;"></div>
-                    <p><strong>( ________________________ )</strong></p>
-                    <p>NIP. ........................................</p>
+                    <p><strong><?= htmlspecialchars($ploting['nama_guru']) ?></strong></p>
+                    <p>NIP. <?= htmlspecialchars($ploting['nip']) ?></p>
                 </div>
             </div>
         </div>
