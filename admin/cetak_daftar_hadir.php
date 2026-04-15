@@ -249,7 +249,7 @@ $bulan_map = ['','Januari','Februari','Maret','April','Mei','Juni',
     <div class="ttd">
         <div class="ttd-box" style="text-align:left;">
             <p>Mengetahui,</p>
-            <p>Kepala Madrasah</p>
+            <p>Plt. Kepala Madrasah</p>
             <div class="ttd-space"></div>
             <p><strong><u>.................................................</u></strong></p>
             <p>NIP. ..........................................</p>
