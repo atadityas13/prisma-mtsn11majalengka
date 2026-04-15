@@ -35,43 +35,46 @@ $hari_map = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
     <title>Jadwal Ujian Praktik — <?= SCHOOL_NAME ?></title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Times New Roman', Times, serif; font-size: 11pt; background: #f0f0f0; }
+        body { font-family: 'Times New Roman', Times, serif; font-size: 11pt; background: #f0f0f0; color: #000; }
 
         @page {
             size: A4 portrait;
-            margin: 10mm;
+            margin: 8mm;
         }
         .page {
-            width: auto;
-            max-width: 210mm;
-            min-height: 297mm;
-            padding: 10mm 10mm;
-            margin: 5mm auto;
+            width: calc(210mm - 16mm);
+            padding: 8mm;
+            margin: 0 auto 8mm;
             background: #fff;
-            box-shadow: 0 0 8px rgba(0,0,0,0.15);
+            box-shadow: 0 0 8px rgba(0,0,0,0.08);
         }
 
         /* ── Kop Surat ── */
         .kop { display: flex; align-items: center; border-bottom: 3px double #000; padding-bottom: 10px; margin-bottom: 18px; }
         .kop img { height: 75px; }
         .kop-text { flex: 1; text-align: center; line-height: 1.4; }
-        .kop-text h3 { font-size: 13pt; text-transform: uppercase; }
-        .kop-text h4 { font-size: 10pt; text-transform: uppercase; }
-        .kop-text h2 { font-size: 15pt; font-weight: 900; text-transform: uppercase; }
+        .kop-text h3 { font-size: 13pt; text-transform: uppercase; margin-bottom: 2px; }
+        .kop-text h4 { font-size: 10pt; text-transform: uppercase; margin-bottom: 2px; }
+        .kop-text h2 { font-size: 15pt; font-weight: 900; text-transform: uppercase; margin-bottom: 2px; }
         .kop-text p  { font-size: 9pt; }
 
         /* ── Judul ── */
         .judul { text-align: center; margin-bottom: 16px; }
-        .judul h4 { font-size: 13pt; text-transform: uppercase; text-decoration: underline; font-weight: 700; letter-spacing: 1px; }
+        .judul h4 { font-size: 13pt; text-transform: uppercase; text-decoration: underline; font-weight: 700; letter-spacing: 1px; margin: 0; }
         .judul p  { font-size: 10pt; color: #333; margin-top: 3px; }
 
         /* ── Tabel ── */
-        table { width: 100%; border-collapse: collapse; font-size: 10pt; }
-        table th, table td { border: 1px solid #000; padding: 5px 7px; vertical-align: middle; }
+        table { width: 100%; border-collapse: collapse; font-size: 10pt; table-layout: fixed; }
+        table th, table td { border: 1px solid #000; padding: 5px 7px; vertical-align: middle; word-break: break-word; }
         table thead th { background: #f0f0f0; text-align: center; font-weight: 700; }
-        table tbody td { height: 26px; }
+        table tbody td { min-height: 24px; }
         .center { text-align: center; }
         .nowrap { white-space: nowrap; }
+
+        table thead th:first-child { width: 30px; }
+        table thead th:nth-child(4) { width: 50px; }
+        table thead th:nth-child(5) { width: 110px; }
+        table thead th:nth-child(6) { width: 90px; }
 
         /* ── Tanda Tangan ── */
         .ttd { margin-top: 30px; display: flex; justify-content: flex-end; }

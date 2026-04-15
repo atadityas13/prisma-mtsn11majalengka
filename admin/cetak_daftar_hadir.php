@@ -48,21 +48,19 @@ $bulan_map = ['','Januari','Februari','Maret','April','Mei','Juni',
     <title>Daftar Hadir Ujian Praktik — <?= SCHOOL_NAME ?></title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Times New Roman', Times, serif; font-size: 11pt; background: #f0f0f0; }
+        body { font-family: 'Times New Roman', Times, serif; font-size: 11pt; background: #f0f0f0; color: #000; }
 
         @page {
             size: A4 portrait;
-            margin: 10mm;
+            margin: 8mm;
         }
 
         .page {
-            width: auto;
-            max-width: 210mm;
-            min-height: 297mm;
-            padding: 10mm 10mm;
-            margin: 5mm auto;
+            width: calc(210mm - 16mm);
+            padding: 8mm;
+            margin: 0 auto 8mm;
             background: #fff;
-            box-shadow: 0 0 8px rgba(0,0,0,.15);
+            box-shadow: 0 0 8px rgba(0,0,0,.08);
             page-break-after: always;
         }
         .page:last-of-type { page-break-after: auto; }
@@ -71,13 +69,13 @@ $bulan_map = ['','Januari','Februari','Maret','April','Mei','Juni',
         .kop { display: flex; align-items: center; border-bottom: 3px double #000; padding-bottom: 10px; margin-bottom: 14px; }
         .kop img { height: 72px; }
         .kop-text { flex: 1; text-align: center; line-height: 1.45; }
-        .kop-text h3 { font-size: 12pt; text-transform: uppercase; }
-        .kop-text h2 { font-size: 14pt; font-weight: 900; text-transform: uppercase; }
+        .kop-text h3 { font-size: 12pt; text-transform: uppercase; margin-bottom: 2px; }
+        .kop-text h2 { font-size: 14pt; font-weight: 900; text-transform: uppercase; margin-bottom: 2px; }
         .kop-text p  { font-size: 9pt; }
 
         /* ── Judul ── */
         .judul { text-align: center; margin-bottom: 14px; }
-        .judul h4 { font-size: 13pt; text-transform: uppercase; text-decoration: underline; font-weight: 700; letter-spacing: .5px; }
+        .judul h4 { font-size: 13pt; text-transform: uppercase; text-decoration: underline; font-weight: 700; letter-spacing: .5px; margin: 0; }
 
         /* ── Info Grid ── */
         .info-table { width: 100%; margin-bottom: 14px; border-collapse: collapse; font-size: 10.5pt; }
@@ -87,20 +85,15 @@ $bulan_map = ['','Januari','Februari','Maret','April','Mei','Juni',
 
         /* ── Tabel Hadir ── */
         table.hadir { width: 100%; border-collapse: collapse; font-size: 10pt; table-layout: fixed; }
-        table.hadir th, table.hadir td { border: 1px solid #000; padding: 5px 7px; vertical-align: middle; }
+        table.hadir th, table.hadir td { border: 1px solid #000; padding: 6px 7px; vertical-align: middle; }
         table.hadir thead th { background: #f0f0f0; text-align: center; font-weight: 700; }
         table.hadir tbody td.center { text-align: center; }
-        table.hadir tbody tr { height: 32px; } /* ruang tanda tangan */
-        table.hadir th:nth-child(2), table.hadir td:nth-child(2) {
-            width: 140px;
-            white-space: nowrap;
-            overflow: hidden;
-        }
-        table.hadir th:nth-child(3), table.hadir td:nth-child(3) {
-            width: auto;
-        }
-        table.hadir th:nth-child(4) { width: 55px; }
-        table.hadir th:nth-child(5) { width: 90px; }
+        table.hadir tbody tr { min-height: 30px; }
+        table.hadir th:nth-child(1), table.hadir td:nth-child(1) { width: 32px; }
+        table.hadir th:nth-child(2), table.hadir td:nth-child(2) { width: 70px; white-space: nowrap; }
+        table.hadir th:nth-child(3), table.hadir td:nth-child(3) { width: auto; word-break: break-word; overflow-wrap: anywhere; }
+        table.hadir th:nth-child(4), table.hadir td:nth-child(4) { width: 55px; }
+        table.hadir th:nth-child(5), table.hadir td:nth-child(5) { width: 90px; }
 
         /* ── TTD ── */
         .ttd { margin-top: 24px; display: flex; justify-content: space-between; }

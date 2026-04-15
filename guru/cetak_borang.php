@@ -41,28 +41,27 @@ $siswas = $db->resultSet();
             padding: 0;
             margin: 0;
             background: #eee;
+            color: #000;
         }
 
         @page {
             size: A4 portrait;
-            margin: 10mm;
+            margin: 8mm;
         }
 
         .page {
-            width: auto;
-            max-width: 210mm;
-            min-height: 297mm;
-            padding: 10mm 10mm;
-            margin: 5mm auto;
+            width: calc(210mm - 16mm);
+            padding: 8mm;
+            margin: 0 auto 8mm;
             background: white;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.08);
         }
 
         .header-table {
             width: 100%;
             border-bottom: 3px double #000;
             padding-bottom: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .header-table td {
@@ -71,19 +70,17 @@ $siswas = $db->resultSet();
             border: none !important;
         }
 
-        .logo-left {
-            width: 70px;
-            text-align: left !important;
-        }
-
+        .logo-left,
         .logo-right {
             width: 70px;
-            text-align: right !important;
         }
+
+        .logo-left { text-align: left !important; }
+        .logo-right { text-align: right !important; }
 
         .title {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .title h4 {
@@ -95,6 +92,7 @@ $siswas = $db->resultSet();
         .info-table {
             width: 100%;
             margin-bottom: 15px;
+            border-collapse: collapse;
         }
 
         .info-table td {
@@ -106,17 +104,41 @@ $siswas = $db->resultSet();
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
+            table-layout: fixed;
         }
 
         table.data-table th,
         table.data-table td {
             border: 1px solid #000;
-            padding: 4px 5px;
+            padding: 5px 6px;
             text-align: center;
+            word-break: break-word;
         }
 
         table.data-table td {
-            height: 25px;
+            height: 24px;
+        }
+
+        table.data-table th:first-child,
+        table.data-table td:first-child {
+            width: 30px;
+        }
+
+        table.data-table th:nth-child(2),
+        table.data-table td:nth-child(2) {
+            width: 35%;
+            text-align: left;
+            padding-left: 8px;
+        }
+
+        table.data-table th:nth-child(3),
+        table.data-table td:nth-child(3) {
+            width: 15%;
+        }
+
+        table.data-table th:last-child,
+        table.data-table td:last-child {
+            width: 100px;
         }
 
         .text-left {
@@ -124,7 +146,7 @@ $siswas = $db->resultSet();
         }
 
         .footer {
-            margin-top: 40px;
+            margin-top: 36px;
         }
 
         .sig-container {

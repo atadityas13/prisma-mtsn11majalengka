@@ -29,15 +29,21 @@ $siswas = $db->resultSet();
             font-size: 11pt;
             padding: 0;
             margin: 0;
+            background: #eee;
+            color: #000;
+        }
+
+        @page {
+            size: A4 portrait;
+            margin: 8mm;
         }
 
         .page {
-            width: 210mm;
-            min-height: 297mm;
-            padding: 15mm 20mm;
-            margin: 10mm auto;
+            width: calc(210mm - 16mm);
+            padding: 10mm 12mm;
+            margin: 0 auto 8mm;
             background: white;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.08);
             page-break-after: always;
         }
 
@@ -94,13 +100,35 @@ $siswas = $db->resultSet();
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 30px;
+            table-layout: fixed;
         }
 
         table.nilai th,
         table.nilai td {
             border: 1px solid #000;
-            padding: 5px;
+            padding: 6px;
             text-align: left;
+            word-break: break-word;
+        }
+
+        table.nilai th:first-child,
+        table.nilai td:first-child {
+            width: 30px;
+        }
+
+        table.nilai th:nth-child(2),
+        table.nilai td:nth-child(2) {
+            width: 35%;
+        }
+
+        table.nilai th:nth-child(3),
+        table.nilai td:nth-child(3) {
+            width: 20%;
+        }
+
+        table.nilai th:nth-child(4),
+        table.nilai td:nth-child(4) {
+            width: 20%;
         }
 
         .text-center {
@@ -135,7 +163,7 @@ $siswas = $db->resultSet();
             .page {
                 margin: 0;
                 box-shadow: none;
-                width: 100%;
+                width: auto;
             }
         }
     </style>
