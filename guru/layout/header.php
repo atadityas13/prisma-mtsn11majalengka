@@ -138,7 +138,7 @@ Auth::restrictTo('guru');
                         </div>
                     </div>
                     <div class="ms-auto d-flex align-items-center">
-                        <span class="text-muted small me-3 d-none d-sm-inline">Halo, <strong><?= explode(' ', $_SESSION['nama_lengkap'])[0] ?></strong></span>
+                        <span class="text-muted small me-3 d-none d-sm-inline"><strong><?= htmlspecialchars($_SESSION['nama_lengkap']) ?></strong></span>
                         <span class="badge bg-label-info"><?= strtoupper($_SESSION['role']) ?></span>
                     </div>
                 </div>
