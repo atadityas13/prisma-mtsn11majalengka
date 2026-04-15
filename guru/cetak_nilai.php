@@ -125,8 +125,8 @@ $siswas = $db->resultSet();
                 </tr>
                 <tr>
                     <?php if (count($aspeks) > 0): ?>
-                        <?php foreach($aspeks as $a): ?>
-                            <th width="70" style="font-size: 9pt;"><?= $a['nama_aspek'] ?></th>
+                        <?php foreach($aspeks as $idx => $a): ?>
+                            <th width="70" style="font-size: 9pt;">A<?= $idx + 1 ?></th>
                         <?php endforeach; ?>
                     <?php else: ?>
                         <th>-</th>
@@ -174,6 +174,17 @@ $siswas = $db->resultSet();
                 <?php endif; ?>
             </tbody>
         </table>
+
+        <?php if (count($aspeks) > 0): ?>
+        <div class="keterangan-aspek" style="margin-top: 20px; font-size: 10pt;">
+            <strong>Keterangan Aspek Penilaian:</strong>
+            <ul style="margin: 5px 0; padding-left: 20px;">
+                <?php foreach ($aspeks as $idx => $a): ?>
+                <li>A<?= $idx + 1 ?>: <?= htmlspecialchars($a['nama_aspek']) ?></li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+        <?php endif; ?>
 
         <?php if (count($siswas) == 0): ?>
             <div class="alert alert-warning text-center">Belum ada data siswa yang diploting untuk Anda.</div>

@@ -259,13 +259,13 @@ $siswas = $db->resultSet();
                 </tr>
                 <tr>
                     <?php if (count($aspeks) > 0): ?>
-                        <?php foreach ($aspeks as $a): ?>
-                            <th width="70"><?= $a['nama_aspek'] ?></th>
+                        <?php foreach ($aspeks as $idx => $a): ?>
+                            <th width="70">A<?= $idx + 1 ?></th>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <th width="70">Aspek 1</th>
-                        <th width="70">Aspek 2</th>
-                        <th width="70">Aspek 3</th>
+                        <th width="70">A1</th>
+                        <th width="70">A2</th>
+                        <th width="70">A3</th>
                     <?php endif; ?>
                 </tr>
             </thead>
@@ -294,6 +294,17 @@ $siswas = $db->resultSet();
                 <?php endif; ?>
             </tbody>
         </table>
+
+        <?php if (count($aspeks) > 0): ?>
+        <div class="keterangan-aspek" style="margin-top: 20px; font-size: 10pt;">
+            <strong>Keterangan Aspek Penilaian:</strong>
+            <ul style="margin: 5px 0; padding-left: 20px;">
+                <?php foreach ($aspeks as $idx => $a): ?>
+                <li>A<?= $idx + 1 ?>: <?= htmlspecialchars($a['nama_aspek']) ?></li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+        <?php endif; ?>
 
         <div class="footer">
             <div class="sig-container">

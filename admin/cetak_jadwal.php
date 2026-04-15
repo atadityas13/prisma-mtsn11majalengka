@@ -23,7 +23,7 @@ $db->query("SELECT pp.id as ploting_id,
             LEFT JOIN ploting_siswa ps ON ps.ploting_id = pp.id
             GROUP BY pp.id, g.nama_lengkap, g.nip, m.nama_mapel,
                      j.tanggal, j.jam_mulai, j.jam_selesai, j.ruangan, j.keterangan
-            ORDER BY m.nama_mapel ASC, j.tanggal ASC, j.jam_mulai ASC");
+            ORDER BY j.tanggal ASC, j.jam_mulai ASC, m.nama_mapel ASC");
 $jadwals = $db->resultSet();
 
 $hari_map = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];

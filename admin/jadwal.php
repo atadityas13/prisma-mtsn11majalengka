@@ -33,7 +33,7 @@ $db->query("SELECT pp.id as ploting_id,
             LEFT JOIN jadwal_praktik j ON j.ploting_id  = pp.id
             GROUP BY pp.id, g.nama_lengkap, m.nama_mapel,
                      j.tanggal, j.jam_mulai, j.jam_selesai, j.ruangan, j.keterangan
-            ORDER BY m.nama_mapel ASC, g.nama_lengkap ASC");
+            ORDER BY j.tanggal ASC, j.jam_mulai ASC, m.nama_mapel ASC");
 $plotings = $db->resultSet();
 
 $count_terjadwal = count(array_filter($plotings, fn($p) => !empty($p['tanggal'])));
