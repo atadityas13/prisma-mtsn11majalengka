@@ -144,7 +144,6 @@ $hari_map = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
                 <th style="width:110px;">Hari / Tanggal</th>
                 <th style="width:90px;">Jam</th>
                 <th>Ruangan</th>
-                <th>Keterangan</th>
             </tr>
         </thead>
         <tbody>
@@ -168,7 +167,6 @@ $hari_map = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
                     <td class="nowrap"><?= $hari ?>, <?= $tgl->format('d/m/Y') ?></td>
                     <td class="center nowrap"><?= substr($j['jam_mulai'],0,5) ?> – <?= substr($j['jam_selesai'],0,5) ?></td>
                     <td><?= htmlspecialchars($j['ruangan']) ?></td>
-                    <td><?= htmlspecialchars($j['keterangan'] ?? '') ?></td>
                 </tr>
                 <?php endforeach; ?>
             <?php endif; ?>
