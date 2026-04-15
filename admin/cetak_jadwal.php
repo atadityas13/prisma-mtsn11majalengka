@@ -75,9 +75,9 @@ $hari_map = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
         .nowrap { white-space: nowrap; }
 
         table thead th:first-child { width: 30px; }
-        table thead th:nth-child(4) { width: 50px; }
-        table thead th:nth-child(5) { width: 110px; }
-        table thead th:nth-child(6) { width: 90px; }
+        table thead th:nth-child(4) { width: 140px; }
+        table thead th:nth-child(5) { width: 90px; }
+        table thead th:nth-child(6) { width: 140px; }
 
         /* ── Tanda Tangan ── */
         .ttd { margin-top: 30px; display: flex; justify-content: flex-end; }
@@ -140,8 +140,7 @@ $hari_map = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
                 <th style="width:30px;">No</th>
                 <th>Mata Pelajaran</th>
                 <th>Guru Penguji</th>
-                <th class="center" style="width:50px;">Siswa</th>
-                <th style="width:110px;">Hari / Tanggal</th>
+                <th style="width:140px;">Hari / Tanggal</th>
                 <th style="width:90px;">Jam</th>
                 <th>Ruangan</th>
             </tr>
@@ -149,7 +148,7 @@ $hari_map = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
         <tbody>
             <?php if (empty($jadwals)): ?>
             <tr>
-                <td colspan="8" class="center" style="padding:20px; color:#888;">
+                <td colspan="6" class="center" style="padding:20px; color:#888;">
                     Belum ada jadwal yang diatur.
                 </td>
             </tr>
@@ -163,7 +162,6 @@ $hari_map = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
                     <td class="center"><?= $i + 1 ?></td>
                     <td><?= htmlspecialchars($j['nama_mapel']) ?></td>
                     <td><?= htmlspecialchars($j['nama_guru']) ?></td>
-                    <td class="center"><?= $j['jumlah_siswa'] ?></td>
                     <td class="nowrap"><?= $hari ?>, <?= $tgl->format('d/m/Y') ?></td>
                     <td class="center nowrap"><?= substr($j['jam_mulai'],0,5) ?> – <?= substr($j['jam_selesai'],0,5) ?></td>
                     <td><?= htmlspecialchars($j['ruangan']) ?></td>
