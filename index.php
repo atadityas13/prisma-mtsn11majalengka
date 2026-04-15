@@ -1,12 +1,12 @@
 <?php
-require_once 'includes/config.php';
-require_once 'includes/Auth.php';
-
 // Redirect to installer if not installed
 if (!file_exists('includes/config.php') || !file_exists('install.lock')) {
     header("Location: install.php");
     exit;
 }
+
+require_once 'includes/config.php';
+require_once 'includes/Auth.php';
 
 if (Auth::isLoggedIn()) {
     if ($_SESSION['role'] === 'admin') header("Location: " . base_url("admin/dashboard.php"));
