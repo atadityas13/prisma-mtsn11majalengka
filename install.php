@@ -29,14 +29,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $db_pass = $_POST['db_pass'] ?? '';
 
         try {
-            // Test Connection
-            $pdo = new PDO("mysql:host=$db_host", $db_user, $db_pass);
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            // Uji Koneksi: Coba terhubung langsung ke database yang ditentukan (untuk shared hosting)
+            try {
+                $pdo = new PDO("mysql:host=$db_host;dbname=$db_name", $db_user, $db_pass);
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            } catch (PDOException $e) {
+                // Jika database belum ada (Error 1049 Unknown database), coba buat (berlaku untuk localhost/root user)
+                if ($e->getCode() == 1049 || strpos($e->getMessage(), 'Unknown database') !== false) {
+                    $pdo = new PDO("mysql:host=$db_host", $db_user, $db_pass);
+                    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                    $pdo->exec("CREATE DATABASE IF NOT EXISTS `$db_name` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+                    $pdo->exec("USE `$db_name`");
+                } else {
+                    throw $e; // Lemparkan error lainnya (contoh: Access Denied karena salah password)
+                }
+            }
             
-            // Create Database
-            $pdo->exec("CREATE DATABASE IF NOT EXISTS `$db_name` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
-            $pdo->exec("USE `$db_name`");
-
             // Import SQL Schema
             $sql_file = __DIR__ . '/prisma_db.sql';
             if (file_exists($sql_file)) {
@@ -58,8 +66,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             header("Location: install.php?step=2");
             exit;
-        } catch (Exception $e) {
-            $error = "Terjadi kesalahan: " . $e->getMessage();
+        } catch (Throwable $e) {
+            $error = "Terjadi kesalahan: " . $e->getMessage() . " (Pastikan ekstensi PDO aktif di server)";
         }
     } elseif ($step === 2) {
         // Admin Setup
@@ -121,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 unset($_SESSION['db_config']);
                 $step = 3;
-            } catch (Exception $e) {
+            } catch (Throwable $e) {
                 $error = "Gagal membuat akun admin: " . $e->getMessage();
             }
         }
@@ -168,6 +176,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php if ($error): ?>
             <div class="alert alert-danger text-start py-2" style="font-size: 0.9rem;">
                 <i class="bx bx-error me-1"></i> <?= $error ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if (!extension_loaded('pdo') || !extension_loaded('pdo_mysql')): ?>
+            <div class="alert alert-danger text-start py-2 border-danger" style="font-size: 0.9rem;">
+                <i class="bx bx-error me-1"></i> <strong>Peringatan Server:</strong> Ekstensi PHP <code>pdo</code> atau <code>pdo_mysql</code> tidak ditemukan! Harap aktifkan ekstensi tersebut di pengaturan hosting/cPanel Anda agar aplikasi dapat terhubung ke database.
             </div>
         <?php endif; ?>
 
