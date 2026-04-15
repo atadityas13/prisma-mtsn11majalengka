@@ -200,17 +200,32 @@ $siswas = $db->resultSet();
         }
 
         .footer {
-            margin-top: 40px;
+            margin-top: 20px;
         }
 
-        .sig-container {
+        .footer-row {
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .keterangan-aspek {
+            flex: 1 1 60%;
+            min-width: 0;
+            font-size: 10pt;
+        }
+
+        .keterangan-aspek ul {
+            margin: 5px 0 0;
+            padding-left: 20px;
         }
 
         .sig-box {
-            width: 250px;
-            text-align: center;
+            flex: 0 0 35%;
+            min-width: 180px;
+            text-align: left;
+            padding-left: 0;
         }
 
         .sig-box p {
@@ -345,19 +360,19 @@ $siswas = $db->resultSet();
             </tbody>
         </table>
 
-        <?php if (count($aspeks) > 0): ?>
-        <div class="keterangan-aspek" style="margin-top: 20px; font-size: 10pt;">
-            <strong>Keterangan Aspek Penilaian:</strong>
-            <ul style="margin: 5px 0; padding-left: 20px;">
-                <?php foreach ($aspeks as $idx => $a): ?>
-                <li>A<?= $idx + 1 ?>: <?= htmlspecialchars($a['nama_aspek']) ?></li>
-                <?php endforeach; ?>
-            </ul>
-        </div>
-        <?php endif; ?>
-
         <div class="footer">
-            <div class="sig-container">
+            <div class="footer-row">
+                <?php if (count($aspeks) > 0): ?>
+                <div class="keterangan-aspek">
+                    <strong>Keterangan Aspek Penilaian:</strong>
+                    <ul>
+                        <?php foreach ($aspeks as $idx => $a): ?>
+                        <li>A<?= $idx + 1 ?>: <?= htmlspecialchars($a['nama_aspek']) ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+                <?php endif; ?>
+
                 <div class="sig-box">
                     <p>Cingambul, <?= $jadwal_tanggal_formatted ? htmlspecialchars($jadwal_tanggal_formatted) : date('d/m/Y') ?></p>
                     <p>Penguji,</p>
