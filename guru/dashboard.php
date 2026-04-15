@@ -28,9 +28,8 @@ $total_graded = (int)($db->single()['count'] ?? 0);
 
 $percent = $total_siswa_assigned > 0 ? round(($total_graded / $total_siswa_assigned) * 100, 1) : 0;
 
-// Fetch Jadwal Praktik
-$db->query("SELECT j.* 
-            FROM jadwal_praktik j
+// Fetch Jadwal Praktik penguji ini
+$db->query("SELECT j.* FROM jadwal_praktik j
             JOIN ploting_penguji pp ON j.ploting_id = pp.id
             WHERE pp.guru_id = :guru_id AND pp.mapel_id = :mapel_id");
 $db->bind(':guru_id', $guru_id);
