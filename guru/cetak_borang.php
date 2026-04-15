@@ -89,36 +89,42 @@ $siswas = $db->resultSet();
             text-decoration: underline;
         }
 
-        .info-grid {
+        .info-rows {
             display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-template-columns: 1fr 1fr;
             gap: 6px 24px;
             margin-bottom: 15px;
         }
 
-        .info-group {
+        .info-column {
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 6px;
+            min-width: 0;
+        }
+
+        .info-item {
+            display: flex;
             align-items: flex-start;
-            gap: 0 6px;
+            gap: 8px;
+            min-width: 0;
         }
 
         .info-label {
-            min-width: 110px;
+            flex: 0 0 110px;
             font-weight: 600;
+            white-space: nowrap;
         }
 
         .info-separator {
             width: 10px;
+            flex: 0 0 auto;
         }
 
         .info-value {
-            flex: 1 1 calc(100% - 120px);
+            flex: 1 1 auto;
             min-width: 0;
-        }
-
-        .info-value strong {
-            white-space: nowrap;
+            word-break: break-word;
         }
 
         table.data-table {
@@ -249,26 +255,30 @@ $siswas = $db->resultSet();
             <h4>BORANG PENILAIAN UJIAN PRAKTIK</h4>
         </div>
 
-        <div class="info-grid">
-            <div class="info-group">
-                <span class="info-label">Penguji</span>
-                <span class="info-separator">:</span>
-                <span class="info-value"><strong><?= $_SESSION['nama_lengkap'] ?></strong></span>
+        <div class="info-rows">
+            <div class="info-column">
+                <div class="info-item">
+                    <span class="info-label">Penguji</span>
+                    <span class="info-separator">:</span>
+                    <span class="info-value"><strong><?= $_SESSION['nama_lengkap'] ?></strong></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Tahun Ajaran</span>
+                    <span class="info-separator">:</span>
+                    <span class="info-value"><?= DEFAULT_YEAR ?></span>
+                </div>
             </div>
-            <div class="info-group">
-                <span class="info-label">Mata Uji Praktik</span>
-                <span class="info-separator">:</span>
-                <span class="info-value"><strong><?= $mapel['nama_mapel'] ?></strong></span>
-            </div>
-            <div class="info-group">
-                <span class="info-label">Tahun Ajaran</span>
-                <span class="info-separator">:</span>
-                <span class="info-value"><?= DEFAULT_YEAR ?></span>
-            </div>
-            <div class="info-group">
-                <span class="info-label">Tanggal</span>
-                <span class="info-separator">:</span>
-                <span class="info-value">.......................... <?= date('Y') ?></span>
+            <div class="info-column">
+                <div class="info-item">
+                    <span class="info-label">Mata Uji Praktik</span>
+                    <span class="info-separator">:</span>
+                    <span class="info-value"><strong><?= $mapel['nama_mapel'] ?></strong></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Tanggal</span>
+                    <span class="info-separator">:</span>
+                    <span class="info-value">.......................... <?= date('Y') ?></span>
+                </div>
             </div>
         </div>
 
