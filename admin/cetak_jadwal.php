@@ -39,14 +39,14 @@ $hari_map = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
 
         @page {
             size: A4 portrait;
-            margin: 15mm;
+            margin: 10mm;
         }
         .page {
             width: auto;
             max-width: 210mm;
             min-height: 297mm;
-            padding: 15mm 15mm;
-            margin: 10mm auto;
+            padding: 10mm 10mm;
+            margin: 5mm auto;
             background: #fff;
             box-shadow: 0 0 8px rgba(0,0,0,0.15);
         }

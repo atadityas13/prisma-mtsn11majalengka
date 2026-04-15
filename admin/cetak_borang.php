@@ -50,15 +50,15 @@ $siswas = $db->resultSet();
 
         @page {
             size: A4 portrait;
-            margin: 15mm;
+            margin: 10mm;
         }
 
         .page {
             width: auto;
             max-width: 210mm;
             min-height: 297mm;
-            padding: 15mm 15mm;
-            margin: 10mm auto;
+            padding: 10mm 10mm;
+            margin: 5mm auto;
             background: white;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
         }
