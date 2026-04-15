@@ -254,7 +254,7 @@ $bulan_map = ['','Januari','Februari','Maret','April','Mei','Juni',
             <p><strong><u>.................................................</u></strong></p>
             <p>NIP. ..........................................</p>
         </div>
-        <div class="ttd-box">
+        <div class="ttd-box" style="text-align:left;">
             <p>Cingambul, <?= $tgl_obj->format('d') . ' ' . $bulan_map[(int)$tgl_obj->format('m')] . ' ' . $tgl_obj->format('Y') ?></p>
             <p>Guru Penguji,</p>
             <div class="ttd-space"></div>
