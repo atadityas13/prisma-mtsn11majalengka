@@ -111,18 +111,46 @@ if ($action === 'add') {
 
             if (empty($nisn) || empty($nama)) continue;
 
-            // Check if exists
+            // Check if NISN already ada di tabel siswa
+            $db->query("SELECT s.id as siswa_id, u.id as user_id
+                        FROM siswa s
+                        JOIN users u ON s.user_id = u.id
+                        WHERE s.nisn = :nisn");
+            $db->bind(':nisn', $nisn);
+            $existing = $db->single();
+
+            if ($existing) {
+                // Update existing siswa data
+                $db->query("UPDATE siswa SET nama_lengkap = :nama, nomor_peserta = :nopes,
+                            jenis_kelamin = :jk, kelas = :kelas, tahun_ajaran = :tahun
+                            WHERE id = :id");
+                $db->bind(':nama', $nama);
+                $db->bind(':nopes', $nopes);
+                $db->bind(':jk', $jk);
+                $db->bind(':kelas', $kelas);
+                $db->bind(':tahun', DEFAULT_YEAR);
+                $db->bind(':id', $existing['siswa_id']);
+                $db->execute();
+                $count++;
+                continue;
+            }
+
+            // If user exists but siswa belum dibuat, buat siswa baru
             $db->query("SELECT id FROM users WHERE username = :username");
             $db->bind(':username', $nisn);
-            if ($db->single()) continue;
+            $user = $db->single();
 
-            // Create User
-            $password = password_hash($nisn, PASSWORD_DEFAULT);
-            $db->query("INSERT INTO users (username, password, role) VALUES (:username, :password, 'siswa')");
-            $db->bind(':username', $nisn);
-            $db->bind(':password', $password);
-            $db->execute();
-            $user_id = $db->lastInsertId();
+            if ($user) {
+                $user_id = $user['id'];
+            } else {
+                // Create User
+                $password = password_hash($nisn, PASSWORD_DEFAULT);
+                $db->query("INSERT INTO users (username, password, role) VALUES (:username, :password, 'siswa')");
+                $db->bind(':username', $nisn);
+                $db->bind(':password', $password);
+                $db->execute();
+                $user_id = $db->lastInsertId();
+            }
 
             // Create Siswa
             $db->query("INSERT INTO siswa (user_id, nisn, nama_lengkap, nomor_peserta, jenis_kelamin, kelas, tahun_ajaran) 
