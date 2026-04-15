@@ -137,12 +137,12 @@ $hari_map = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
     <table>
         <thead>
             <tr>
-                <th style="width:30px;">No</th>
-                <th>Mata Pelajaran</th>
-                <th>Guru Penguji</th>
+                <th style="width:40px;">No</th>
+                <th style="width:180px;">Mata Pelajaran</th>
+                <th style="width:180px;">Guru Penguji</th>
                 <th style="width:140px;">Hari / Tanggal</th>
                 <th style="width:90px;">Jam</th>
-                <th>Ruangan</th>
+                <th style="width:180px;">Ruangan</th>
             </tr>
         </thead>
         <tbody>
