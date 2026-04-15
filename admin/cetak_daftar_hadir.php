@@ -77,7 +77,7 @@ $bulan_map = ['','Januari','Februari','Maret','April','Mei','Juni',
         .info-table { width: 100%; margin-bottom: 14px; border-collapse: collapse; font-size: 10.5pt; }
         .info-table td { padding: 2px 0; vertical-align: top; }
         .info-table td:nth-child(2) { width: 12px; text-align: center; }
-        .info-label { width: 130px; }
+        .info-label { width: 150px; }
 
         /* ── Tabel Hadir ── */
         table.hadir { width: 100%; border-collapse: collapse; font-size: 10pt; table-layout: auto; }
