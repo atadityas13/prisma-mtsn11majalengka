@@ -11,6 +11,10 @@ $db->query("SELECT pp.id, g.nama_lengkap as nama_guru, m.nama_mapel
             JOIN mapel m ON pp.mapel_id = m.id
             ORDER BY m.nama_mapel ASC, g.nama_lengkap ASC");
 $plotings = $db->resultSet();
+
+// Fetch Classes for Rapor printing
+$db->query("SELECT DISTINCT kelas FROM siswa ORDER BY kelas ASC");
+$kelas_list = $db->resultSet();
 ?>
 
 <div class="row">
