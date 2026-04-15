@@ -135,7 +135,7 @@ $db = new Database();
                 </div>
                 <div class="modal-body">
                     <div class="mb-3 text-center">
-                        <a href="../assets/template_siswa.xlsx" class="btn btn-sm btn-label-secondary mb-3">
+                        <a href="download_template_siswa.php" class="btn btn-sm btn-label-secondary mb-3">
                             <i class="bx bx-download me-1"></i> Unduh Template Excel
                         </a>
                     </div>
