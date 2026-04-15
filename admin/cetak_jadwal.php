@@ -38,15 +38,18 @@ $hari_map = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
         body { font-family: 'Times New Roman', Times, serif; font-size: 11pt; background: #f0f0f0; color: #000; }
 
         @page {
-            size: A4 portrait;
+            size: A4 landscape;
             margin: 8mm;
         }
         .page {
-            width: calc(210mm - 16mm);
+            width: calc(297mm - 16mm);
             padding: 8mm;
             margin: 0 auto 8mm;
             background: #fff;
             box-shadow: 0 0 8px rgba(0,0,0,0.08);
+        }
+        @media print {
+            .page { width: calc(297mm - 16mm); }
         }
 
         /* ── Kop Surat ── */
