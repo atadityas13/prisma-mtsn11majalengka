@@ -104,11 +104,11 @@ $jadwal = $db->resultSet();
 </div>
 
 <div class="row">
-    <div class="col-12 mb-4">
-        <div class="card">
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
             <div class="card-header d-flex align-items-center justify-content-between">
                 <h5 class="m-0">Jadwal Ujian Praktik</h5>
-                <small class="text-muted">Jadwal pengujian untuk mata pelajaran <?= $mapel_name ?></small>
+                <small class="text-muted">Mata pelajaran <?= $mapel_name ?></small>
             </div>
             <div class="card-body">
                 <?php if (empty($jadwal)): ?>
@@ -117,44 +117,38 @@ $jadwal = $db->resultSet();
                         <p class="text-muted mb-0">Belum ada jadwal yang ditentukan</p>
                     </div>
                 <?php else: ?>
-                    <div class="row">
-                        <?php foreach ($jadwal as $j): ?>
-                            <div class="col-md-6 col-lg-4 mb-4">
-                                <div class="card h-100 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <div class="py-4 mb-3 rounded-3 bg-primary bg-opacity-10">
-                                            <i class="bx bx-calendar bx-lg text-primary"></i>
-                                        </div>
-                                        <h5 class="card-title mb-2">Jadwal Ujian</h5>
-                                        <p class="text-muted mb-1">Tanggal</p>
-                                        <h3 class="fw-bold mb-3"><?= date('d/m/Y', strtotime($j['tanggal'])) ?></h3>
-                                        <div class="mb-2">
-                                            <span class="d-block text-muted">Waktu</span>
-                                            <strong><?= $j['jam_mulai'] ?> - <?= $j['jam_selesai'] ?></strong>
-                                        </div>
-                                        <div class="mb-2">
-                                            <span class="d-block text-muted">Ruangan</span>
-                                            <strong><?= htmlspecialchars($j['ruangan']) ?></strong>
-                                        </div>
-                                        <?php if (!empty($j['keterangan'])): ?>
-                                            <div class="mt-3">
-                                                <small class="text-muted"><?= htmlspecialchars($j['keterangan']) ?></small>
-                                            </div>
-                                        <?php endif; ?>
-                                    </div>
+                    <?php foreach ($jadwal as $j): ?>
+                        <div class="mb-3 p-3 border rounded bg-light">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div>
+                                    <h6 class="mb-1 fw-bold"><?= date('d/m/Y', strtotime($j['tanggal'])) ?></h6>
+                                    <small class="text-muted">Tanggal Ujian</small>
+                                </div>
+                                <div class="avatar bg-label-primary rounded-circle p-2">
+                                    <i class="bx bx-calendar text-primary"></i>
                                 </div>
                             </div>
-                        <?php endforeach; ?>
-                    </div>
+                            <div class="mb-2">
+                                <small class="text-muted d-block">Waktu</small>
+                                <strong><?= $j['jam_mulai'] ?> - <?= $j['jam_selesai'] ?></strong>
+                            </div>
+                            <div class="mb-2">
+                                <small class="text-muted d-block">Ruangan</small>
+                                <strong><?= htmlspecialchars($j['ruangan']) ?></strong>
+                            </div>
+                            <?php if (!empty($j['keterangan'])): ?>
+                                <div>
+                                    <small class="text-muted"><?= htmlspecialchars($j['keterangan']) ?></small>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    <?php endforeach; ?>
                 <?php endif; ?>
             </div>
         </div>
     </div>
-</div>
-
-<div class="row">
-    <div class="col-12">
-        <div class="card">
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
             <div class="card-header d-flex align-items-center justify-content-between">
                 <h5 class="m-0">Langkah Memulai</h5>
             </div>
