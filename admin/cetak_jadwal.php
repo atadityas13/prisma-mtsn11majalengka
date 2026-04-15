@@ -75,8 +75,10 @@ $hari_map = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
         .nowrap { white-space: nowrap; }
 
         table thead th:first-child { width: 30px; }
+        table thead th:nth-child(2) { width: 120px; }
+        table thead th:nth-child(3) { width: 120px; }
         table thead th:nth-child(4) { width: 50px; }
-        table thead th:nth-child(5) { width: 110px; }
+        table thead th:nth-child(5) { width: 140px; }
         table thead th:nth-child(6) { width: 90px; }
 
         /* ── Tanda Tangan ── */
@@ -149,7 +151,7 @@ $hari_map = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
         <tbody>
             <?php if (empty($jadwals)): ?>
             <tr>
-                <td colspan="8" class="center" style="padding:20px; color:#888;">
+                <td colspan="7" class="center" style="padding:20px; color:#888;">
                     Belum ada jadwal yang diatur.
                 </td>
             </tr>
