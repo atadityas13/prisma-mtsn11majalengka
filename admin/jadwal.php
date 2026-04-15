@@ -42,9 +42,14 @@ $count_belum     = count($plotings) - $count_terjadwal;
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="fw-bold py-3 mb-0"><span class="text-muted fw-light">Manajemen /</span> Jadwal Ujian Praktik</h4>
-    <a href="cetak_jadwal.php" target="_blank" class="btn btn-outline-primary">
-        <i class="bx bx-printer me-1"></i> Cetak Jadwal
-    </a>
+    <div class="d-flex gap-2">
+        <a href="cetak_daftar_hadir.php" target="_blank" class="btn btn-outline-success">
+            <i class="bx bx-list-check me-1"></i> Cetak Semua Daftar Hadir
+        </a>
+        <a href="cetak_jadwal.php" target="_blank" class="btn btn-outline-primary">
+            <i class="bx bx-printer me-1"></i> Cetak Jadwal
+        </a>
+    </div>
 </div>
 
 <!-- Summary Cards -->
@@ -74,6 +79,39 @@ $count_belum     = count($plotings) - $count_terjadwal;
         </div>
     </div>
 </div>
+
+<?php if (empty($plotings)): ?>
+<!-- Empty State -->
+<div class="card border-0 shadow-sm">
+    <div class="card-body text-center py-5">
+        <div class="mb-3">
+            <i class="bx bx-calendar-x" style="font-size: 4rem; color: #c0c0c0;"></i>
+        </div>
+        <h5 class="text-muted mb-2">Belum Ada Penguji yang Di-plot</h5>
+        <p class="text-muted mb-4" style="max-width:420px; margin:0 auto;">
+            Jadwal ujian praktik dibuat berdasarkan <strong>Ploting Penguji</strong>.
+            Tambahkan guru penguji beserta siswa yang diuji di halaman Ploting terlebih dahulu,
+            lalu kembali ke halaman ini untuk mengatur jadwalnya.
+        </p>
+        <div class="d-flex gap-2 justify-content-center">
+            <a href="<?= base_url('admin/ploting.php') ?>" class="btn btn-primary">
+                <i class="bx bx-git-repo-forked me-1"></i> Buka Ploting Penguji
+            </a>
+            <button type="button" class="btn btn-outline-secondary" onclick="location.reload()">
+                <i class="bx bx-refresh me-1"></i> Refresh
+            </button>
+        </div>
+    </div>
+</div>
+
+<?php else: ?>
+
+<?php if ($count_belum > 0): ?>
+<div class="alert alert-warning d-flex align-items-center mb-4 py-2" style="font-size:.875rem;">
+    <i class="bx bx-info-circle me-2 fs-5"></i>
+    <span>Ada <strong><?= $count_belum ?> penguji</strong> yang belum memiliki jadwal. Klik tombol <strong>Atur</strong> pada baris yang berstatus <em>Belum</em> untuk menetapkan tanggal, jam, dan ruangan.</span>
+</div>
+<?php endif; ?>
 
 <!-- Tabel Jadwal -->
 <div class="card">
@@ -149,6 +187,10 @@ $count_belum     = count($plotings) - $count_terjadwal;
                                     <?= $p['tanggal'] ? 'Edit' : 'Atur' ?>
                                 </button>
                                 <?php if ($p['tanggal']): ?>
+                                <a href="cetak_daftar_hadir.php?ploting_id=<?= $p['ploting_id'] ?>" target="_blank"
+                                   class="btn btn-sm btn-outline-success" title="Cetak Daftar Hadir">
+                                    <i class="bx bx-list-check"></i>
+                                </a>
                                 <button class="btn btn-sm btn-outline-danger hapus-btn"
                                         data-ploting-id="<?= $p['ploting_id'] ?>"
                                         data-guru="<?= htmlspecialchars($p['nama_guru']) ?>"
@@ -218,6 +260,8 @@ $count_belum     = count($plotings) - $count_terjadwal;
         </form>
     </div>
 </div>
+
+<?php endif; // end else (plotings not empty) ?>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
