@@ -40,8 +40,7 @@ $siswas = $db->resultSet();
 <head>
     <meta charset="UTF-8">
     <title>Borang Penilaian - <?= htmlspecialchars($ploting['nama_mapel']) ?> - <?= htmlspecialchars($ploting['nama_guru']) ?></title>
-    <style>
-        <style>body {
+    <style>body {
             font-family: 'Times New Roman', serif;
             font-size: 11pt;
             padding: 0;
@@ -49,10 +48,16 @@ $siswas = $db->resultSet();
             background: #eee;
         }
 
+        @page {
+            size: A4 portrait;
+            margin: 15mm;
+        }
+
         .page {
-            width: 210mm;
+            width: auto;
+            max-width: 210mm;
             min-height: 297mm;
-            padding: 15mm 20mm;
+            padding: 15mm 15mm;
             margin: 10mm auto;
             background: white;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
@@ -161,7 +166,7 @@ $siswas = $db->resultSet();
             .page {
                 margin: 0;
                 box-shadow: none;
-                width: 100%;
+                width: auto;
             }
         }
     </style>

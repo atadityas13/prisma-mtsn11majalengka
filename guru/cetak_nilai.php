@@ -36,7 +36,8 @@ $siswas = $db->resultSet();
     <title>Daftar Nilai - <?= $mapel['nama_mapel'] ?> - <?= $kelas ?></title>
     <style>
         body { font-family: 'Times New Roman', serif; font-size: 11pt; padding: 0; margin: 0; background: #eee; }
-        .page { width: 210mm; min-height: 297mm; padding: 15mm 20mm; margin: 10mm auto; background: white; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
+        @page { size: A4 portrait; margin: 15mm; }
+        .page { width: auto; max-width: 210mm; min-height: 297mm; padding: 15mm 15mm; margin: 10mm auto; background: white; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
         .header-table { width: 100%; border-bottom: 3px double #000; padding-bottom: 10px; margin-bottom: 20px; }
         .header-table td { vertical-align: middle; text-align: center; border: none !important; }
         .logo-left { width: 70px; text-align: left !important; }
@@ -56,7 +57,7 @@ $siswas = $db->resultSet();
         @media print {
             .no-print { display: none; }
             body { background: white; padding: 0; }
-            .page { margin: 0; box-shadow: none; width: 100%; }
+            .page { margin: 0; box-shadow: none; width: auto; max-width: 210mm; }
         }
     </style>
 </head>

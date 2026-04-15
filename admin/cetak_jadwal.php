@@ -36,10 +36,16 @@ $hari_map = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Times New Roman', Times, serif; font-size: 11pt; background: #f0f0f0; }
+
+        @page {
+            size: A4 portrait;
+            margin: 15mm;
+        }
         .page {
-            width: 210mm;
+            width: auto;
+            max-width: 210mm;
             min-height: 297mm;
-            padding: 15mm 20mm;
+            padding: 15mm 15mm;
             margin: 10mm auto;
             background: #fff;
             box-shadow: 0 0 8px rgba(0,0,0,0.15);
@@ -90,7 +96,7 @@ $hari_map = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
         @media print {
             .no-print { display: none !important; }
             body { background: white; }
-            .page { margin: 0; box-shadow: none; width: 100%; }
+            .page { margin: 0; box-shadow: none; width: auto; }
         }
     </style>
 </head>
