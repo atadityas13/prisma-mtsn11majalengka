@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS siswa (
 -- 6. Assessment Aspects (Aspek Penilaian)
 CREATE TABLE IF NOT EXISTS aspek_penilaian (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    guru_id INT NOT NULL,
+    guru_id INT NULL,
     mapel_id INT NOT NULL,
     nama_aspek VARCHAR(100) NOT NULL,
     bobot_nilai INT DEFAULT 1, -- used for weighted average
