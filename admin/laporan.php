@@ -4,13 +4,13 @@ include_once __DIR__ . '/layout/header.php';
 
 $db = new Database();
 
-// Fetch Mapels for Borang
-$db->query("SELECT * FROM mapel ORDER BY nama_mapel ASC");
-$mapels = $db->resultSet();
-
-// Fetch Classes
-$db->query("SELECT DISTINCT kelas FROM siswa ORDER BY kelas ASC");
-$kelas_list = $db->resultSet();
+// Fetch Ploting entries for Borang
+$db->query("SELECT pp.id, g.nama_lengkap as nama_guru, m.nama_mapel
+            FROM ploting_penguji pp
+            JOIN guru g ON pp.guru_id = g.id
+            JOIN mapel m ON pp.mapel_id = m.id
+            ORDER BY m.nama_mapel ASC, g.nama_lengkap ASC");
+$plotings = $db->resultSet();
 ?>
 
 <div class="row">
@@ -46,27 +46,16 @@ $kelas_list = $db->resultSet();
                 <i class="bx bx-printer text-success fs-3"></i>
             </div>
             <div class="card-body">
-                <p>Cetak lembar penilaian kosong (PDF/Print) untuk digunakan guru penguji saat pelaksanaan ujian.</p>
+                <p>Cetak lembar penilaian kosong berdasarkan guru yang sudah diploting, bukan per kelas.</p>
                 <form action="cetak_borang.php" method="GET" target="_blank">
-                    <div class="row g-2 mb-3">
-                        <div class="col">
-                            <label class="form-label">Mata Pelajaran</label>
-                            <select name="mapel_id" class="form-select" required>
-                                <option value="">Pilih Mapel</option>
-                                <?php foreach ($mapels as $m): ?>
-                                    <option value="<?= $m['id'] ?>"><?= $m['nama_mapel'] ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <div class="col">
-                            <label class="form-label">Kelas</label>
-                            <select name="kelas" class="form-select" required>
-                                <option value="">Pilih Kelas</option>
-                                <?php foreach ($kelas_list as $k): ?>
-                                    <option value="<?= $k['kelas'] ?>"><?= $k['kelas'] ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
+                    <div class="mb-3">
+                        <label class="form-label">Pilih Guru Penguji / Mapel</label>
+                        <select name="ploting_id" class="form-select" required>
+                            <option value="">Pilih Ploting</option>
+                            <?php foreach ($plotings as $p): ?>
+                                <option value="<?= $p['id'] ?>"><?= htmlspecialchars($p['nama_guru'] . ' — ' . $p['nama_mapel']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                     <button type="submit" class="btn btn-success w-100">
                         <i class="bx bx-printer me-1"></i> Cetak Borang Kosong

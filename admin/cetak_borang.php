@@ -5,23 +5,33 @@ require_once __DIR__ . '/../includes/Auth.php';
 Auth::restrictTo('admin');
 
 $db = new Database();
-$mapel_id = $_GET['mapel_id'] ?? '';
-$kelas = $_GET['kelas'] ?? '';
+$ploting_id = $_GET['ploting_id'] ?? '';
 
-// Fetch Mapel Info
-$db->query("SELECT * FROM mapel WHERE id = :id");
-$db->bind(':id', $mapel_id);
-$mapel = $db->single();
+// Fetch Ploting Info
+$db->query("SELECT pp.id as ploting_id, pp.mapel_id, g.nama_lengkap as nama_guru, g.nip, m.nama_mapel
+            FROM ploting_penguji pp
+            JOIN guru g ON pp.guru_id = g.id
+            JOIN mapel m ON pp.mapel_id = m.id
+            WHERE pp.id = :pid");
+$db->bind(':pid', $ploting_id);
+$ploting = $db->single();
+
+if (!$ploting) {
+    die('Ploting tidak ditemukan.');
+}
 
 // Fetch Aspects for this Mapel
 // NOTE: We take aspects from any guru who handles this mapel for simplicity in the blank form
 $db->query("SELECT * FROM aspek_penilaian WHERE mapel_id = :id GROUP BY nama_aspek ORDER BY id ASC");
-$db->bind(':id', $mapel_id);
+$db->bind(':id', $ploting['mapel_id']);
 $aspeks = $db->resultSet();
 
-// Fetch Students in this class
-$db->query("SELECT * FROM siswa WHERE kelas = :kelas ORDER BY nama_lengkap ASC");
-$db->bind(':kelas', $kelas);
+// Fetch Students for this ploting
+$db->query("SELECT s.* FROM ploting_siswa ps
+            JOIN siswa s ON ps.siswa_id = s.id
+            WHERE ps.ploting_id = :pid
+            ORDER BY s.nama_lengkap ASC");
+$db->bind(':pid', $ploting_id);
 $siswas = $db->resultSet();
 ?>
 <!DOCTYPE html>
@@ -29,7 +39,7 @@ $siswas = $db->resultSet();
 
 <head>
     <meta charset="UTF-8">
-    <title>Borang Penilaian - <?= $mapel['nama_mapel'] ?> - <?= $kelas ?></title>
+    <title>Borang Penilaian - <?= htmlspecialchars($ploting['nama_mapel']) ?> - <?= htmlspecialchars($ploting['nama_guru']) ?></title>
     <style>
         <style>body {
             font-family: 'Times New Roman', serif;
@@ -195,10 +205,10 @@ $siswas = $db->resultSet();
             <tr>
                 <td width="120">Mata Pelajaran</td>
                 <td width="15">:</td>
-                <td width="300"><strong><?= $mapel['nama_mapel'] ?></strong></td>
-                <td width="80">Kelas</td>
+                <td width="300"><strong><?= htmlspecialchars($ploting['nama_mapel']) ?></strong></td>
+                <td width="100">Guru Penguji</td>
                 <td width="15">:</td>
-                <td><strong><?= $kelas ?></strong></td>
+                <td><strong><?= htmlspecialchars($ploting['nama_guru']) ?></strong></td>
             </tr>
             <tr>
                 <td>Tahun Ajaran</td>
