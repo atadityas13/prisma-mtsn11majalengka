@@ -47,6 +47,12 @@
                 <div data-i18n="Ploting">Ploting Penguji</div>
             </a>
         </li>
+        <li class="menu-item <?= (basename($_SERVER['PHP_SELF']) == 'jadwal.php') ? 'active' : '' ?>">
+            <a href="<?= base_url('admin/jadwal.php') ?>" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-calendar"></i>
+                <div data-i18n="Jadwal">Jadwal Praktik</div>
+            </a>
+        </li>
         <li class="menu-item <?= (basename($_SERVER['PHP_SELF']) == 'laporan.php') ? 'active' : '' ?>">
             <a href="<?= base_url('admin/laporan.php') ?>" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-file"></i>
