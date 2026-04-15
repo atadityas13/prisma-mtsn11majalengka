@@ -17,13 +17,20 @@ $total_mapel = $db->single()['total'];
 $db->query("SELECT COUNT(*) as total FROM ploting_penguji");
 $total_ploting = $db->single()['total'];
 
-// Assessment progress (Sample data for chart)
-$db->query("SELECT COUNT(*) as total FROM nilai_praktik");
-$total_nilai = $db->single()['total'];
+// Hitung jumlah aspek penilaian yang ada (total per mapel, untuk kalkulasi akurat)
+$db->query("SELECT COUNT(*) as total FROM aspek_penilaian");
+$total_aspek = (int)($db->single()['total'] ?? 1);
 
-// Logic for progress percentage (Assume 1 score per aspek per student assignment)
-// This is a simplified calculation for the dashboard
-$progress_percent = $total_siswa > 0 ? round(($total_nilai / ($total_siswa * 5)) * 100, 1) : 0; 
+// Hitung siswa yang sudah dinilai (minimal 1 aspek)
+$db->query("SELECT COUNT(DISTINCT siswa_id) as total FROM nilai_praktik");
+$sudah_dinilai = (int)($db->single()['total'] ?? 0);
+
+// Hitung total siswa yang sudah di-plot (yang harus dinilai)
+$db->query("SELECT COUNT(DISTINCT siswa_id) as total FROM ploting_siswa");
+$total_siswa_plot = (int)($db->single()['total'] ?? 0);
+
+// Progres = berapa persen siswa yang sudah dinilai dari yang sudah di-plot
+$progress_percent = $total_siswa_plot > 0 ? round(($sudah_dinilai / $total_siswa_plot) * 100, 1) : 0;
 if ($progress_percent > 100) $progress_percent = 100;
 ?>
 
@@ -42,9 +49,29 @@ if ($progress_percent > 100) $progress_percent = 100;
                     </div>
                 </div>
                 <div class="col-sm-5 text-center text-sm-start">
-                    <div class="card-body pb-0 px-0 px-md-4">
-                        <img src="https://demos.themeselection.com/sneat-bootstrap-html-admin-template-free/assets/img/illustrations/man-with-laptop-light.png" height="140" alt="View Badge User" data-app-dark-img="illustrations/man-with-laptop-dark.png" data-app-light-img="illustrations/man-with-laptop-light.png" />
-                    </div>
+                        <div class="card-body pb-0 px-0 px-md-4 text-center">
+                            <svg width="140" viewBox="0 0 200 170" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <ellipse cx="100" cy="155" rx="70" ry="12" fill="#e7e7ff" />
+                              <!-- Body -->
+                              <rect x="65" y="90" width="70" height="60" rx="10" fill="#696cff"/>
+                              <!-- Laptop base -->
+                              <rect x="55" y="140" width="90" height="8" rx="4" fill="#554ee0"/>
+                              <!-- Laptop screen -->
+                              <rect x="70" y="60" width="60" height="40" rx="5" fill="#b2b3ff"/>
+                              <rect x="74" y="64" width="52" height="32" rx="3" fill="#f4f4ff"/>
+                              <!-- Lines on screen -->
+                              <rect x="78" y="70" width="30" height="3" rx="1" fill="#696cff"/>
+                              <rect x="78" y="76" width="44" height="2" rx="1" fill="#d0d0ff"/>
+                              <rect x="78" y="81" width="36" height="2" rx="1" fill="#d0d0ff"/>
+                              <!-- Head -->
+                              <circle cx="100" cy="45" r="18" fill="#ffb8a0"/>
+                              <!-- Hair -->
+                              <path d="M83 42 Q84 28 100 27 Q116 28 117 42" fill="#3d2314"/>
+                              <!-- Arms -->
+                              <rect x="45" y="95" width="22" height="10" rx="5" fill="#696cff" transform="rotate(-10 45 95)"/>
+                              <rect x="133" y="95" width="22" height="10" rx="5" fill="#696cff" transform="rotate(10 133 95)"/>
+                            </svg>
+                        </div>
                 </div>
             </div>
         </div>

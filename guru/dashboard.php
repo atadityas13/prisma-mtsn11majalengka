@@ -11,35 +11,20 @@ $db->query("SELECT nama_mapel FROM mapel WHERE id = :id");
 $db->bind(':id', $mapel_id);
 $mapel_name = $db->single()['nama_mapel'];
 
-// Count Students Assigned
-// We need to check ploting_penguji
-$db->query("SELECT * FROM ploting_penguji WHERE guru_id = :guru_id AND mapel_id = :mapel_id");
+// Count Students Assigned via ploting_siswa (skema baru)
+$db->query("SELECT COUNT(ps.id) as count
+            FROM ploting_siswa ps
+            JOIN ploting_penguji pp ON ps.ploting_id = pp.id
+            WHERE pp.guru_id = :guru_id AND pp.mapel_id = :mapel_id");
 $db->bind(':guru_id', $guru_id);
 $db->bind(':mapel_id', $mapel_id);
-$plots = $db->resultSet();
-
-$total_siswa_assigned = 0;
-foreach ($plots as $p) {
-    if ($p['siswa_id_start']) {
-        // Range plotting
-        $db->query("SELECT COUNT(*) as count FROM siswa WHERE kelas = :kelas AND id BETWEEN :start AND :end");
-        $db->bind(':kelas', $p['kelas']);
-        $db->bind(':start', $p['siswa_id_start']);
-        $db->bind(':end', $p['siswa_id_end']);
-        $total_siswa_assigned += $db->single()['count'];
-    } else {
-        // Full class plotting
-        $db->query("SELECT COUNT(*) as count FROM siswa WHERE kelas = :kelas");
-        $db->bind(':kelas', $p['kelas']);
-        $total_siswa_assigned += $db->single()['count'];
-    }
-}
+$total_siswa_assigned = (int)($db->single()['count'] ?? 0);
 
 // Count Graded
 $db->query("SELECT COUNT(DISTINCT siswa_id) as count FROM nilai_praktik WHERE guru_id = :guru_id AND mapel_id = :mapel_id");
 $db->bind(':guru_id', $guru_id);
 $db->bind(':mapel_id', $mapel_id);
-$total_graded = $db->single()['count'];
+$total_graded = (int)($db->single()['count'] ?? 0);
 
 $percent = $total_siswa_assigned > 0 ? round(($total_graded / $total_siswa_assigned) * 100, 1) : 0;
 ?>

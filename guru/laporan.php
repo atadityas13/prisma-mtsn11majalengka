@@ -11,11 +11,14 @@ $db->query("SELECT * FROM mapel WHERE id = :id");
 $db->bind(':id', $mapel_id);
 $mapel = $db->single();
 
-// Fetch Classes assigned to this guru
-$db->query("SELECT DISTINCT kelas FROM ploting_penguji WHERE guru_id = :gid AND mapel_id = :mid ORDER BY kelas ASC");
+// Cek apakah guru ini punya siswa yang sudah di-plot
+$db->query("SELECT COUNT(ps.id) as total
+            FROM ploting_siswa ps
+            JOIN ploting_penguji pp ON ps.ploting_id = pp.id
+            WHERE pp.guru_id = :gid AND pp.mapel_id = :mid");
 $db->bind(':gid', $guru_id);
 $db->bind(':mid', $mapel_id);
-$kelas_list = $db->resultSet();
+$kelas_list = [['has_data' => (int)($db->single()['total'] ?? 0)]]; // reuse varname untuk cek if count > 0
 ?>
 
 <div class="row">
@@ -29,7 +32,7 @@ $kelas_list = $db->resultSet();
             <div class="card-body">
                 <p>Cetak atau lihat daftar nilai yang sudah Anda input untuk seluruh siswa (Gabungan semua kelas).</p>
                 <div class="d-grid mt-3">
-                    <?php if (count($kelas_list) > 0): ?>
+                    <?php if ($kelas_list[0]['has_data'] > 0): ?>
                         <a href="<?= base_url('guru/cetak_nilai.php') ?>" 
                            target="_blank" 
                            class="btn btn-info btn-lg text-white">
@@ -53,7 +56,7 @@ $kelas_list = $db->resultSet();
             <div class="card-body">
                 <p>Cetak lembar penilaian kosong (PDF) untuk seluruh siswa yang Anda uji pada mata pelajaran <strong><?= $mapel['nama_mapel'] ?></strong>.</p>
                 <div class="d-grid mt-3">
-                    <?php if (count($kelas_list) > 0): ?>
+                    <?php if ($kelas_list[0]['has_data'] > 0): ?>
                         <a href="<?= base_url('guru/cetak_borang.php') ?>" 
                            target="_blank" 
                            class="btn btn-primary btn-lg">

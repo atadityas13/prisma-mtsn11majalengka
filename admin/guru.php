@@ -256,6 +256,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 });
             }
+        }); // ← tutup delete-btn listener
+    });
+
     // Reset Password
     document.querySelectorAll('.reset-pass-btn').forEach(btn => {
         btn.addEventListener('click', function() {

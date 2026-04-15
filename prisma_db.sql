@@ -68,13 +68,19 @@ CREATE TABLE IF NOT EXISTS ploting_penguji (
     id INT AUTO_INCREMENT PRIMARY KEY,
     guru_id INT NOT NULL,
     mapel_id INT NOT NULL,
-    kelas VARCHAR(20) NOT NULL,
-    siswa_id_start INT NULL,
-    siswa_id_end INT NULL,
     FOREIGN KEY (guru_id) REFERENCES guru(id) ON DELETE CASCADE,
     FOREIGN KEY (mapel_id) REFERENCES mapel(id) ON DELETE CASCADE,
-    FOREIGN KEY (siswa_id_start) REFERENCES siswa(id) ON DELETE SET NULL,
-    FOREIGN KEY (siswa_id_end) REFERENCES siswa(id) ON DELETE SET NULL
+    UNIQUE KEY unique_guru_mapel (guru_id, mapel_id)
+) ENGINE=InnoDB;
+
+-- 7b. Ploting Siswa (Detail siswa per penguji)
+CREATE TABLE IF NOT EXISTS ploting_siswa (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    ploting_id INT NOT NULL,
+    siswa_id INT NOT NULL,
+    FOREIGN KEY (ploting_id) REFERENCES ploting_penguji(id) ON DELETE CASCADE,
+    FOREIGN KEY (siswa_id) REFERENCES siswa(id) ON DELETE CASCADE,
+    UNIQUE KEY unique_siswa_per_plot (ploting_id, siswa_id)
 ) ENGINE=InnoDB;
 
 -- 8. Scores (Nilai Praktik)

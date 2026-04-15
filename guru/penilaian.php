@@ -22,28 +22,16 @@ if (count($aspeks) == 0) {
     exit;
 }
 
-// Fetch Students assigned to this guru
-$db->query("SELECT * FROM ploting_penguji WHERE guru_id = :guru_id AND mapel_id = :mapel_id");
+// Fetch Students assigned to this guru via ploting_siswa
+$db->query("SELECT s.* FROM siswa s
+            JOIN ploting_siswa ps  ON ps.siswa_id = s.id
+            JOIN ploting_penguji pp ON ps.ploting_id = pp.id
+            WHERE pp.guru_id = :guru_id AND pp.mapel_id = :mapel_id
+            ORDER BY s.nomor_peserta ASC");
 $db->bind(':guru_id', $guru_id);
 $db->bind(':mapel_id', $mapel_id);
-$plots = $db->resultSet();
+$siswas = $db->resultSet();
 
-$siswas = [];
-foreach ($plots as $p) {
-    if ($p['siswa_id_start']) {
-        $db->query("SELECT * FROM siswa WHERE kelas = :kelas AND id BETWEEN :start AND :end ORDER BY nama_lengkap ASC");
-        $db->bind(':kelas', $p['kelas']);
-        $db->bind(':start', $p['siswa_id_start']);
-        $db->bind(':end', $p['siswa_id_end']);
-        $res = $db->resultSet();
-        $siswas = array_merge($siswas, $res);
-    } else {
-        $db->query("SELECT * FROM siswa WHERE kelas = :kelas ORDER BY nama_lengkap ASC");
-        $db->bind(':kelas', $p['kelas']);
-        $res = $db->resultSet();
-        $siswas = array_merge($siswas, $res);
-    }
-}
 ?>
 
 <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Guru /</span> Penilaian Siswa</h4>
@@ -102,6 +90,10 @@ foreach ($siswas as $s) {
                             <input type="number" name="nilai[<?= $a['id'] ?>]" class="form-control form-control-sm qg-input" min="0" max="100" required placeholder="0-100">
                         </div>
                     <?php endforeach; ?>
+                    <div class="mb-2">
+                        <label class="form-label small mb-1">Catatan (Opsional)</label>
+                        <textarea name="catatan" class="form-control form-control-sm" rows="2" placeholder="Catatan penilaian..."></textarea>
+                    </div>
                 </div>
                 <div class="d-grid gap-2 mt-3">
                     <button type="submit" class="btn btn-primary">
@@ -128,7 +120,7 @@ foreach ($siswas as $s) {
 </div>
 
 <div class="card mb-4">
-    <div class="card-header p-3 border-bottom" style="position: relative; z-index: 1100; pointer-events: auto;">
+    <div class="card-header p-3 border-bottom">
         <ul class="nav nav-pills" id="filterTabs">
             <li class="nav-item">
                 <a href="javascript:void(0);" class="nav-link active" data-filter="" style="cursor: pointer !important;">

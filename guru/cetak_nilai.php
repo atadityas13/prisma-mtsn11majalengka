@@ -19,33 +19,15 @@ $db->query("SELECT * FROM aspek_penilaian WHERE mapel_id = :mid ORDER BY id ASC"
 $db->bind(':mid', $mapel_id);
 $aspeks = $db->resultSet();
 
-// Fetch Students assigned to this guru
-if ($kelas) {
-    $db->query("SELECT * FROM ploting_penguji WHERE guru_id = :gid AND mapel_id = :mid AND kelas = :kelas");
-    $db->bind(':kelas', $kelas);
-} else {
-    $db->query("SELECT * FROM ploting_penguji WHERE guru_id = :gid AND mapel_id = :mid");
-}
+// Fetch Students assigned to this guru via ploting_siswa
+$db->query("SELECT s.* FROM siswa s
+            JOIN ploting_siswa ps  ON ps.siswa_id = s.id
+            JOIN ploting_penguji pp ON ps.ploting_id = pp.id
+            WHERE pp.guru_id = :gid AND pp.mapel_id = :mid
+            ORDER BY s.nomor_peserta ASC");
 $db->bind(':gid', $guru_id);
 $db->bind(':mid', $mapel_id);
-$plots = $db->resultSet();
-
-$siswas = [];
-foreach ($plots as $p) {
-    if ($p['siswa_id_start']) {
-        $db->query("SELECT * FROM siswa WHERE kelas = :kelas AND id BETWEEN :start AND :end ORDER BY nama_lengkap ASC");
-        $db->bind(':kelas', $p['kelas']);
-        $db->bind(':start', $p['siswa_id_start']);
-        $db->bind(':end', $p['siswa_id_end']);
-        $res = $db->resultSet();
-        $siswas = array_merge($siswas, $res);
-    } else {
-        $db->query("SELECT * FROM siswa WHERE kelas = :kelas ORDER BY nama_lengkap ASC");
-        $db->bind(':kelas', $p['kelas']);
-        $res = $db->resultSet();
-        $siswas = array_merge($siswas, $res);
-    }
-}
+$siswas = $db->resultSet();
 ?>
 <!DOCTYPE html>
 <html lang="id">
