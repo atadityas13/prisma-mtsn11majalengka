@@ -28,13 +28,15 @@ $total_graded = (int)($db->single()['count'] ?? 0);
 
 $percent = $total_siswa_assigned > 0 ? round(($total_graded / $total_siswa_assigned) * 100, 1) : 0;
 
-// Fetch Jadwal Praktik penguji ini
-$db->query("SELECT j.* FROM jadwal_praktik j
+// Fetch Jadwal
+$db->query("SELECT j.tanggal, j.jam_mulai, j.jam_selesai, j.ruangan, j.keterangan
+            FROM jadwal_praktik j
             JOIN ploting_penguji pp ON j.ploting_id = pp.id
-            WHERE pp.guru_id = :guru_id AND pp.mapel_id = :mapel_id");
+            WHERE pp.guru_id = :guru_id AND pp.mapel_id = :mapel_id
+            ORDER BY j.tanggal ASC, j.jam_mulai ASC");
 $db->bind(':guru_id', $guru_id);
 $db->bind(':mapel_id', $mapel_id);
-$jadwal = $db->single();
+$jadwal = $db->resultSet();
 ?>
 
 <div class="row">
@@ -96,6 +98,48 @@ $jadwal = $db->single();
                     <a href="penilaian.php" class="btn btn-primary btn-sm w-100">Lanjutkan Penilaian <i
                             class="bx bx-right-arrow-alt"></i></a>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 mb-4">
+        <div class="card">
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <h5 class="m-0">Jadwal Ujian Praktik</h5>
+                <small class="text-muted">Jadwal pengujian untuk mata pelajaran <?= $mapel_name ?></small>
+            </div>
+            <div class="card-body">
+                <?php if (empty($jadwal)): ?>
+                    <div class="text-center py-4">
+                        <i class="bx bx-calendar bx-lg text-muted mb-2"></i>
+                        <p class="text-muted mb-0">Belum ada jadwal yang ditentukan</p>
+                    </div>
+                <?php else: ?>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Tanggal</th>
+                                    <th>Waktu</th>
+                                    <th>Ruangan</th>
+                                    <th>Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($jadwal as $j): ?>
+                                    <tr>
+                                        <td><?= date('d/m/Y', strtotime($j['tanggal'])) ?></td>
+                                        <td><?= $j['jam_mulai'] ?> - <?= $j['jam_selesai'] ?></td>
+                                        <td><?= htmlspecialchars($j['ruangan']) ?></td>
+                                        <td><?= htmlspecialchars($j['keterangan'] ?? '-') ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>
