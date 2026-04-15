@@ -1,8 +1,6 @@
 -- PRISMA - Penilaian Ujian Praktik Siswa
 -- Database Schema
 
-CREATE DATABASE IF NOT EXISTS prisma_db;
-USE prisma_db;
 
 -- 1. Users table for authentication
 CREATE TABLE IF NOT EXISTS users (
