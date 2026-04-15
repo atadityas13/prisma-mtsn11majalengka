@@ -117,27 +117,38 @@ $jadwal = $db->resultSet();
                         <p class="text-muted mb-0">Belum ada jadwal yang ditentukan</p>
                     </div>
                 <?php else: ?>
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Tanggal</th>
-                                    <th>Waktu</th>
-                                    <th>Ruangan</th>
-                                    <th>Keterangan</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($jadwal as $j): ?>
-                                    <tr>
-                                        <td><?= date('d/m/Y', strtotime($j['tanggal'])) ?></td>
-                                        <td><?= $j['jam_mulai'] ?> - <?= $j['jam_selesai'] ?></td>
-                                        <td><?= htmlspecialchars($j['ruangan']) ?></td>
-                                        <td><?= htmlspecialchars($j['keterangan'] ?? '-') ?></td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
+                    <div class="row">
+                        <?php foreach ($jadwal as $j): ?>
+                            <div class="col-md-6 col-lg-4 mb-3">
+                                <div class="card h-100 border-primary">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="avatar bg-label-primary me-3">
+                                                <i class="bx bx-calendar bx-sm"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="card-title mb-0"><?= date('d/m/Y', strtotime($j['tanggal'])) ?></h6>
+                                                <small class="text-muted">Tanggal Ujian</small>
+                                            </div>
+                                        </div>
+                                        <div class="mb-2">
+                                            <i class="bx bx-time-five me-1"></i>
+                                            <span class="fw-medium"><?= $j['jam_mulai'] ?> - <?= $j['jam_selesai'] ?></span>
+                                        </div>
+                                        <div class="mb-2">
+                                            <i class="bx bx-building me-1"></i>
+                                            <span class="fw-medium"><?= htmlspecialchars($j['ruangan']) ?></span>
+                                        </div>
+                                        <?php if (!empty($j['keterangan'])): ?>
+                                            <div class="mb-0">
+                                                <i class="bx bx-info-circle me-1"></i>
+                                                <small class="text-muted"><?= htmlspecialchars($j['keterangan']) ?></small>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
                     </div>
                 <?php endif; ?>
             </div>
