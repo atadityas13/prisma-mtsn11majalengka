@@ -37,7 +37,29 @@ $db->query("SELECT j.tanggal, j.jam_mulai, j.jam_selesai, j.ruangan, j.keteranga
 $db->bind(':guru_id', $guru_id);
 $db->bind(':mapel_id', $mapel_id);
 $jadwal = $db->resultSet();
+
+// Check if aspects are already set
+$db->query("SELECT COUNT(*) as count FROM aspek_penilaian WHERE mapel_id = :mapel_id");
+$db->bind(':mapel_id', $mapel_id);
+$total_aspek = (int)($db->single()['count'] ?? 0);
 ?>
+
+<?php if ($total_aspek === 0): ?>
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="alert alert-warning d-flex align-items-center" role="alert">
+                <span class="badge badge-center rounded-pill bg-warning me-3"><i class="bx bx-error bx-sm"></i></span>
+                <div class="d-flex flex-column ps-1">
+                    <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">Perhatian: Kriteria Penilaian Belum Ada!</h6>
+                    <span>Anda belum menambahkan <strong>Aspek Penilaian</strong> untuk mata pelajaran <?= $mapel_name ?>. Silakan tambahkan kriteria terlebih dahulu sebelum menginput nilai.</span>
+                    <div class="mt-2">
+                        <a href="aspek.php" class="btn btn-sm btn-warning">Atur Aspek Sekarang</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
 
 <div class="row">
     <div class="col-12 mb-4">
