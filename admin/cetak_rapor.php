@@ -133,7 +133,8 @@ $siswas = $db->resultSet();
 
         table.nilai th:last-child,
         table.nilai td:last-child {
-            width: auto; /* Take remaining space */
+            width: auto;
+            /* Take remaining space */
         }
 
         .text-center {
@@ -158,6 +159,32 @@ $siswas = $db->resultSet();
 
         .sig-box p {
             margin: 2px 0;
+            position: relative;
+            z-index: 5;
+        }
+
+        .sig-overlay {
+            position: relative;
+            height: 100px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        .img-cap {
+            position: absolute;
+            top: -30px;
+            left: -100px;
+            width: 150px;
+            z-index: 2;
+            opacity: 0.9;
+        }
+
+        .img-ttd {
+            position: absolute;
+            top: 0px;
+            left: -25px;
+            width: 200px;
+            z-index: 3;
         }
 
         @media print {
@@ -332,9 +359,12 @@ $siswas = $db->resultSet();
                 <div class="sig-box">
                     <p>Cingambul, 16 April 2026</p>
                     <p>Plt. Kepala Madrasah,</p>
-                    <br><br><br>
-                    <p><strong>H. Dede Apip Mustopa</strong></p>
-                    <p>NIP. ........................................</p>
+                    <div class="sig-overlay">
+                        <img src="<?= base_url('assets/img/cap.png') ?>" class="img-cap">
+                        <img src="<?= base_url('assets/img/ttd-kepala.png') ?>" class="img-ttd">
+                    </div>
+                    <p><strong><u>H. Dede Apip Mustopa</u></strong></p>
+                    <p>NIP. 196801171992031002</p>
                 </div>
             </div>
         </div>
