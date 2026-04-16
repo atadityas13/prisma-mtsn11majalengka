@@ -14,201 +14,192 @@ $db = new Database();
 $db->query("SELECT * FROM mapel ORDER BY nama_mapel ASC");
 $mapels = $db->resultSet();
 foreach ($mapels as &$m) {
-    // Fetch Materis
     $db->query("SELECT * FROM materi_penilaian WHERE mapel_id = :id ORDER BY id ASC");
     $db->bind(':id', $m['id']);
     $m['materis'] = $db->resultSet();
     
-    foreach ($m['materis'] as &$mat) {
-        $db->query("SELECT * FROM aspek_penilaian WHERE materi_id = :id ORDER BY id ASC");
-        $db->bind(':id', $mat['id']);
-        $mat['aspects'] = $db->resultSet();
+    $db->query("SELECT * FROM aspek_penilaian WHERE mapel_id = :mid ORDER BY materi_id ASC, id ASC");
+    $db->bind(':mid', $m['id']);
+    $all_aspeks = $db->resultSet();
+    
+    $m['grouped_aspeks'] = [];
+    foreach ($all_aspeks as $a) {
+        $mid = $a['materi_id'] ?? 0;
+        $m['grouped_aspeks'][$mid][] = $a;
     }
 }
+unset($m);
 
 // 2. Fetch All Students
 $db->query("SELECT * FROM siswa ORDER BY kelas ASC, nama_lengkap ASC");
 $siswas = $db->resultSet();
 
 $spreadsheet = new Spreadsheet();
-
-// --- SHEET 1: REKAP NILAI ---
 $sheet = $spreadsheet->getActiveSheet();
 $sheet->setTitle('Rekap Nilai Praktik');
 
 // Headers Static
-$sheet->setCellValue('A1', 'NO');
-$sheet->mergeCells('A1:A3');
-$sheet->setCellValue('B1', 'NISN');
-$sheet->mergeCells('B1:B3');
-$sheet->setCellValue('C1', 'NO. PESERTA');
-$sheet->mergeCells('C1:C3');
-$sheet->setCellValue('D1', 'NAMA LENGKAP');
-$sheet->mergeCells('D1:D3');
-$sheet->setCellValue('E1', 'KELAS');
-$sheet->mergeCells('E1:E3');
+$sheet->setCellValue('A1', 'NO')->mergeCells('A1:A3');
+$sheet->setCellValue('B1', 'NISN')->mergeCells('B1:B3');
+$sheet->setCellValue('C1', 'NO. PESERTA')->mergeCells('C1:C3');
+$sheet->setCellValue('D1', 'NAMA LENGKAP')->mergeCells('D1:D3');
+$sheet->setCellValue('E1', 'KELAS')->mergeCells('E1:E3');
 
-// Dynamic Headers for Mapels
-$currentCol = 6; // Column 'F' starts here
+$currentCol = 6; 
 $aspect_col_map = [];
 $materi_avg_col_map = [];
 $mapel_avg_col_map = [];
 
 foreach ($mapels as $m) {
-    if (empty($m['materis'])) continue;
-    
+    if (empty($m['grouped_aspeks'])) continue;
     $mapelStartCol = $currentCol;
     
-    foreach ($m['materis'] as $mat) {
-        $matStartColStr = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($currentCol);
-        $aspectCount = count($mat['aspects']);
+    // 1. Defined Materis
+    foreach ($m['materis'] as $m_idx => $mat) {
+        $m_aspeks = $m['grouped_aspeks'][$mat['id']] ?? [];
+        if (empty($m_aspeks)) continue;
         
-        // Cols per Materi: aspects + 1 for Materi Avg
-        $colSpan = ($aspectCount > 0 ? $aspectCount : 1) + 1;
+        $matStartColStr = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($currentCol);
+        $colSpan = count($m_aspeks) + 1;
         $matEndColStr = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($currentCol + $colSpan - 1);
         
-        // Header Row 2: Materi Name
-        $sheet->setCellValue($matStartColStr . '2', $mat['nama_materi']);
-        $sheet->mergeCells($matStartColStr . '2:' . $matEndColStr . '2');
+        $sheet->setCellValue($matStartColStr . '2', 'M' . ($m_idx + 1))->mergeCells($matStartColStr . '2:' . $matEndColStr . '2');
         
-        // Header Row 3: Aspects
-        if ($aspectCount > 0) {
-            foreach ($mat['aspects'] as $idx => $a) {
-                $colStr = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($currentCol + $idx);
-                $sheet->setCellValue($colStr . '3', 'A' . ($a['id'])); // Use ID or sequence? I'll use A1, A2 global seq later
-                $aspect_col_map[$m['id']][$a['id']] = $colStr;
-            }
+        foreach ($m_aspeks as $a_idx => $a) {
+            $colStr = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($currentCol + $a_idx);
+            $sheet->setCellValue($colStr . '3', 'A' . ($a_idx + 1)); 
+            $aspect_col_map[$m['id']][$mat['id']][$a['id']] = $colStr;
+            $sheet->getColumnDimension($colStr)->setWidth(6);
         }
         
-        // Materi Average Column
-        $mAvgColStr = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($currentCol + $colSpan - 1);
-        $sheet->setCellValue($mAvgColStr . '3', 'M-RATA');
+        $mAvgColStr = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($currentCol + count($m_aspeks));
+        $sheet->setCellValue($mAvgColStr . '3', 'M' . ($m_idx + 1) . '-RATA');
         $materi_avg_col_map[$m['id']][$mat['id']] = $mAvgColStr;
-        
+        $sheet->getColumnDimension($mAvgColStr)->setWidth(10);
         $currentCol += $colSpan;
     }
     
-    // Final column per subject is "FINAL RATA"
+    // 2. Orphaned Aspects
+    if (!empty($m['grouped_aspeks'][0])) {
+        $o_aspeks = $m['grouped_aspeks'][0];
+        $matStartColStr = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($currentCol);
+        $colSpan = count($o_aspeks) + 1;
+        $matEndColStr = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($currentCol + $colSpan - 1);
+        
+        $sheet->setCellValue($matStartColStr . '2', 'Lain-lain')->mergeCells($matStartColStr . '2:' . $matEndColStr . '2');
+        foreach ($o_aspeks as $a_idx => $a) {
+            $colStr = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($currentCol + $a_idx);
+            $sheet->setCellValue($colStr . '3', 'A' . ($a_idx + 1)); 
+            $aspect_col_map[$m['id']][0][$a['id']] = $colStr;
+            $sheet->getColumnDimension($colStr)->setWidth(6);
+        }
+        $mAvgColStr = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($currentCol + count($o_aspeks));
+        $sheet->setCellValue($mAvgColStr . '3', 'L-RATA');
+        $materi_avg_col_map[$m['id']][0] = $mAvgColStr;
+        $sheet->getColumnDimension($mAvgColStr)->setWidth(10);
+        $currentCol += $colSpan;
+    }
+    
     $mapelAvgColStr = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($currentCol);
-    $sheet->setCellValue($mapelAvgColStr . '2', 'FINAL');
-    $sheet->setCellValue($mapelAvgColStr . '3', 'RATA');
-    $sheet->mergeCells($mapelAvgColStr . '2:' . $mapelAvgColStr . '2'); // Already 2 rows high because of row 1 header
+    $sheet->setCellValue($mapelAvgColStr . '2', 'FINAL')->setCellValue($mapelAvgColStr . '3', 'RATA');
     $mapel_avg_col_map[$m['id']] = $mapelAvgColStr;
+    $sheet->getColumnDimension($mapelAvgColStr)->setWidth(10);
     
-    // Merge Mapel Header
-    $mapelStartColStr = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($mapelStartCol);
-    $mapelEndColStr = $mapelAvgColStr;
-    $sheet->setCellValue($mapelStartColStr . '1', $m['nama_mapel']);
-    $sheet->mergeCells($mapelStartColStr . '1:' . $mapelEndColStr . '1');
-    
+    $sheet->setCellValue(\PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($mapelStartCol) . '1', $m['nama_mapel']);
+    $sheet->mergeCells(\PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($mapelStartCol) . '1:' . $mapelAvgColStr . '1');
     $currentCol++;
 }
 
-// Grand Average Header
+// Grand Average
 $grandAvgColStr = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($currentCol);
-$sheet->setCellValue($grandAvgColStr . '1', 'RATA AKHIR');
-$sheet->mergeCells($grandAvgColStr . '1:' . $grandAvgColStr . '3');
+$sheet->setCellValue($grandAvgColStr . '1', 'RATA AKHIR')->mergeCells($grandAvgColStr . '1:' . $grandAvgColStr . '3');
+$sheet->getColumnDimension($grandAvgColStr)->setWidth(12);
 
-// Data Population
+
 $row = 4;
 foreach ($siswas as $idx => $s) {
-    $sheet->setCellValue('A' . $row, $idx + 1);
-    $sheet->setCellValue('B' . $row, $s['nisn']);
-    $sheet->setCellValue('C' . $row, $s['nomor_peserta']);
-    $sheet->setCellValue('D' . $row, $s['nama_lengkap']);
-    $sheet->setCellValue('E' . $row, $s['kelas']);
-    
-    // Pre-fetch all scores for student
+    $sheet->setCellValue('A' . $row, $idx + 1)->setCellValue('B' . $row, $s['nisn'])->setCellValue('C' . $row, $s['nomor_peserta'])->setCellValue('D' . $row, $s['nama_lengkap'])->setCellValue('E' . $row, $s['kelas']);
     $db->query("SELECT aspek_id, nilai_angka FROM nilai_praktik WHERE siswa_id = :sid");
     $db->bind(':sid', $s['id']);
     $score_res = $db->resultSet();
-    $score_map = [];
-    foreach ($score_res as $sr) { $score_map[$sr['aspek_id']] = $sr['nilai_angka']; }
-    
+    $score_map = []; foreach ($score_res as $sr) { $score_map[$sr['aspek_id']] = $sr['nilai_angka']; }
     $grand_total_scores = [];
-    
     foreach ($mapels as $m) {
-        if (empty($m['materis'])) continue;
-        
-        $materi_avgs = [];
-        foreach ($m['materis'] as $mat) {
-            $m_sum = 0;
-            $m_count = 0;
-            foreach ($mat['aspects'] as $a) {
+        if (empty($m['grouped_aspeks'])) continue;
+        $m_avgs = [];
+        foreach ($m['grouped_aspeks'] as $mid => $a_list) {
+            $sum = 0; $count = 0;
+            foreach ($a_list as $a) {
                 if (isset($score_map[$a['id']])) {
-                    $sheet->setCellValue($aspect_col_map[$m['id']][$a['id']] . $row, $score_map[$a['id']]);
-                    $m_sum += $score_map[$a['id']];
-                    $m_count++;
+                    $sheet->setCellValue($aspect_col_map[$m['id']][$mid][$a['id']] . $row, $score_map[$a['id']]);
+                    $sum += $score_map[$a['id']]; $count++;
                 }
             }
-            
-            if ($m_count > 0) {
-                $m_avg = $m_sum / count($mat['aspects']);
-                $sheet->setCellValue($materi_avg_col_map[$m['id']][$mat['id']] . $row, round($m_avg, 2));
-                $materi_avgs[] = $m_avg;
+            if ($count > 0) {
+                $avg = $sum / count($a_list);
+                $sheet->setCellValue($materi_avg_col_map[$m['id']][$mid] . $row, round($avg, 2));
+                $m_avgs[] = $avg;
             }
         }
-        
-        if (!empty($materi_avgs)) {
-            $mapel_avg = array_sum($materi_avgs) / count($m['materis']);
-            $sheet->setCellValue($mapel_avg_col_map[$m['id']] . $row, round($mapel_avg, 2));
-            $grand_total_scores[] = $mapel_avg;
+        if (!empty($m_avgs)) {
+            $div = count($m['materis']); if (isset($m['grouped_aspeks'][0]) && $div > 0) $div++;
+            $final_avg = array_sum($m_avgs) / max($div, 1);
+            $sheet->setCellValue($mapel_avg_col_map[$m['id']] . $row, round($final_avg, 2));
+            $grand_total_scores[] = $final_avg;
         }
     }
-    
     if (!empty($grand_total_scores)) {
-        $sheet->setCellValue($grandAvgColStr . $row, round(array_sum($grand_total_scores) / count($mapels), 2));
+        $sheet->setCellValue($grandAvgColStr . $row, round(array_sum($grand_total_scores) / count($grand_total_scores), 2));
     }
-    
     $row++;
 }
 
-// Styling Sheet 1
-$lastCol = $grandAvgColStr;
-$sheet->getStyle('A1:' . $lastCol . '3')->getFont()->setBold(true);
-$sheet->getStyle('A1:' . $lastCol . '3')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-$sheet->getStyle('A1:' . $lastCol . '3')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-$sheet->getStyle('A1:' . $lastCol . ($row - 1))->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+// Global Styling
+$sheet->getStyle('A1:' . $grandAvgColStr . '3')->getFont()->setBold(true);
+$sheet->getStyle('A1:' . $grandAvgColStr . '3')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)->setVertical(Alignment::VERTICAL_CENTER);
+$sheet->getStyle('A1:' . $grandAvgColStr . ($row - 1))->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
 $sheet->freezePane('F4');
 
-// --- SHEET 2: KETERANGAN ASPEK ---
+// Legend Sheet
 $legendSheet = $spreadsheet->createSheet();
-$legendSheet->setTitle('Keterangan Aspek');
-
-$legendSheet->setCellValue('A1', 'KETERANGAN KODE ASPEK PENILAIAN');
-$legendSheet->mergeCells('A1:D1');
+$legendSheet->setTitle('Keterangan');
+$legendSheet->setCellValue('A1', 'KETERANGAN KODE MATERI DAN ASPEK PENILAIAN')->mergeCells('A1:C1');
 $legendSheet->getStyle('A1')->getFont()->setBold(true)->setSize(14);
-
-$legendSheet->setCellValue('A3', 'NO');
-$legendSheet->setCellValue('B3', 'MATA PELAJARAN');
-$legendSheet->setCellValue('C3', 'KODE');
-$legendSheet->setCellValue('D3', 'NAMA ASPEK / KRITERIA');
-$legendSheet->getStyle('A3:D3')->getFont()->setBold(true);
-
-$lIdx = 1;
+$legendSheet->setCellValue('A3', 'MATA PELAJARAN')->setCellValue('B3', 'KODE')->setCellValue('C3', 'NAMA MATERI / ASPEK');
+$legendSheet->getStyle('A3:C3')->getFont()->setBold(true);
 $lRow = 4;
 foreach ($mapels as $m) {
-    if (count($m['aspects']) > 0) {
-        foreach ($m['aspects'] as $aIdx => $a) {
-            $legendSheet->setCellValue('A' . $lRow, $lIdx++);
-            $legendSheet->setCellValue('B' . $lRow, $m['nama_mapel']);
-            $legendSheet->setCellValue('C' . $lRow, 'A' . ($aIdx + 1));
-            $legendSheet->setCellValue('D' . $lRow, $a['nama_aspek']);
+    if (empty($m['grouped_aspeks'])) continue;
+    $legendSheet->setCellValue('A' . $lRow, $m['nama_mapel'])->getStyle('A' . $lRow)->getFont()->setBold(true);
+    foreach ($m['materis'] as $m_idx => $mat) {
+        $m_aspeks = $m['grouped_aspeks'][$mat['id']] ?? []; if (empty($m_aspeks)) continue;
+        $legendSheet->setCellValue('B' . $lRow, 'M' . ($m_idx + 1))->setCellValue('C' . $lRow, $mat['nama_materi'])->getStyle('B' . $lRow . ':C' . $lRow)->getFont()->setBold(true);
+        $lRow++;
+        foreach ($m_aspeks as $a_idx => $a) {
+            $legendSheet->setCellValue('B' . $lRow, 'A' . ($a_idx + 1))->setCellValue('C' . $lRow, $a['nama_aspek']);
             $lRow++;
         }
     }
+    if (!empty($m['grouped_aspeks'][0])) {
+        $legendSheet->setCellValue('B' . $lRow, 'Lain-lain')->getStyle('B' . $lRow)->getFont()->setBold(true); $lRow++;
+        foreach ($m['grouped_aspeks'][0] as $a_idx => $a) {
+            $legendSheet->setCellValue('B' . $lRow, 'A' . ($a_idx + 1))->setCellValue('C' . $lRow, $a['nama_aspek']);
+            $lRow++;
+        }
+    }
+    $lRow++;
 }
-$legendSheet->getStyle('A3:D' . ($lRow-1))->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
-$legendSheet->getColumnDimension('B')->setAutoSize(true);
-$legendSheet->getColumnDimension('D')->setAutoSize(true);
-
-// Finalize
+$legendSheet->getColumnDimension('A')->setAutoSize(true); $legendSheet->getColumnDimension('C')->setAutoSize(true);
 $spreadsheet->setActiveSheetIndex(0);
 
-header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-header('Content-Disposition: attachment;filename="Rekap_Nilai_PRISMA_' . date('Ymd_His') . '.xlsx"');
-header('Cache-Control: max-age=0');
+// Identity Widths
+$sheet->getColumnDimension('A')->setWidth(5);
+$sheet->getColumnDimension('B')->setWidth(15);
+$sheet->getColumnDimension('C')->setWidth(28);
+$sheet->getColumnDimension('D')->setWidth(40);
+$sheet->getColumnDimension('E')->setWidth(10);
 
-$writer = new Xlsx($spreadsheet);
-$writer->save('php://output');
+header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+header('Content-Disposition: attachment;filename="Rekap_Nilai_Lengkap_' . date('Ymd_His') . '.xlsx"');
+$writer = new Xlsx($spreadsheet); $writer->save('php://output');
 exit;

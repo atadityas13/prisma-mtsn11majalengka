@@ -61,8 +61,11 @@ $siswas = $db->resultSet();
 
 <head>
     <meta charset="UTF-8">
-    <title>Borang Penilaian - <?= htmlspecialchars($ploting['nama_mapel']) ?> - <?= htmlspecialchars($ploting['nama_guru']) ?></title>
-    <style>body {
+    <title>Borang Penilaian - <?= htmlspecialchars($ploting['nama_mapel']) ?> -
+        <?= htmlspecialchars($ploting['nama_guru']) ?>
+    </title>
+    <style>
+        body {
             font-family: 'Times New Roman', serif;
             font-size: 11pt;
             padding: 0;
@@ -166,47 +169,58 @@ $siswas = $db->resultSet();
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
-            table-layout: fixed;
+            table-layout: auto;
         }
 
         table.data-table th,
         table.data-table td {
             border: 1px solid #000;
-            padding: 4px 5px;
+            padding: 4px 6px;
             text-align: center;
             word-break: break-word;
+        }
+
+        table.data-table th {
+            white-space: nowrap;
+            font-size: 10pt;
             line-height: 1.2;
+            background: #fcfcfc;
         }
 
         table.data-table td {
             min-height: 18px;
         }
 
-        table.data-table th:first-child,
-        table.data-table td:first-child {
+        .col-no {
             width: 30px;
         }
 
-        table.data-table th:nth-child(2),
-        table.data-table td:nth-child(2) {
-            width: 35%;
-            text-align: left;
-            padding-left: 8px;
+        .col-nama {
+            text-align: left !important;
+            padding-left: 8px !important;
+            width: auto;
         }
 
-        table.data-table th:nth-child(3),
-        table.data-table td:nth-child(3) {
-            width: 15%;
+        .col-assessment {
+            width: 1%;
+            white-space: nowrap;
         }
 
-        table.data-table th:nth-last-child(2),
-        table.data-table td:nth-last-child(2) {
-            width: 60px;
+        .col-aspek {
+            min-width: 45px;
+            width: 1%;
+            white-space: nowrap;
         }
 
-        table.data-table th:last-child,
-        table.data-table td:last-child {
-            width: 120px;
+        .col-final {
+            width: 1%;
+            white-space: nowrap;
+        }
+
+        .col-ket {
+            width: auto;
+            text-align: left !important;
+            min-width: 100px;
         }
 
         /* Space for handwriting */
@@ -322,7 +336,7 @@ $siswas = $db->resultSet();
                 <div class="info-item">
                     <span class="info-label">Tanggal</span>
                     <span class="info-separator">:</span>
-                    <span class="info-value">.......................... 2026</span>
+                    <span class="info-value">16 April 2026</span>
                 </div>
             </div>
         </div>
@@ -330,38 +344,55 @@ $siswas = $db->resultSet();
         <table class="data-table">
             <thead>
                 <tr>
-                    <th rowspan="3" width="30">No</th>
-                    <th rowspan="3">Nama Siswa</th>
-                    <th colspan="<?= count($aspeks) > 0 ? count($aspeks) : 3 ?>">Aspek Penilaian</th>
-                    <th rowspan="3" width="60">Nilai Akhir</th>
-                    <th rowspan="3" width="120">Keterangan</th>
+                    <th rowspan="3" class="col-no">No</th>
+                    <th rowspan="3" class="col-nama">Nama Siswa</th>
+                    <th colspan="<?= count($aspeks) > 0 ? count($aspeks) : 3 ?>" class="col-assessment">Penilaian</th>
+                    <th rowspan="3" class="col-final">Nilai Akhir</th>
+                    <th rowspan="3" class="col-ket">Keterangan</th>
                 </tr>
                 <tr>
-                    <?php 
+                    <?php
                     // Render headers for defined materials
                     if (count($aspeks) > 0):
-                        if (!empty($materis)): 
-                            foreach ($materis as $m): 
+                        if (!empty($materis)):
+                            foreach ($materis as $m_idx => $m):
                                 $m_aspect_count = count($grouped_aspeks[$m['id']] ?? []);
-                                if ($m_aspect_count == 0) continue;
-                            ?>
-                                <th colspan="<?= $m_aspect_count ?>" style="font-size: 8pt;"><?= htmlspecialchars($m['nama_materi']) ?></th>
-                            <?php endforeach; 
-                        endif; 
+                                if ($m_aspect_count == 0)
+                                    continue;
+                                ?>
+                                <th colspan="<?= $m_aspect_count ?>" style="font-size: 8pt;">
+                                    M<?= $m_idx + 1 ?></th>
+                            <?php endforeach;
+                        endif;
 
                         // Render header for orphaned aspects (if any)
                         if (!empty($grouped_aspeks[0])): ?>
                             <th colspan="<?= count($grouped_aspeks[0]) ?>" style="font-size: 8pt;">Lain-lain</th>
-                        <?php endif; 
+                        <?php endif;
                     else: ?>
                         <th colspan="3">Aspek Belum Diisi</th>
                     <?php endif; ?>
                 </tr>
                 <tr>
                     <?php if (count($aspeks) > 0): ?>
-                        <?php foreach ($aspeks as $idx => $a): ?>
-                            <th width="40">A<?= $idx + 1 ?></th>
-                        <?php endforeach; ?>
+                        <?php
+                        // Per-materi numbering restart as requested
+                        if (!empty($materis)):
+                            foreach ($materis as $m):
+                                $m_aspeks = $grouped_aspeks[$m['id']] ?? [];
+                                foreach ($m_aspeks as $a_idx => $a): ?>
+                                    <th class="col-aspek">A<?= $a_idx + 1 ?></th>
+                                <?php endforeach;
+                            endforeach;
+                        endif;
+
+                        // Orphaned aspects
+                        if (!empty($grouped_aspeks[0])):
+                            foreach ($grouped_aspeks[0] as $a_idx => $a): ?>
+                                <th width="40">A<?= $a_idx + 1 ?></th>
+                            <?php endforeach;
+                        endif;
+                        ?>
                     <?php else: ?>
                         <th width="40">A1</th>
                         <th width="40">A2</th>
@@ -373,17 +404,19 @@ $siswas = $db->resultSet();
                 <?php if (count($siswas) > 0): ?>
                     <?php foreach ($siswas as $idx => $s): ?>
                         <tr>
-                            <td><?= $idx + 1 ?></td>
-                            <td class="text-left" style="padding-left: 10px;"><?= $s['nama_lengkap'] ?></td>
+                            <td class="col-no"><?= $idx + 1 ?></td>
+                            <td class="col-nama"><?= $s['nama_lengkap'] ?></td>
                             <?php if (count($aspeks) > 0): ?>
                                 <?php foreach ($aspeks as $a): ?>
-                                    <td></td>
+                                    <td class="col-aspek"></td>
                                 <?php endforeach; ?>
                             <?php else: ?>
-                                <td></td><td></td><td></td>
+                                <td class="col-aspek"></td>
+                                <td class="col-aspek"></td>
+                                <td class="col-aspek"></td>
                             <?php endif; ?>
-                            <td></td>
-                            <td></td>
+                            <td class="col-final"></td>
+                            <td class="col-ket"></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
@@ -398,18 +431,40 @@ $siswas = $db->resultSet();
         <div class="footer">
             <div class="footer-row">
                 <?php if (count($aspeks) > 0): ?>
-                <div class="keterangan-aspek">
-                    <strong>Keterangan Aspek Penilaian:</strong>
-                    <ul>
-                        <?php foreach ($aspeks as $idx => $a): ?>
-                        <li>A<?= $idx + 1 ?>: <?= htmlspecialchars($a['nama_aspek']) ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
+                    <div class="keterangan-aspek">
+                        <strong>Keterangan Materi dan Aspek Penilaian:</strong>
+                        <?php
+                        // Group legend by material for clarity since indexes now restart
+                        if (!empty($materis)):
+                            foreach ($materis as $m_idx => $m):
+                                $m_aspeks = $grouped_aspeks[$m['id']] ?? [];
+                                if (empty($m_aspeks))
+                                    continue;
+                                ?>
+                                <div style="font-weight: bold; margin-top: 5px;">M<?= $m_idx + 1 ?>
+                                    (<?= htmlspecialchars($m['nama_materi']) ?>):</div>
+                                <ul style="margin-top: 2px;">
+                                    <?php foreach ($m_aspeks as $a_idx => $a): ?>
+                                        <li>A<?= $a_idx + 1 ?>: <?= htmlspecialchars($a['nama_aspek']) ?></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                                <?php
+                            endforeach;
+                        endif;
+
+                        if (!empty($grouped_aspeks[0])): ?>
+                            <div style="font-weight: bold; margin-top: 5px;">Lain-lain:</div>
+                            <ul style="margin-top: 2px;">
+                                <?php foreach ($grouped_aspeks[0] as $a_idx => $a): ?>
+                                    <li>A<?= $a_idx + 1 ?>: <?= htmlspecialchars($a['nama_aspek']) ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php endif; ?>
+                    </div>
                 <?php endif; ?>
 
                 <div class="sig-box">
-                    <p>Cingambul, <?= $jadwal_tanggal_formatted ? htmlspecialchars($jadwal_tanggal_formatted) : date('d/m/Y') ?></p>
+                    <p>Cingambul, 16 April 2026</p>
                     <p>Penguji,</p>
                     <div style="height: 70px;"></div>
                     <p><strong><?= htmlspecialchars($ploting['nama_guru']) ?></strong></p>

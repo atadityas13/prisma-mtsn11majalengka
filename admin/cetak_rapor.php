@@ -118,17 +118,22 @@ $siswas = $db->resultSet();
 
         table.nilai th:nth-child(2),
         table.nilai td:nth-child(2) {
-            width: 35%;
+            width: 30%;
         }
 
         table.nilai th:nth-child(3),
         table.nilai td:nth-child(3) {
-            width: 20%;
+            width: 90px;
         }
 
         table.nilai th:nth-child(4),
         table.nilai td:nth-child(4) {
-            width: 20%;
+            width: 130px;
+        }
+
+        table.nilai th:last-child,
+        table.nilai td:last-child {
+            width: auto; /* Take remaining space */
         }
 
         .text-center {
@@ -235,8 +240,8 @@ $siswas = $db->resultSet();
                         <th width="40" class="text-center">NO</th>
                         <th>MATA PELAJARAN PRAKTIK</th>
                         <th width="100" class="text-center">NILAI AKHIR</th>
-                        <th width="120" class="text-center">PREDIKAT</th>
-                        <th>KETERANGAN</th>
+                        <th width="100" class="text-center">PREDIKAT</th>
+                        <th width="180">KETERANGAN</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -245,26 +250,44 @@ $siswas = $db->resultSet();
                     $count_nilai = 0;
                     foreach ($mapels as $idx => $m):
                         // NEW LOGIC: Final Score = Average of Material Averages
-                        $db->query("SELECT id FROM materi_penilaian WHERE mapel_id = :mid");
+                        // 1. Fetch all scores for this student and mapel, grouped by materi
+                        $db->query("SELECT n.nilai_angka, a.materi_id 
+                                    FROM nilai_praktik n
+                                    JOIN aspek_penilaian a ON n.aspek_id = a.id
+                                    WHERE n.siswa_id = :sid AND n.mapel_id = :mid");
+                        $db->bind(':sid', $s['id']);
                         $db->bind(':mid', $m['id']);
-                        $subject_materis = $db->resultSet();
-                        
+                        $scores_raw = $db->resultSet();
+
+                        $materi_groups = [];
+                        foreach ($scores_raw as $sr) {
+                            $m_id = $sr['materi_id'] ?? 0;
+                            $materi_groups[$m_id][] = $sr['nilai_angka'];
+                        }
+
                         $materi_avgs = [];
-                        foreach ($subject_materis as $sm) {
-                            $db->query("SELECT AVG(nilai_angka) as avg_m FROM nilai_praktik 
-                                        WHERE siswa_id = :sid AND mapel_id = :mid 
-                                        AND aspek_id IN (SELECT id FROM aspek_penilaian WHERE materi_id = :m_id)");
-                            $db->bind(':sid', $s['id']);
-                            $db->bind(':mid', $m['id']);
-                            $db->bind(':m_id', $sm['id']);
-                            $m_res = $db->single();
-                            if (!is_null($m_res['avg_m'])) {
-                                $materi_avgs[] = $m_res['avg_m'];
+                        foreach ($materi_groups as $m_id => $vals) {
+                            if (!empty($vals)) {
+                                $materi_avgs[] = array_sum($vals) / count($vals);
                             }
                         }
 
-                        $total_m_count = count($subject_materis);
-                        $score = ($total_m_count > 0 && count($materi_avgs) > 0) ? array_sum($materi_avgs) / $total_m_count : null;
+                        // Get count of defined materials to use as base divisor
+                        $db->query("SELECT COUNT(*) as c FROM materi_penilaian WHERE mapel_id = :mid");
+                        $db->bind(':mid', $m['id']);
+                        $defined_m_count = $db->single()['c'];
+
+                        $score = null;
+                        if (!empty($materi_avgs)) {
+                            // Divisor is at least the number of defined materials
+                            // Orphaned aspects groups (m_id=0) should also be counted if they exist
+                            $divisor = max($defined_m_count, 1);
+                            if (isset($materi_groups[0]) && $defined_m_count > 0) {
+                                // If orphaned exists alongside defined materials, we treat orphaned as 1 extra group
+                                $divisor += 1;
+                            }
+                            $score = array_sum($materi_avgs) / $divisor;
+                        }
 
                         $predikat = '-';
                         if (!is_null($score)) {
@@ -274,9 +297,11 @@ $siswas = $db->resultSet();
                                 $predikat = 'B (Baik)';
                             elseif ($score >= 70)
                                 $predikat = 'C (Cukup)';
-                            elseif ($score >= 0)
+                            elseif ($score >= 60)
                                 $predikat = 'D (Kurang)';
-                            
+                            elseif ($score >= 0)
+                                $predikat = 'E (Mengulang)';
+
                             $total_nilai += $score;
                             $count_nilai++;
                         }
@@ -305,7 +330,7 @@ $siswas = $db->resultSet();
                     <p>.......................................</p>
                 </div>
                 <div class="sig-box">
-                    <p>Cingambul, <?= date('d F Y') ?></p>
+                    <p>Cingambul, 16 April 2026</p>
                     <p>Plt. Kepala Madrasah,</p>
                     <br><br><br>
                     <p><strong>H. Dede Apip Mustopa</strong></p>
