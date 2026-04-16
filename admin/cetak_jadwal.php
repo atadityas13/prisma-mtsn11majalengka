@@ -354,9 +354,9 @@ $hari_map = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
                     <?php endif; ?>
 
                     <td><?= htmlspecialchars($j['nama_guru']) ?></td>
-                    <td class="center">
+                    <td class="center nowrap">
                         <?php if ($j['no_awal'] && $j['no_akhir']): ?>
-                            <?= $j['no_awal'] ?> – <?= $j['no_akhir'] ?>
+                            <?= substr($j['no_awal'], -4) ?> s.d. <?= substr($j['no_akhir'], -4) ?>
                         <?php else: ?>
                             -
                         <?php endif; ?>
