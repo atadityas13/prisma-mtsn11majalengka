@@ -78,6 +78,7 @@ if ($action === 'save_plot') {
             $inserted++;
         }
 
+        Auth::log("Admin memploting $inserted siswa ke guru ID: $guru_id", 'system', $db);
         echo json_encode([
             'status'   => 'success',
             'inserted' => $inserted,
@@ -166,6 +167,7 @@ if ($action === 'save_plot') {
     $db->query("DELETE FROM ploting_siswa WHERE id = :id");
     $db->bind(':id', $ploting_siswa_id);
     $db->execute();
+    Auth::log("Admin mereset ploting siswa ID: $ploting_siswa_id", 'system', $db);
 
     echo json_encode(['status' => 'success']);
 
@@ -183,6 +185,7 @@ if ($action === 'save_plot') {
     $db->query("DELETE FROM ploting_penguji WHERE id = :id");
     $db->bind(':id', $id);
     $db->execute();
+    Auth::log("Admin menghapus seluruh ploting ID: $id", 'system', $db);
 
     echo json_encode(['status' => 'success']);
 }

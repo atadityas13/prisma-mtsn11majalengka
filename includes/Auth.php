@@ -82,14 +82,22 @@ class Auth {
         exit;
     }
 
-    // Log activity
-    public function logActivity($action) {
-        if (isset($_SESSION['user_id'])) {
-            $this->db->query("INSERT INTO activity_log (user_id, action, ip_address) VALUES (:user_id, :action, :ip_address)");
-            $this->db->bind(':user_id', $_SESSION['user_id']);
-            $this->db->bind(':action', $action);
-            $this->db->bind(':ip_address', $_SERVER['REMOTE_ADDR']);
-            $this->db->execute();
-        }
+    // Log activity (Instance method)
+    public function logActivity($action, $category = 'system') {
+        self::log($action, $category, $this->db);
+    }
+
+    // Static log helper
+    public static function log($action, $category = 'system', $db = null) {
+        if (!isset($_SESSION['user_id'])) return;
+        
+        if (!$db) $db = new Database();
+        
+        $db->query("INSERT INTO activity_log (user_id, action, category, ip_address) VALUES (:user_id, :action, :category, :ip_address)");
+        $db->bind(':user_id', $_SESSION['user_id']);
+        $db->bind(':action', $action);
+        $db->bind(':category', $category);
+        $db->bind(':ip_address', $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1');
+        $db->execute();
     }
 }

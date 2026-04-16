@@ -45,6 +45,7 @@ if ($action === 'save_score') {
                 $db->execute();
             }
         }
+        Auth::log("Guru menyimpan nilai untuk siswa ID: $siswa_id", 'assessment', $db);
         echo json_encode(['status' => 'success']);
     } catch (Exception $e) {
         echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
@@ -64,6 +65,7 @@ if ($action === 'save_score') {
         $db->bind(':mid', $mapel_id);
         $db->execute();
         
+        Auth::log("Guru meriset nilai untuk siswa ID: $siswa_id", 'assessment', $db);
         echo json_encode(['status' => 'success']);
     } catch (Exception $e) {
         echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);

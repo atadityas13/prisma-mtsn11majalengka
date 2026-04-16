@@ -17,6 +17,7 @@ if ($action === 'add') {
         $db->bind(':kode', $kode);
         $db->bind(':nama', $nama);
         $db->execute();
+        Auth::log("Admin menambahkan mapel: $nama", 'system', $db);
         echo json_encode(['status' => 'success']);
     } catch (Exception $e) {
         echo json_encode(['status' => 'error', 'message' => 'Kode Mapel sudah ada atau error: ' . $e->getMessage()]);
@@ -45,6 +46,7 @@ if ($action === 'add') {
         $db->query("DELETE FROM mapel WHERE id = :id");
         $db->bind(':id', $id);
         $db->execute();
+        Auth::log("Admin menghapus mapel ID: $id", 'system', $db);
         echo json_encode(['status' => 'success']);
     } catch (Exception $e) {
         echo json_encode(['status' => 'error', 'message' => 'Gagal menghapus. Kemungkinan ada data guru/plotting yang terikat.']);

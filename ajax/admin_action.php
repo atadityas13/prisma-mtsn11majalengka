@@ -109,4 +109,16 @@ if ($action === 'add') {
     } catch (Exception $e) {
         echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
     }
+} elseif ($action === 'clear_logs') {
+    try {
+        $db->query("TRUNCATE TABLE activity_log");
+        $db->execute();
+        
+        // Log that logs were cleared (optional, but it will be the first and only entry)
+        Auth::log("Admin membersihkan seluruh log aktivitas", 'system', $db);
+        
+        echo json_encode(['status' => 'success', 'message' => 'Seluruh log berhasil dibersihkan']);
+    } catch (Exception $e) {
+        echo json_encode(['status' => 'error', 'message' => 'Gagal membersihkan log: ' . $e->getMessage()]);
+    }
 }

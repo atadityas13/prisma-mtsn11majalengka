@@ -105,6 +105,7 @@ CREATE TABLE IF NOT EXISTS activity_log (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NULL,
     action TEXT NOT NULL,
+    category ENUM('system', 'assessment') DEFAULT 'system',
     ip_address VARCHAR(45) NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL

@@ -33,6 +33,7 @@ if ($action === 'add') {
         $db->bind(':nama', $nama);
         $db->bind(':bobot', $bobot);
         $db->execute();
+        Auth::log("Menambahkan aspek penilaian: $nama", 'assessment', $db);
         echo json_encode(['status' => 'success']);
     } catch (Exception $e) {
         echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
@@ -53,6 +54,7 @@ if ($action === 'add') {
             $db->bind(':id', $id);
         }
         $db->execute();
+        Auth::log("Menghapus aspek penilaian ID: $id", 'assessment', $db);
         echo json_encode(['status' => 'success']);
     } catch (Exception $e) {
         echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);

@@ -57,6 +57,7 @@ if ($action === 'add') {
         $db->bind(':mapel_id', $mapel_id);
         $db->execute();
 
+        Auth::log("Admin menambahkan guru: $nama (NIP: $nip)", 'system', $db);
         echo json_encode(['status' => 'success', 'message' => 'Guru berhasil ditambahkan']);
     } catch (Exception $e) {
         echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
@@ -91,6 +92,7 @@ if ($action === 'add') {
             }
         }
 
+        Auth::log("Admin mengupdate data guru ID: $id ($nama)", 'system', $db);
         echo json_encode(['status' => 'success', 'message' => 'Data guru berhasil diupdate']);
     } catch (Exception $e) {
         echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
@@ -110,6 +112,7 @@ if ($action === 'add') {
             $db->query("DELETE FROM users WHERE id = :user_id");
             $db->bind(':user_id', $res['user_id']);
             $db->execute();
+            Auth::log("Admin menghapus guru ID: $id", 'system', $db);
             echo json_encode(['status' => 'success', 'message' => 'Guru berhasil dihapus']);
         } else {
             echo json_encode(['status' => 'error', 'message' => 'Data tidak ditemukan']);
@@ -143,6 +146,7 @@ if ($action === 'add') {
             $db->bind(':uid', $res['user_id']);
             $db->execute();
 
+            Auth::log("Admin meriset password guru ID: $id", 'system', $db);
             echo json_encode(['status' => 'success', 'message' => 'Password berhasil direset ke Tanggal Lahir (DDMMYYYY)']);
         } else {
             echo json_encode(['status' => 'error', 'message' => 'Data tidak ditemukan']);

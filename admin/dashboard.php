@@ -32,6 +32,23 @@ $total_siswa_plot = (int)($db->single()['total'] ?? 0);
 // Progres = berapa persen siswa yang sudah dinilai dari yang sudah di-plot
 $progress_percent = $total_siswa_plot > 0 ? round(($sudah_dinilai / $total_siswa_plot) * 100, 1) : 0;
 if ($progress_percent > 100) $progress_percent = 100;
+
+// Base query for logs
+$log_base_query = "SELECT al.*, u.username, u.role, 
+                  COALESCE(adm.nama_lengkap, g.nama_lengkap, s.nama_lengkap) as nama_display 
+           FROM activity_log al
+           LEFT JOIN users u ON al.user_id = u.id
+           LEFT JOIN admins adm ON u.id = adm.user_id AND u.role = 'admin'
+           LEFT JOIN guru g ON u.id = g.user_id AND u.role = 'guru'
+           LEFT JOIN siswa s ON u.id = s.user_id AND u.role = 'siswa'";
+
+// Fetch 5 latest system logs
+$db->query($log_base_query . " WHERE al.category = 'system' ORDER BY al.created_at DESC LIMIT 5");
+$system_logs = $db->resultSet();
+
+// Fetch 5 latest assessment logs
+$db->query($log_base_query . " WHERE al.category = 'assessment' ORDER BY al.created_at DESC LIMIT 5");
+$assessment_logs = $db->resultSet();
 ?>
 
 <div class="row">
@@ -168,6 +185,92 @@ if ($progress_percent > 100) $progress_percent = 100;
     </div>
 </div>
 
+<div class="row">
+    <!-- System Logs -->
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <h5 class="card-title m-0 me-2 text-primary"><i class="bx bx-shield me-2"></i>Log Master Data</h5>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-sm btn-outline-danger clearLogsBtn" title="Bersihkan Log">
+                        <i class="bx bx-trash"></i>
+                    </button>
+                    <a href="logs.php?cat=system" class="btn btn-sm btn-outline-primary">Lihat Semua</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive text-nowrap">
+                    <table class="table table-hover table-sm">
+                        <thead>
+                            <tr>
+                                <th>Waktu</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (empty($system_logs)): ?>
+                                <tr><td colspan="2" class="text-center">Belum ada data.</td></tr>
+                            <?php else: ?>
+                                <?php foreach ($system_logs as $log): ?>
+                                <tr>
+                                    <td class="text-nowrap small text-muted"><?= date('d/m H:i', strtotime($log['created_at'])) ?></td>
+                                    <td class="small">
+                                        <div class="fw-bold"><?= $log['nama_display'] ?? $log['username'] ?? 'System' ?></div>
+                                        <div><?= $log['action'] ?></div>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assessment Logs -->
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <h5 class="card-title m-0 me-2 text-success"><i class="bx bx-edit me-2"></i>Log Penilaian</h5>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-sm btn-outline-danger clearLogsBtn" title="Bersihkan Log">
+                        <i class="bx bx-trash"></i>
+                    </button>
+                    <a href="logs.php?cat=assessment" class="btn btn-sm btn-outline-success">Lihat Semua</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive text-nowrap">
+                    <table class="table table-hover table-sm">
+                        <thead>
+                            <tr>
+                                <th>Waktu</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (empty($assessment_logs)): ?>
+                                <tr><td colspan="2" class="text-center">Belum ada data.</td></tr>
+                            <?php else: ?>
+                                <?php foreach ($assessment_logs as $log): ?>
+                                <tr>
+                                    <td class="text-nowrap small text-muted"><?= date('d/m H:i', strtotime($log['created_at'])) ?></td>
+                                    <td class="small">
+                                        <div class="fw-bold"><?= $log['nama_display'] ?? $log['username'] ?? 'System' ?></div>
+                                        <div><?= $log['action'] ?></div>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         var options = {
@@ -206,6 +309,33 @@ if ($progress_percent > 100) $progress_percent = 100;
 
         var chart = new ApexCharts(document.querySelector("#assessmentProgressChart"), options);
         chart.render();
+    });
+
+    // Clear Logs Functionality
+    document.querySelectorAll('.clearLogsBtn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            if (confirm('Apakah Anda yakin ingin menghapus SELURUH riwayat log? Tindakan ini tidak dapat dibatalkan.')) {
+                const formData = new FormData();
+                formData.append('action', 'clear_logs');
+
+                fetch('../ajax/admin_action.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert('Terjadi kesalahan saat mencoba membersihkan log.');
+                });
+            }
+        });
     });
 </script>
 

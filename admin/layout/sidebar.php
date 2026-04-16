@@ -68,6 +68,12 @@
                 <div data-i18n="Admin">Manajemen Admin</div>
             </a>
         </li>
+        <li class="menu-item <?= (basename($_SERVER['PHP_SELF']) == 'logs.php') ? 'active' : '' ?>">
+            <a href="<?= base_url('admin/logs.php') ?>" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-list-check"></i>
+                <div data-i18n="Logs">Log Aktivitas</div>
+            </a>
+        </li>
         <li class="menu-item">
             <a href="<?= base_url('logout.php') ?>" class="menu-link text-danger">
                 <i class="menu-icon tf-icons bx bx-power-off"></i>

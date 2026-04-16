@@ -44,6 +44,7 @@ if ($action === 'add') {
         $db->bind(':tahun', $tahun);
         $db->execute();
 
+        Auth::log("Admin menambahkan siswa: $nama (NISN: $nisn)", 'system', $db);
         echo json_encode(['status' => 'success', 'message' => 'Siswa berhasil ditambahkan']);
     } catch (Exception $e) {
         echo json_encode(['status' => 'error', 'message' => 'NISN sudah ada atau data tidak valid.']);
@@ -81,6 +82,7 @@ if ($action === 'add') {
             }
         }
 
+        Auth::log("Admin mengupdate data siswa ID: $id ($nama)", 'system', $db);
         echo json_encode(['status' => 'success', 'message' => 'Data siswa berhasil diupdate']);
     } catch (Exception $e) {
         echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
@@ -166,6 +168,7 @@ if ($action === 'add') {
             $count++;
         }
 
+        Auth::log("Admin mengimport $count data siswa", 'system', $db);
         echo json_encode(['status' => 'success', 'message' => "$count data siswa berhasil diimport"]);
     } catch (Exception $e) {
         echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
@@ -181,6 +184,7 @@ if ($action === 'add') {
             $db->query("DELETE FROM users WHERE id = :user_id");
             $db->bind(':user_id', $res['user_id']);
             $db->execute();
+            Auth::log("Admin menghapus siswa ID: $id", 'system', $db);
             echo json_encode(['status' => 'success']);
         }
     } catch (Exception $e) {
