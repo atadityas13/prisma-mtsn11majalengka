@@ -60,6 +60,7 @@ $bulan_map = [
             font-size: 11pt;
             background: #f0f0f0;
             color: #000;
+            min-height: 100vh;
         }
 
         @page {
@@ -69,6 +70,7 @@ $bulan_map = [
 
         .page {
             width: calc(210mm - 16mm);
+            min-height: calc(297mm - 16mm);
             padding: 8mm;
             margin: 0 auto 8mm;
             background: #fff;

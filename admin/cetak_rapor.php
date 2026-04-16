@@ -31,6 +31,7 @@ $siswas = $db->resultSet();
             margin: 0;
             background: #eee;
             color: #000;
+            min-height: 100vh;
         }
 
         @page {
@@ -40,6 +41,7 @@ $siswas = $db->resultSet();
 
         .page {
             width: calc(210mm - 16mm);
+            min-height: calc(297mm - 16mm);
             padding: 10mm 12mm;
             margin: 0 auto 8mm;
             background: white;
@@ -317,17 +319,24 @@ $siswas = $db->resultSet();
                         }
 
                         $predikat = '-';
+                        $keterangan = '-';
                         if (!is_null($score)) {
-                            if ($score >= 90)
-                                $predikat = 'A (Sangat Baik)';
-                            elseif ($score >= 80)
-                                $predikat = 'B (Baik)';
-                            elseif ($score >= 70)
-                                $predikat = 'C (Cukup)';
-                            elseif ($score >= 60)
-                                $predikat = 'D (Kurang)';
-                            elseif ($score >= 0)
-                                $predikat = 'E (Mengulang)';
+                            if ($score >= 90) {
+                                $predikat = 'A';
+                                $keterangan = 'Sangat Baik';
+                            } elseif ($score >= 80) {
+                                $predikat = 'B';
+                                $keterangan = 'Baik';
+                            } elseif ($score >= 70) {
+                                $predikat = 'C';
+                                $keterangan = 'Cukup';
+                            } elseif ($score >= 60) {
+                                $predikat = 'D';
+                                $keterangan = 'Kurang';
+                            } elseif ($score >= 0) {
+                                $predikat = 'E';
+                                $keterangan = 'Mengulang';
+                            }
 
                             $total_nilai += $score;
                             $count_nilai++;
@@ -338,7 +347,7 @@ $siswas = $db->resultSet();
                             <td><?= $m['nama_mapel'] ?></td>
                             <td class="text-center"><?= !is_null($score) ? round($score, 2) : '-' ?></td>
                             <td class="text-center"><?= $predikat ?></td>
-                            <td></td>
+                            <td><?= $keterangan ?></td>
                         </tr>
                     <?php endforeach; ?>
                     <tr style="background: #f0f0f0; font-weight: bold;">
