@@ -6,12 +6,27 @@ $db = new Database();
 $guru_id = $_SESSION['guru_id'];
 $mapel_id = $_SESSION['mapel_id'];
 
-// Fetch All Aspek for this mapel (Global)
-$db->query("SELECT * FROM aspek_penilaian WHERE mapel_id = :mapel_id ORDER BY id ASC");
+// Fetch All Materis for this mapel
+$db->query("SELECT * FROM materi_penilaian WHERE mapel_id = :mapel_id ORDER BY id ASC");
+$db->bind(':mapel_id', $mapel_id);
+$materis = $db->resultSet();
+
+// Fetch All Aspek for this mapel (Global) joined with Materi
+$db->query("SELECT a.*, m.nama_materi FROM aspek_penilaian a 
+            LEFT JOIN materi_penilaian m ON a.materi_id = m.id 
+            WHERE a.mapel_id = :mapel_id 
+            ORDER BY m.id ASC, a.id ASC");
 $db->bind(':mapel_id', $mapel_id);
 $aspeks = $db->resultSet();
 
-// Fetch Colleagues (Teachers with the same mapel)
+// Group aspects by Materi
+$grouped_aspeks = [];
+foreach ($aspeks as $a) {
+    $materi_name = $a['nama_materi'] ?? 'Tanpa Materi';
+    $grouped_aspeks[$materi_name][] = $a;
+}
+
+// Fetch Colleagues
 $db->query("SELECT nama_lengkap FROM guru WHERE mapel_id = :mapel_id AND id != :guru_id");
 $db->bind(':mapel_id', $mapel_id);
 $db->bind(':guru_id', $guru_id);
@@ -30,8 +45,7 @@ $colleagues = $db->resultSet();
     <span class="badge badge-center rounded-pill bg-info me-3"><i class="bx bx-info-circle"></i></span>
     <div class="d-flex flex-column ps-1">
         <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">Informasi</h6>
-        <span>Aspek penilaian ini berlaku <strong>secara global</strong> untuk mata pelajaran yang Anda uji. Perubahan
-            pada aspek ini akan memengaruhi penilaian seluruh siswa di mata pelajaran tersebut.</span>
+        <span>Poin penilaian (Aspek) harus dikelompokkan ke dalam <strong>Materi Uji</strong>. Pastikan Anda sudah membuat Materi terlebih dahulu.</span>
         <?php if (!empty($colleagues)): ?>
             <div class="mt-2 text-sm">
                 <strong>Rekan Penguji :</strong>
@@ -44,46 +58,55 @@ $colleagues = $db->resultSet();
     </div>
 </div>
 
-<!-- Alert for Empty Aspek -->
-<?php if (count($aspeks) == 0): ?>
-    <div class="alert alert-warning d-flex" role="alert">
-        <span class="badge badge-center rounded-pill bg-warning me-3"><i class="bx bx-error"></i></span>
-        <div class="d-flex flex-column ps-1">
-            <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">Peringatan: Aspek Belum Diisi</h6>
-            <span>Anda belum menambahkan aspek penilaian. Silakan tambah minimal 1 aspek agar bisa mulai menilai
-                siswa.</span>
+<!-- Warning for Missing Materi -->
+<?php if (empty($materis)): ?>
+    <div class="alert alert-danger d-flex align-items-center" role="alert">
+        <span class="badge badge-center rounded-pill bg-danger me-3"><i class="bx bx-error bx-xs"></i></span>
+        <div>
+            Materi Uji belum dibuat. Silakan buat <a href="materi.php" class="alert-link">Materi Uji</a> terlebih dahulu agar bisa menambahkan aspek.
         </div>
     </div>
 <?php endif; ?>
 
 <div class="card">
     <div class="card-body">
-        <div class="table-responsive text-nowrap">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Nama Aspek (Kriteria)</th>
-                        <th>Bobot</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody class="table-border-bottom-0">
-                    <?php foreach ($aspeks as $idx => $a): ?>
-                        <tr>
-                            <td><?= $idx + 1 ?></td>
-                            <td><strong><?= $a['nama_aspek'] ?></strong></td>
-                            <td><?= $a['bobot_nilai'] ?></td>
-                            <td>
-                                <button class="btn btn-sm btn-outline-danger delete-aspek-btn" data-id="<?= $a['id'] ?>">
-                                    <i class="bx bx-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
+        <?php if (empty($grouped_aspeks)): ?>
+            <div class="text-center py-4 text-muted">Belum ada aspek penilaian.</div>
+        <?php else: ?>
+            <?php foreach ($grouped_aspeks as $materi_name => $items): ?>
+                <div class="mb-4">
+                    <h5 class="bg-light p-2 rounded text-primary border-start border-primary border-4">
+                        <i class="bx bx-book-content me-1"></i> Materi: <?= htmlspecialchars($materi_name) ?>
+                    </h5>
+                    <div class="table-responsive text-nowrap">
+                        <table class="table table-hover table-sm">
+                            <thead>
+                                <tr>
+                                    <th width="50">No</th>
+                                    <th>Aspek Penilaian</th>
+                                    <th width="100">Bobot</th>
+                                    <th width="100">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($items as $idx => $a): ?>
+                                    <tr>
+                                        <td><?= $idx + 1 ?></td>
+                                        <td><strong><?= htmlspecialchars($a['nama_aspek']) ?></strong></td>
+                                        <td><?= $a['bobot_nilai'] ?></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-danger delete-aspek-btn" data-id="<?= $a['id'] ?>">
+                                                <i class="bx bx-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
     </div>
 </div>
 
@@ -93,10 +116,19 @@ $colleagues = $db->resultSet();
         <form id="addAspekForm">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Tambah Kriteria Penilaian</h5>
+                    <h5 class="modal-title">Tambah Aspek Penilaian</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Pilih Materi Uji</label>
+                        <select name="materi_id" class="form-select" required>
+                            <option value="">-- Pilih Materi --</option>
+                            <?php foreach ($materis as $m): ?>
+                                <option value="<?= $m['id'] ?>"><?= htmlspecialchars($m['nama_materi']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
                     <div class="mb-3">
                         <label class="form-label">Nama Aspek</label>
                         <input type="text" name="nama_aspek" class="form-control"
@@ -141,6 +173,7 @@ $colleagues = $db->resultSet();
                     fetch('../ajax/aspek_action.php', { method: 'POST', body: formData })
                         .then(r => r.json()).then(data => {
                             if (data.status === 'success') location.reload();
+                            else alert(data.message);
                         });
                 }
             });

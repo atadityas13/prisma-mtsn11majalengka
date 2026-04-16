@@ -27,11 +27,24 @@ if ($jadwal_tanggal) {
     $jadwal_tanggal_formatted = (new DateTime($jadwal_tanggal))->format('d/m/Y');
 }
 
-// Fetch Aspects for this Mapel
-// NOTE: We take aspects from any guru who handles this mapel for simplicity in the blank form
-$db->query("SELECT * FROM aspek_penilaian WHERE mapel_id = :id GROUP BY nama_aspek ORDER BY id ASC");
+// Fetch Materis
+$db->query("SELECT * FROM materi_penilaian WHERE mapel_id = :id ORDER BY id ASC");
+$db->bind(':id', $ploting['mapel_id']);
+$materis = $db->resultSet();
+
+// Fetch Aspects joined with Materi
+$db->query("SELECT a.*, m.nama_materi FROM aspek_penilaian a 
+            JOIN materi_penilaian m ON a.materi_id = m.id 
+            WHERE a.mapel_id = :id 
+            ORDER BY m.id ASC, a.id ASC");
 $db->bind(':id', $ploting['mapel_id']);
 $aspeks = $db->resultSet();
+
+// Group aspects by Materi
+$grouped_aspeks = [];
+foreach ($aspeks as $a) {
+    $grouped_aspeks[$a['materi_id']][] = $a;
+}
 
 // Fetch Students for this ploting
 $db->query("SELECT s.* FROM ploting_siswa ps
@@ -315,21 +328,33 @@ $siswas = $db->resultSet();
         <table class="data-table">
             <thead>
                 <tr>
-                    <th rowspan="2" width="30">No</th>
-                    <th rowspan="2">Nama Siswa</th>
-                    <th colspan="<?= count($aspeks) > 0 ? count($aspeks) : 3 ?>">Aspek Penilaian</th>
-                    <th rowspan="2" width="60">Nilai Akhir</th>
-                    <th rowspan="2" width="120">Keterangan</th>
+                    <th rowspan="3" width="30">No</th>
+                    <th rowspan="3">Nama Siswa</th>
+                    <th colspan="<?= count($aspeks) ?>">Aspek Penilaian</th>
+                    <th rowspan="3" width="60">Nilai Akhir</th>
+                    <th rowspan="3" width="120">Keterangan</th>
+                </tr>
+                <tr>
+                    <?php if (!empty($materis)): ?>
+                        <?php foreach ($materis as $m): 
+                            $m_aspect_count = count($grouped_aspeks[$m['id']] ?? []);
+                            if ($m_aspect_count == 0) continue;
+                        ?>
+                            <th colspan="<?= $m_aspect_count ?>" style="font-size: 8pt;"><?= htmlspecialchars($m['nama_materi']) ?></th>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <th colspan="3">Aspek</th>
+                    <?php endif; ?>
                 </tr>
                 <tr>
                     <?php if (count($aspeks) > 0): ?>
                         <?php foreach ($aspeks as $idx => $a): ?>
-                            <th width="70">A<?= $idx + 1 ?></th>
+                            <th width="40">A<?= $idx + 1 ?></th>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <th width="70">A1</th>
-                        <th width="70">A2</th>
-                        <th width="70">A3</th>
+                        <th width="40">A1</th>
+                        <th width="40">A2</th>
+                        <th width="40">A3</th>
                     <?php endif; ?>
                 </tr>
             </thead>
@@ -341,11 +366,10 @@ $siswas = $db->resultSet();
                             <td class="text-left" style="padding-left: 10px;"><?= $s['nama_lengkap'] ?></td>
                             <?php if (count($aspeks) > 0): ?>
                                 <?php foreach ($aspeks as $a): ?>
-                                    <td></td><?php endforeach; ?>
+                                    <td></td>
+                                <?php endforeach; ?>
                             <?php else: ?>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td></td><td></td><td></td>
                             <?php endif; ?>
                             <td></td>
                             <td></td>
@@ -353,8 +377,8 @@ $siswas = $db->resultSet();
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="<?= 3 + (count($aspeks) > 0 ? count($aspeks) : 3) ?>"
-                            style="padding: 20px; color: #888;">Belum ada data siswa di kelas ini.</td>
+                        <td colspan="<?= 3 + count($aspeks) ?>"
+                            style="padding: 20px; color: #888;">Belum ada data siswa di ploting ini.</td>
                     </tr>
                 <?php endif; ?>
             </tbody>

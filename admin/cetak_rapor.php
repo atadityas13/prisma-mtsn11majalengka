@@ -244,23 +244,39 @@ $siswas = $db->resultSet();
                     $total_nilai = 0;
                     $count_nilai = 0;
                     foreach ($mapels as $idx => $m):
-                        $db->query("SELECT AVG(nilai_angka) as avg_n FROM nilai_praktik WHERE siswa_id = :sid AND mapel_id = :mid");
-                        $db->bind(':sid', $s['id']);
+                        // NEW LOGIC: Final Score = Average of Material Averages
+                        $db->query("SELECT id FROM materi_penilaian WHERE mapel_id = :mid");
                         $db->bind(':mid', $m['id']);
-                        $score_res = $db->single();
-                        $score = $score_res['avg_n'];
+                        $subject_materis = $db->resultSet();
+                        
+                        $materi_avgs = [];
+                        foreach ($subject_materis as $sm) {
+                            $db->query("SELECT AVG(nilai_angka) as avg_m FROM nilai_praktik 
+                                        WHERE siswa_id = :sid AND mapel_id = :mid 
+                                        AND aspek_id IN (SELECT id FROM aspek_penilaian WHERE materi_id = :m_id)");
+                            $db->bind(':sid', $s['id']);
+                            $db->bind(':mid', $m['id']);
+                            $db->bind(':m_id', $sm['id']);
+                            $m_res = $db->single();
+                            if (!is_null($m_res['avg_m'])) {
+                                $materi_avgs[] = $m_res['avg_m'];
+                            }
+                        }
+
+                        $total_m_count = count($subject_materis);
+                        $score = ($total_m_count > 0 && count($materi_avgs) > 0) ? array_sum($materi_avgs) / $total_m_count : null;
 
                         $predikat = '-';
-                        if ($score >= 90)
-                            $predikat = 'A (Sangat Baik)';
-                        elseif ($score >= 80)
-                            $predikat = 'B (Baik)';
-                        elseif ($score >= 70)
-                            $predikat = 'C (Cukup)';
-                        elseif ($score >= 0)
-                            $predikat = 'D (Kurang)';
-
                         if (!is_null($score)) {
+                            if ($score >= 90)
+                                $predikat = 'A (Sangat Baik)';
+                            elseif ($score >= 80)
+                                $predikat = 'B (Baik)';
+                            elseif ($score >= 70)
+                                $predikat = 'C (Cukup)';
+                            elseif ($score >= 0)
+                                $predikat = 'D (Kurang)';
+                            
                             $total_nilai += $score;
                             $count_nilai++;
                         }

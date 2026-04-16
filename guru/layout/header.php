@@ -105,6 +105,9 @@ Auth::restrictTo('guru');
                 <li class="menu-item <?= (basename($_SERVER['PHP_SELF']) == 'dashboard.php') ? 'active' : '' ?>">
                     <a href="<?= base_url('guru/dashboard.php') ?>" class="menu-link"><i class="bx bx-home-circle"></i> <div>Dashboard</div></a>
                 </li>
+                <li class="menu-item <?= (basename($_SERVER['PHP_SELF']) == 'materi.php') ? 'active' : '' ?>">
+                    <a href="<?= base_url('guru/materi.php') ?>" class="menu-link"><i class="bx bx-book-content"></i> <div>Materi Uji</div></a>
+                </li>
                 <li class="menu-item <?= (basename($_SERVER['PHP_SELF']) == 'aspek.php') ? 'active' : '' ?>">
                     <a href="<?= base_url('guru/aspek.php') ?>" class="menu-link"><i class="bx bx-list-check"></i> <div>Aspek Penilaian</div></a>
                 </li>

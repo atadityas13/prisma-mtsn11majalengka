@@ -38,40 +38,46 @@ $db->bind(':guru_id', $guru_id);
 $db->bind(':mapel_id', $mapel_id);
 $jadwal = $db->resultSet();
 
+// Check if Materi is already set
+$db->query("SELECT COUNT(*) as count FROM materi_penilaian WHERE mapel_id = :mapel_id");
+$db->bind(':mapel_id', $mapel_id);
+$total_materi = (int) ($db->single()['count'] ?? 0);
+
 // Check if aspects are already set
 $db->query("SELECT COUNT(*) as count FROM aspek_penilaian WHERE mapel_id = :mapel_id");
 $db->bind(':mapel_id', $mapel_id);
 $total_aspek = (int) ($db->single()['count'] ?? 0);
 
-// Fetch Colleagues (Teachers with the same mapel)
+// Fetch Colleagues
 $db->query("SELECT nama_lengkap FROM guru WHERE mapel_id = :mapel_id AND id != :guru_id");
 $db->bind(':mapel_id', $mapel_id);
 $db->bind(':guru_id', $guru_id);
 $colleagues = $db->resultSet();
 ?>
 
-<?php if ($total_aspek === 0): ?>
+<?php if ($total_materi === 0): ?>
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="alert alert-danger d-flex align-items-center" role="alert">
+                <span class="badge badge-center rounded-pill bg-danger me-3"><i class="bx bx-book-content bx-sm"></i></span>
+                <div class="d-flex flex-column ps-1">
+                    <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">Penting: Materi Uji Belum Ditentukan!</h6>
+                    <span>Anda belum menambahkan <strong>Materi Uji</strong> untuk <?= $mapel_name ?>. Materi diperlukan sebagai wadah aspek penilaian.</span>
+                    <div class="mt-2 text-end">
+                        <a href="materi.php" class="btn btn-sm btn-dark">Atur Materi Sekarang</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php elseif ($total_aspek === 0): ?>
     <div class="row">
         <div class="col-12 mb-4">
             <div class="alert alert-warning d-flex align-items-center" role="alert">
-                <span class="badge badge-center rounded-pill bg-warning me-3"><i class="bx bx-error bx-sm"></i></span>
+                <span class="badge badge-center rounded-pill bg-warning me-3"><i class="bx bx-list-check bx-sm"></i></span>
                 <div class="d-flex flex-column ps-1">
-                    <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">Perhatian: Kriteria Penilaian Belum
-                        Ada!</h6>
-                    <span>Anda belum menambahkan <strong>Aspek Penilaian</strong> untuk mata pelajaran <?= $mapel_name ?>.
-                        Silakan tambahkan kriteria terlebih dahulu sebelum menginput nilai.</span>
-
-                    <?php if (!empty($colleagues)): ?>
-                        <div class="mt-2 text-sm border-top pt-2 border-dark border-opacity-10">
-                            <strong>Rekan Penguji Anda:</strong>
-                            <span class="text-muted"
-                                style="font-weight: bold;"><?= implode(', ', array_column($colleagues, 'nama_lengkap')) ?></span>
-                            <br>
-                            <small>* Silahkan berkoordinasi dengan rekan Anda untuk menentukan kriteria penilaian yang
-                                seragam.</small>
-                        </div>
-                    <?php endif; ?>
-
+                    <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">Perhatian: Aspek Penilaian Belum Ada!</h6>
+                    <span>Materi sudah ada, tapi Anda belum menambahkan <strong>Poin/Aspek Penilaian</strong> di dalamnya.</span>
                     <div class="mt-2 text-end">
                         <a href="aspek.php" class="btn btn-sm btn-dark">Atur Aspek Sekarang</a>
                     </div>
@@ -198,24 +204,24 @@ $colleagues = $db->resultSet();
                 <ol class="list-group list-group-flush list-group-numbered">
                     <li class="list-group-item d-flex justify-content-between align-items-start">
                         <div class="ms-2 me-auto">
-                            <div class="fw-bold">Atur Aspek Penilaian</div>
-                            Tambahkan kriteria penilaian untuk mata pelajaran <?= $mapel_name ?>.
+                            <div class="fw-bold">1. Atur Materi Uji</div>
+                            Grup besar yang diujikan (misal: Shalat Jenazah).
+                        </div>
+                        <a href="materi.php" class="btn btn-xs btn-outline-info">Buka</a>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div class="fw-bold">2. Atur Aspek Penilaian</div>
+                            Detail kriteria penilaian di dalam setiap materi.
                         </div>
                         <a href="aspek.php" class="btn btn-xs btn-outline-info">Buka</a>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-start">
                         <div class="ms-2 me-auto">
-                            <div class="fw-bold">Input Nilai Siswa</div>
-                            Klik tombol "Nilai" pada daftar siswa yang muncul di halaman penilaian.
+                            <div class="fw-bold">3. Input Nilai Siswa</div>
+                            Lakukan penilaian langsung di aplikasi (Borangnya digital).
                         </div>
                         <a href="penilaian.php" class="btn btn-xs btn-outline-info">Buka</a>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-start">
-                        <div class="ms-2 me-auto">
-                            <div class="fw-bold">Selesai & Unduh</div>
-                            Unduh rekap nilai dalam format Excel jika semua siswa sudah dinilai.
-                        </div>
-                        <a href="laporan.php" class="btn btn-xs btn-outline-info">Buka</a>
                     </li>
                 </ol>
             </div>

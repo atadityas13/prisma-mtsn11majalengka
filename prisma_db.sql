@@ -52,15 +52,26 @@ CREATE TABLE IF NOT EXISTS siswa (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+-- 5b. Examination Materials (Materi Uji)
+CREATE TABLE IF NOT EXISTS materi_penilaian (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    mapel_id INT NOT NULL,
+    nama_materi VARCHAR(100) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (mapel_id) REFERENCES mapel(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
 -- 6. Assessment Aspects (Aspek Penilaian)
 CREATE TABLE IF NOT EXISTS aspek_penilaian (
     id INT AUTO_INCREMENT PRIMARY KEY,
     guru_id INT NULL,
     mapel_id INT NOT NULL,
+    materi_id INT NULL,
     nama_aspek VARCHAR(100) NOT NULL,
     bobot_nilai INT DEFAULT 1, -- used for weighted average
     FOREIGN KEY (guru_id) REFERENCES guru(id) ON DELETE CASCADE,
-    FOREIGN KEY (mapel_id) REFERENCES mapel(id) ON DELETE CASCADE
+    FOREIGN KEY (mapel_id) REFERENCES mapel(id) ON DELETE CASCADE,
+    FOREIGN KEY (materi_id) REFERENCES materi_penilaian(id) ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
 -- 7. Ploting Penguji (Assignment)

@@ -17,25 +17,20 @@ $role = $_SESSION['role'];
 $mapel_id = ($role === 'guru') ? $_SESSION['mapel_id'] : ($_POST['mapel_id'] ?? '');
 
 if ($action === 'add') {
-    $nama = $_POST['nama_aspek'] ?? '';
-    $bobot = $_POST['bobot_nilai'] ?? 1;
-    $materi_id = $_POST['materi_id'] ?? null;
-    $guru_id = ($role === 'guru') ? $_SESSION['guru_id'] : null;
+    $nama = $_POST['nama_materi'] ?? '';
 
-    if (empty($mapel_id) || empty($nama) || empty($materi_id)) {
-        echo json_encode(['status' => 'error', 'message' => 'Data tidak lengkap. Pastikan Materi sudah dipilih.']);
+    if (empty($mapel_id) || empty($nama)) {
+        echo json_encode(['status' => 'error', 'message' => 'Data tidak lengkap']);
         exit;
     }
 
     try {
-        $db->query("INSERT INTO aspek_penilaian (guru_id, mapel_id, materi_id, nama_aspek, bobot_nilai) VALUES (:guru_id, :mapel_id, :materi_id, :nama, :bobot)");
-        $db->bind(':guru_id', $guru_id);
+        $db->query("INSERT INTO materi_penilaian (mapel_id, nama_materi) VALUES (:mapel_id, :nama)");
         $db->bind(':mapel_id', $mapel_id);
-        $db->bind(':materi_id', $materi_id);
         $db->bind(':nama', $nama);
-        $db->bind(':bobot', $bobot);
         $db->execute();
-        Auth::log("Menambahkan aspek penilaian: $nama", 'assessment', $db);
+        
+        Auth::log("Menambahkan materi penilaian: $nama", 'assessment', $db);
         echo json_encode(['status' => 'success']);
     } catch (Exception $e) {
         echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
@@ -45,18 +40,16 @@ if ($action === 'add') {
     $id = $_POST['id'] ?? '';
     try {
         if ($role === 'guru') {
-            // For Guru, they can only delete aspects in their current mapel (which are shared anyway)
-            // To prevent accidental cross-mapel deletion
-            $db->query("DELETE FROM aspek_penilaian WHERE id = :id AND mapel_id = :mapel_id");
+            $db->query("DELETE FROM materi_penilaian WHERE id = :id AND mapel_id = :mapel_id");
             $db->bind(':id', $id);
             $db->bind(':mapel_id', $mapel_id);
         } else {
-            // Admin can delete any
-            $db->query("DELETE FROM aspek_penilaian WHERE id = :id");
+            $db->query("DELETE FROM materi_penilaian WHERE id = :id");
             $db->bind(':id', $id);
         }
         $db->execute();
-        Auth::log("Menghapus aspek penilaian ID: $id", 'assessment', $db);
+        
+        Auth::log("Menghapus materi penilaian ID: $id", 'assessment', $db);
         echo json_encode(['status' => 'success']);
     } catch (Exception $e) {
         echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);

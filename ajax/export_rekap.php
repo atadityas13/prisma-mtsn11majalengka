@@ -10,14 +10,20 @@ use PhpOffice\PhpSpreadsheet\Style\Fill;
 
 $db = new Database();
 
-// 1. Fetch Mapels and their Aspects
+// 1. Fetch Mapels, Materis and their Aspects
 $db->query("SELECT * FROM mapel ORDER BY nama_mapel ASC");
 $mapels = $db->resultSet();
-$mapel_aspects = [];
 foreach ($mapels as &$m) {
-    $db->query("SELECT * FROM aspek_penilaian WHERE mapel_id = :id ORDER BY id ASC");
+    // Fetch Materis
+    $db->query("SELECT * FROM materi_penilaian WHERE mapel_id = :id ORDER BY id ASC");
     $db->bind(':id', $m['id']);
-    $m['aspects'] = $db->resultSet();
+    $m['materis'] = $db->resultSet();
+    
+    foreach ($m['materis'] as &$mat) {
+        $db->query("SELECT * FROM aspek_penilaian WHERE materi_id = :id ORDER BY id ASC");
+        $db->bind(':id', $mat['id']);
+        $mat['aspects'] = $db->resultSet();
+    }
 }
 
 // 2. Fetch All Students
@@ -32,60 +38,79 @@ $sheet->setTitle('Rekap Nilai Praktik');
 
 // Headers Static
 $sheet->setCellValue('A1', 'NO');
-$sheet->mergeCells('A1:A2');
+$sheet->mergeCells('A1:A3');
 $sheet->setCellValue('B1', 'NISN');
-$sheet->mergeCells('B1:B2');
+$sheet->mergeCells('B1:B3');
 $sheet->setCellValue('C1', 'NO. PESERTA');
-$sheet->mergeCells('C1:C2');
+$sheet->mergeCells('C1:C3');
 $sheet->setCellValue('D1', 'NAMA LENGKAP');
-$sheet->mergeCells('D1:D2');
+$sheet->mergeCells('D1:D3');
 $sheet->setCellValue('E1', 'KELAS');
-$sheet->mergeCells('E1:E2');
+$sheet->mergeCells('E1:E3');
 
 // Dynamic Headers for Mapels
 $currentCol = 6; // Column 'F' starts here
-$mapel_col_start = [];
+$aspect_col_map = [];
+$materi_avg_col_map = [];
+$mapel_avg_col_map = [];
 
 foreach ($mapels as $m) {
-    $startColStr = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($currentCol);
-    $aspectCount = count($m['aspects']);
+    if (empty($m['materis'])) continue;
     
-    // We need columns for each aspect + 1 for subject average
-    $colSpan = ($aspectCount > 0 ? $aspectCount : 1) + 1;
-    $endColStr = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($currentCol + $colSpan - 1);
+    $mapelStartCol = $currentCol;
     
-    // Header Row 1: Subject Name (Merged)
-    $sheet->setCellValue($startColStr . '1', $m['nama_mapel']);
-    $sheet->mergeCells($startColStr . '1:' . $endColStr . '1');
-    
-    // Header Row 2: Aspects (A1, A2...) + Avg
-    if ($aspectCount > 0) {
-        foreach ($m['aspects'] as $idx => $a) {
-            $aspectLabel = 'A' . ($idx + 1);
-            $colStr = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($currentCol + $idx);
-            $sheet->setCellValue($colStr . '2', $aspectLabel);
-            $aspect_col_map[$m['id']][$a['id']] = $colStr;
+    foreach ($m['materis'] as $mat) {
+        $matStartColStr = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($currentCol);
+        $aspectCount = count($mat['aspects']);
+        
+        // Cols per Materi: aspects + 1 for Materi Avg
+        $colSpan = ($aspectCount > 0 ? $aspectCount : 1) + 1;
+        $matEndColStr = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($currentCol + $colSpan - 1);
+        
+        // Header Row 2: Materi Name
+        $sheet->setCellValue($matStartColStr . '2', $mat['nama_materi']);
+        $sheet->mergeCells($matStartColStr . '2:' . $matEndColStr . '2');
+        
+        // Header Row 3: Aspects
+        if ($aspectCount > 0) {
+            foreach ($mat['aspects'] as $idx => $a) {
+                $colStr = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($currentCol + $idx);
+                $sheet->setCellValue($colStr . '3', 'A' . ($a['id'])); // Use ID or sequence? I'll use A1, A2 global seq later
+                $aspect_col_map[$m['id']][$a['id']] = $colStr;
+            }
         }
-    } else {
-        $colStr = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($currentCol);
-        $sheet->setCellValue($colStr . '2', '-');
+        
+        // Materi Average Column
+        $mAvgColStr = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($currentCol + $colSpan - 1);
+        $sheet->setCellValue($mAvgColStr . '3', 'M-RATA');
+        $materi_avg_col_map[$m['id']][$mat['id']] = $mAvgColStr;
+        
+        $currentCol += $colSpan;
     }
     
-    // Final column per subject is "Rata-rata"
-    $avgColStr = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($currentCol + $colSpan - 1);
-    $sheet->setCellValue($avgColStr . '2', 'RATA');
-    $mapel_avg_col_map[$m['id']] = $avgColStr;
+    // Final column per subject is "FINAL RATA"
+    $mapelAvgColStr = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($currentCol);
+    $sheet->setCellValue($mapelAvgColStr . '2', 'FINAL');
+    $sheet->setCellValue($mapelAvgColStr . '3', 'RATA');
+    $sheet->mergeCells($mapelAvgColStr . '2:' . $mapelAvgColStr . '2'); // Already 2 rows high because of row 1 header
+    $mapel_avg_col_map[$m['id']] = $mapelAvgColStr;
     
-    $currentCol += $colSpan;
+    // Merge Mapel Header
+    $mapelStartColStr = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($mapelStartCol);
+    $mapelEndColStr = $mapelAvgColStr;
+    $sheet->setCellValue($mapelStartColStr . '1', $m['nama_mapel']);
+    $sheet->mergeCells($mapelStartColStr . '1:' . $mapelEndColStr . '1');
+    
+    $currentCol++;
 }
 
 // Grand Average Header
 $grandAvgColStr = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($currentCol);
-$sheet->setCellValue($grandAvgColStr . '1', 'RATA-RATA AKHIR');
-$sheet->mergeCells($grandAvgColStr . '1:' . $grandAvgColStr . '2');
+$sheet->setCellValue($grandAvgColStr . '1', 'RATA AKHIR');
+$sheet->mergeCells($grandAvgColStr . '1:' . $grandAvgColStr . '3');
 
 // Data Population
-$row = 3;
+$row = 4;
 foreach ($siswas as $idx => $s) {
     $sheet->setCellValue('A' . $row, $idx + 1);
     $sheet->setCellValue('B' . $row, $s['nisn']);
@@ -93,43 +118,46 @@ foreach ($siswas as $idx => $s) {
     $sheet->setCellValue('D' . $row, $s['nama_lengkap']);
     $sheet->setCellValue('E' . $row, $s['kelas']);
     
-    $grand_total_sum = 0;
-    $grand_total_count = 0;
+    // Pre-fetch all scores for student
+    $db->query("SELECT aspek_id, nilai_angka FROM nilai_praktik WHERE siswa_id = :sid");
+    $db->bind(':sid', $s['id']);
+    $score_res = $db->resultSet();
+    $score_map = [];
+    foreach ($score_res as $sr) { $score_map[$sr['aspek_id']] = $sr['nilai_angka']; }
+    
+    $grand_total_scores = [];
     
     foreach ($mapels as $m) {
-        $mapel_sum = 0;
-        $mapel_count = 0;
+        if (empty($m['materis'])) continue;
         
-        // Fetch scores for this student and mapel
-        $db->query("SELECT aspek_id, nilai_angka FROM nilai_praktik WHERE siswa_id = :sid AND mapel_id = :mid");
-        $db->bind(':sid', $s['id']);
-        $db->bind(':mid', $m['id']);
-        $scores = $db->resultSet();
-        $score_map = [];
-        foreach ($scores as $sc) { $score_map[$sc['aspek_id']] = $sc['nilai_angka']; }
-        
-        // Fill aspect scores
-        foreach ($m['aspects'] as $a) {
-            if (isset($score_map[$a['id']])) {
-                $colStr = $aspect_col_map[$m['id']][$a['id']];
-                $sheet->setCellValue($colStr . $row, $score_map[$a['id']]);
-                $mapel_sum += $score_map[$a['id']];
-                $mapel_count++;
+        $materi_avgs = [];
+        foreach ($m['materis'] as $mat) {
+            $m_sum = 0;
+            $m_count = 0;
+            foreach ($mat['aspects'] as $a) {
+                if (isset($score_map[$a['id']])) {
+                    $sheet->setCellValue($aspect_col_map[$m['id']][$a['id']] . $row, $score_map[$a['id']]);
+                    $m_sum += $score_map[$a['id']];
+                    $m_count++;
+                }
+            }
+            
+            if ($m_count > 0) {
+                $m_avg = $m_sum / count($mat['aspects']);
+                $sheet->setCellValue($materi_avg_col_map[$m['id']][$mat['id']] . $row, round($m_avg, 2));
+                $materi_avgs[] = $m_avg;
             }
         }
         
-        // Subject Average
-        if ($mapel_count > 0) {
-            $avg = $mapel_sum / count($m['aspects']); // Divided by total aspects for fairness
-            $sheet->setCellValue($mapel_avg_col_map[$m['id']] . $row, round($avg, 2));
-            $grand_total_sum += $avg;
-            $grand_total_count++;
+        if (!empty($materi_avgs)) {
+            $mapel_avg = array_sum($materi_avgs) / count($m['materis']);
+            $sheet->setCellValue($mapel_avg_col_map[$m['id']] . $row, round($mapel_avg, 2));
+            $grand_total_scores[] = $mapel_avg;
         }
     }
     
-    // Grand Total Average
-    if (count($mapels) > 0) {
-        $sheet->setCellValue($grandAvgColStr . $row, round($grand_total_sum / count($mapels), 2));
+    if (!empty($grand_total_scores)) {
+        $sheet->setCellValue($grandAvgColStr . $row, round(array_sum($grand_total_scores) / count($mapels), 2));
     }
     
     $row++;
@@ -137,11 +165,11 @@ foreach ($siswas as $idx => $s) {
 
 // Styling Sheet 1
 $lastCol = $grandAvgColStr;
-$sheet->getStyle('A1:' . $lastCol . '2')->getFont()->setBold(true);
-$sheet->getStyle('A1:' . $lastCol . '2')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-$sheet->getStyle('A1:' . $lastCol . '2')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+$sheet->getStyle('A1:' . $lastCol . '3')->getFont()->setBold(true);
+$sheet->getStyle('A1:' . $lastCol . '3')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+$sheet->getStyle('A1:' . $lastCol . '3')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
 $sheet->getStyle('A1:' . $lastCol . ($row - 1))->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
-$sheet->freezePane('F3');
+$sheet->freezePane('F4');
 
 // --- SHEET 2: KETERANGAN ASPEK ---
 $legendSheet = $spreadsheet->createSheet();
