@@ -144,7 +144,7 @@ $hari_map = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
         table th,
         table td {
             border: 1px solid #000;
-            padding: 5px 7px;
+            padding: 3px 5px;
             vertical-align: middle;
             word-break: break-word;
         }
