@@ -12,7 +12,9 @@ Auth::restrictTo('guru');
     <title><?= $page_title ?? 'Dashboard' ?> | PRISMA Guru</title>
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="<?= base_url('assets/img/logo.png') ?>" />
+    <link rel="icon" type="image/png" href="<?= base_url('assets/img/logo-mtsn11.png') ?>" />
+    <link rel="shortcut icon" href="<?= base_url('assets/img/logo-mtsn11.png') ?>" type="image/png" />
+    <link rel="apple-touch-icon" href="<?= base_url('assets/img/logo-mtsn11.png') ?>" />
 
     <!-- Fonts & Icons (Same CDNs as Admin) -->
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />

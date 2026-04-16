@@ -12,7 +12,9 @@ Auth::restrictTo('siswa');
     <title>Dashboard Siswa | PRISMA</title>
     
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="<?= base_url('assets/img/logo.png') ?>" />
+    <link rel="icon" type="image/png" href="<?= base_url('assets/img/logo-mtsn11.png') ?>" />
+    <link rel="shortcut icon" href="<?= base_url('assets/img/logo-mtsn11.png') ?>" type="image/png" />
+    <link rel="apple-touch-icon" href="<?= base_url('assets/img/logo-mtsn11.png') ?>" />
 
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" />
@@ -28,7 +30,7 @@ Auth::restrictTo('siswa');
     <nav class="navbar navbar-expand-lg sticky-top py-2 px-0">
         <div class="container px-3">
             <a class="navbar-brand d-flex align-items-center" href="#">
-                <img src="<?= base_url('assets/img/logo.png') ?>" alt="Logo" height="40" class="me-3">
+                <img src="<?= base_url('assets/img/logo-mtsn11.png') ?>" alt="Logo" height="40" class="me-3">
                 <span class="fw-bold text-dark d-none d-md-inline-block me-3" style="font-size: 1.1rem;">PRISMA <span class="text-muted fw-normal d-none d-lg-inline">(Penilaian Ujian Praktik Siswa)</span></span>
             </a>
             <div class="d-flex align-items-center ms-auto">
