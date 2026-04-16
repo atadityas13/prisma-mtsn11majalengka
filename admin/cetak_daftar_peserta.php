@@ -156,7 +156,8 @@ $bulan_map = [
         table.peserta th,
         table.peserta td {
             border: 1px solid #000;
-            padding: 11px 6px; /* Diperbesar agar 67 siswa pas 3 halaman */
+            padding: 10px 6px;
+            /* Diperbesar agar 67 siswa pas 3 halaman */
             vertical-align: middle;
         }
 
@@ -314,7 +315,7 @@ $bulan_map = [
         $siswas = $db->resultSet();
 
         // Titimangsa gunakan tanggal hari ini atau tanggal awal ujian
-        $tgl_titimangsa = date('d') . ' ' . $bulan_map[(int)date('m')] . ' ' . date('Y');
+        $tgl_titimangsa = date('d') . ' ' . $bulan_map[(int) date('m')] . ' ' . date('Y');
         ?>
         <div class="page">
             <div class="kop">
