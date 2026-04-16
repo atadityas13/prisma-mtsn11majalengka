@@ -32,18 +32,20 @@ $db->query("SELECT * FROM materi_penilaian WHERE mapel_id = :id ORDER BY id ASC"
 $db->bind(':id', $ploting['mapel_id']);
 $materis = $db->resultSet();
 
-// Fetch Aspects joined with Materi
-$db->query("SELECT a.*, m.nama_materi FROM aspek_penilaian a 
-            JOIN materi_penilaian m ON a.materi_id = m.id 
+// Fetch ALL Aspects joined with Materi (LEFT JOIN to catch orphaned)
+$db->query("SELECT a.*, m.nama_materi 
+            FROM aspek_penilaian a 
+            LEFT JOIN materi_penilaian m ON a.materi_id = m.id 
             WHERE a.mapel_id = :id 
             ORDER BY m.id ASC, a.id ASC");
 $db->bind(':id', $ploting['mapel_id']);
 $aspeks = $db->resultSet();
 
-// Group aspects by Materi
+// Group aspects by Materi ID (use 0 for orphaned)
 $grouped_aspeks = [];
 foreach ($aspeks as $a) {
-    $grouped_aspeks[$a['materi_id']][] = $a;
+    $m_id = $a['materi_id'] ?? 0;
+    $grouped_aspeks[$m_id][] = $a;
 }
 
 // Fetch Students for this ploting
@@ -330,20 +332,29 @@ $siswas = $db->resultSet();
                 <tr>
                     <th rowspan="3" width="30">No</th>
                     <th rowspan="3">Nama Siswa</th>
-                    <th colspan="<?= count($aspeks) ?>">Aspek Penilaian</th>
+                    <th colspan="<?= count($aspeks) > 0 ? count($aspeks) : 3 ?>">Aspek Penilaian</th>
                     <th rowspan="3" width="60">Nilai Akhir</th>
                     <th rowspan="3" width="120">Keterangan</th>
                 </tr>
                 <tr>
-                    <?php if (!empty($materis)): ?>
-                        <?php foreach ($materis as $m): 
-                            $m_aspect_count = count($grouped_aspeks[$m['id']] ?? []);
-                            if ($m_aspect_count == 0) continue;
-                        ?>
-                            <th colspan="<?= $m_aspect_count ?>" style="font-size: 8pt;"><?= htmlspecialchars($m['nama_materi']) ?></th>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <th colspan="3">Aspek</th>
+                    <?php 
+                    // Render headers for defined materials
+                    if (count($aspeks) > 0):
+                        if (!empty($materis)): 
+                            foreach ($materis as $m): 
+                                $m_aspect_count = count($grouped_aspeks[$m['id']] ?? []);
+                                if ($m_aspect_count == 0) continue;
+                            ?>
+                                <th colspan="<?= $m_aspect_count ?>" style="font-size: 8pt;"><?= htmlspecialchars($m['nama_materi']) ?></th>
+                            <?php endforeach; 
+                        endif; 
+
+                        // Render header for orphaned aspects (if any)
+                        if (!empty($grouped_aspeks[0])): ?>
+                            <th colspan="<?= count($grouped_aspeks[0]) ?>" style="font-size: 8pt;">Lain-lain</th>
+                        <?php endif; 
+                    else: ?>
+                        <th colspan="3">Aspek Belum Diisi</th>
                     <?php endif; ?>
                 </tr>
                 <tr>
@@ -377,7 +388,7 @@ $siswas = $db->resultSet();
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="<?= 3 + count($aspeks) ?>"
+                        <td colspan="<?= 3 + (count($aspeks) > 0 ? count($aspeks) : 3) ?>"
                             style="padding: 20px; color: #888;">Belum ada data siswa di ploting ini.</td>
                     </tr>
                 <?php endif; ?>

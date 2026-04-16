@@ -63,6 +63,16 @@ $colleagues = $db->resultSet();
                 <div class="d-flex flex-column ps-1">
                     <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">Penting: Materi Uji Belum Ditentukan!</h6>
                     <span>Anda belum menambahkan <strong>Materi Uji</strong> untuk <?= $mapel_name ?>. Materi diperlukan sebagai wadah aspek penilaian.</span>
+                    
+                    <?php if (!empty($colleagues)): ?>
+                        <div class="mt-2 text-sm border-top pt-2 border-dark border-opacity-10">
+                            <strong>Rekan Penguji Anda:</strong>
+                            <span class="text-muted" style="font-weight: bold;"><?= implode(', ', array_column($colleagues, 'nama_lengkap')) ?></span>
+                            <br>
+                            <small>* Silakan berkoordinasi dengan rekan Anda untuk menentukan materi yang seragam.</small>
+                        </div>
+                    <?php endif; ?>
+
                     <div class="mt-2 text-end">
                         <a href="materi.php" class="btn btn-sm btn-dark">Atur Materi Sekarang</a>
                     </div>
@@ -78,6 +88,16 @@ $colleagues = $db->resultSet();
                 <div class="d-flex flex-column ps-1">
                     <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">Perhatian: Aspek Penilaian Belum Ada!</h6>
                     <span>Materi sudah ada, tapi Anda belum menambahkan <strong>Poin/Aspek Penilaian</strong> di dalamnya.</span>
+
+                    <?php if (!empty($colleagues)): ?>
+                        <div class="mt-2 text-sm border-top pt-2 border-dark border-opacity-10">
+                            <strong>Rekan Penguji Anda:</strong>
+                            <span class="text-muted" style="font-weight: bold;"><?= implode(', ', array_column($colleagues, 'nama_lengkap')) ?></span>
+                            <br>
+                            <small>* Berkoordinasilah dengan rekan untuk menentukan aspek/kriteria penilaian yang seragam.</small>
+                        </div>
+                    <?php endif; ?>
+
                     <div class="mt-2 text-end">
                         <a href="aspek.php" class="btn btn-sm btn-dark">Atur Aspek Sekarang</a>
                     </div>
