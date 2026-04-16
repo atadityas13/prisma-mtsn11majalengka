@@ -24,7 +24,6 @@ $siswas = $db->resultSet();
     <meta charset="UTF-8">
     <title>Rapor Praktik - Kelas <?= $kelas ?></title>
     <style>
-    <style>
         body {
             font-family: 'Times New Roman', serif;
             font-size: 11pt;
@@ -36,24 +35,23 @@ $siswas = $db->resultSet();
 
         @page {
             size: A4 portrait;
-            margin: 10mm;
+            margin: 8mm;
         }
 
         .page {
-            width: calc(210mm - 20mm);
-            padding: 10mm 15mm;
-            margin: 0 auto 10mm;
+            width: calc(210mm - 16mm);
+            padding: 10mm 12mm;
+            margin: 0 auto 8mm;
             background: white;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.08);
             page-break-after: always;
         }
-        .page:last-of-type { page-break-after: auto; }
 
         .header-table {
             width: 100%;
             border-bottom: 3px double #000;
             padding-bottom: 10px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .header-table td {
@@ -62,24 +60,30 @@ $siswas = $db->resultSet();
             border: none !important;
         }
 
-        .logo-left, .logo-right { width: 75px; }
-        .logo-left { text-align: left !important; }
-        .logo-right { text-align: right !important; }
+        .header-table h2,
+        .header-table h3,
+        .header-table p {
+            margin: 2px 0;
+        }
+
+        .logo-left {
+            width: 70px;
+            text-align: left !important;
+        }
+
+        .logo-right {
+            width: 70px;
+            text-align: right !important;
+        }
 
         .title {
             text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .title h3 {
-            margin: 0;
-            font-size: 14pt;
-            text-decoration: underline;
+            margin-bottom: -15px;
             text-transform: uppercase;
         }
 
         .profile {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .profile table {
@@ -88,9 +92,8 @@ $siswas = $db->resultSet();
         }
 
         .profile table td {
-            padding: 2px 0;
+            padding: 4px 0;
             vertical-align: top;
-            font-size: 11pt;
         }
 
         table.nilai {
@@ -103,78 +106,82 @@ $siswas = $db->resultSet();
         table.nilai th,
         table.nilai td {
             border: 1px solid #000;
-            padding: 8px 10px;
+            padding: 6px;
             text-align: left;
             word-break: break-word;
         }
 
-        table.nilai th {
-            background: #f9f9f9;
-            text-align: center;
-            font-weight: 700;
-            text-transform: uppercase;
+        table.nilai th:first-child,
+        table.nilai td:first-child {
+            width: 30px;
         }
 
-        .text-center { text-align: center !important; }
+        table.nilai th:nth-child(2),
+        table.nilai td:nth-child(2) {
+            width: 35%;
+        }
+
+        table.nilai th:nth-child(3),
+        table.nilai td:nth-child(3) {
+            width: 20%;
+        }
+
+        table.nilai th:nth-child(4),
+        table.nilai td:nth-child(4) {
+            width: 20%;
+        }
+
+        .text-center {
+            text-align: center !important;
+        }
 
         .footer {
-            margin-top: 40px;
+            margin-top: 30px;
         }
 
         .sig-container {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            margin-top: 50px;
         }
 
         .sig-box {
-            width: 250px;
+            width: 300px;
             text-align: left;
+            padding-left: 20px;
         }
 
         .sig-box p {
             margin: 2px 0;
         }
 
-        .sig-space {
-            height: 70px;
-        }
-
         @media print {
-            .no-print { display: none; }
-            body { background: white; padding: 0; }
-            .page { margin: 0; box-shadow: none; width: auto; }
-        }
+            .no-print {
+                display: none;
+            }
 
-        .btn-print {
-            padding: 8px 16px;
-            cursor: pointer;
-            background: #28a745;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            font-weight: bold;
+            .page {
+                margin: 0;
+                box-shadow: none;
+                width: auto;
+            }
         }
     </style>
 </head>
 
 <body>
     <div class="no-print"
-        style="position: fixed; top: 0; left: 0; right: 0; background: #333; color: #fff; padding: 12px; text-align: center; z-index: 1000;">
-        <button class="btn-print" onclick="window.print()">🖨️ CETAK RAPOR</button>
-        <button class="btn-print" style="margin-left: 10px; background: #6c757d;" onclick="window.close()">TUTUP</button>
+        style="position: fixed; top: 0; left: 0; right: 0; background: #333; color: #fff; padding: 10px; text-align: center; z-index: 1000;">
+        <button onclick="window.print()" style="padding: 5px 15px; cursor: pointer;">Cetak Rapor</button>
         <span style="margin-left: 20px;">Mencetak <?= count($siswas) ?> rapor untuk Kelas <?= $kelas ?></span>
     </div>
 
-    <?php 
-    $bulan_map = ['', 'Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-    foreach ($siswas as $s): ?>
+    <?php foreach ($siswas as $s): ?>
         <div class="page">
-            <!-- Kop Surat -->
             <table class="header-table">
                 <tr>
                     <td class="logo-left">
-                        <img src="<?= base_url('assets/img/logo-kemenag.png') ?>" height="75" alt="Logo Kemenag">
+                        <img src="<?= base_url('assets/img/logo-kemenag.png') ?>" height="70" alt="Logo Kemenag">
                     </td>
                     <td>
                         <h4 style="margin:0; font-weight: bold;">KEMENTERIAN AGAMA REPUBLIK INDONESIA</h4>
@@ -185,20 +192,22 @@ $siswas = $db->resultSet();
                         </p>
                     </td>
                     <td class="logo-right">
-                        <img src="<?= base_url('assets/img/logo-mtsn11.png') ?>" height="75" alt="Logo MTsN 11">
+                        <img src="<?= base_url('assets/img/logo-mtsn11.png') ?>" height="70" alt="Logo MTsN 11">
                     </td>
                 </tr>
             </table>
 
-            <div class="title">
+            <div class="title" style="text-decoration: underline;">
                 <h3>HASIL UJIAN PRAKTIK SISWA</h3>
-                <p><strong>TAHUN AJARAN <?= DEFAULT_YEAR ?></strong></p>
+            </div>
+            <div style="text-align: center; margin-bottom: 20px;">
+                <h4>TAHUN AJARAN <?= DEFAULT_YEAR ?></h4>
             </div>
 
             <div class="profile">
                 <table>
                     <tr>
-                        <td width="160">Nama Siswa</td>
+                        <td width="160">NAMA SISWA</td>
                         <td width="20">:</td>
                         <td><strong><?= strtoupper($s['nama_lengkap']) ?></strong></td>
                     </tr>
@@ -208,12 +217,12 @@ $siswas = $db->resultSet();
                         <td><?= $s['nisn'] ?></td>
                     </tr>
                     <tr>
-                        <td>Nomor Peserta</td>
+                        <td>NOMOR PESERTA</td>
                         <td>:</td>
                         <td><?= $s['nomor_peserta'] ?></td>
                     </tr>
                     <tr>
-                        <td>Kelas</td>
+                        <td>KELAS</td>
                         <td>:</td>
                         <td><?= $s['kelas'] ?></td>
                     </tr>
@@ -222,12 +231,12 @@ $siswas = $db->resultSet();
 
             <table class="nilai">
                 <thead>
-                    <tr>
-                        <th width="40" class="text-center">No</th>
-                        <th>Mata Pelajaran Praktik</th>
-                        <th width="110" class="text-center">Nilai Akhir</th>
-                        <th width="130" class="text-center">Predikat</th>
-                        <th>Keterangan</th>
+                    <tr style="background: #f0f0f0;">
+                        <th width="40" class="text-center">NO</th>
+                        <th>MATA PELAJARAN PRAKTIK</th>
+                        <th width="100" class="text-center">NILAI AKHIR</th>
+                        <th width="120" class="text-center">PREDIKAT</th>
+                        <th>KETERANGAN</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -274,13 +283,13 @@ $siswas = $db->resultSet();
                         ?>
                         <tr>
                             <td class="text-center"><?= $idx + 1 ?></td>
-                            <td style="font-weight: 500;"><?= htmlspecialchars($m['nama_mapel']) ?></td>
-                            <td class="text-center" style="font-weight: bold; font-size: 11pt;"><?= !is_null($score) ? round($score, 2) : '-' ?></td>
+                            <td><?= $m['nama_mapel'] ?></td>
+                            <td class="text-center"><?= !is_null($score) ? round($score, 2) : '-' ?></td>
                             <td class="text-center"><?= $predikat ?></td>
                             <td></td>
                         </tr>
                     <?php endforeach; ?>
-                    <tr style="background: #f9f9f9; font-weight: bold;">
+                    <tr style="background: #f0f0f0; font-weight: bold;">
                         <td colspan="2" class="text-center">RATA-RATA NILAI</td>
                         <td class="text-center"><?= ($count_nilai > 0) ? round($total_nilai / $count_nilai, 2) : '-' ?></td>
                         <td colspan="2"></td>
@@ -288,21 +297,19 @@ $siswas = $db->resultSet();
                 </tbody>
             </table>
 
-            <div class="footer">
-                <div class="sig-container">
-                    <div class="sig-box">
-                        <p>Mengetahui,</p>
-                        <p>Orang Tua/Wali Murid,</p>
-                        <div class="sig-space"></div>
-                        <p>.......................................</p>
-                    </div>
-                    <div class="sig-box">
-                        <p>Cingambul, <?= date('d') ?> <?= $bulan_map[(int)date('m')] ?> <?= date('Y') ?></p>
-                        <p>Plt. Kepala Madrasah,</p>
-                        <div class="sig-space"></div>
-                        <p><strong><u>H. Dede Apip Mustopa, S.Ag.</u></strong></p>
-                        <p>NIP. 196801171992031002</p>
-                    </div>
+            <div class="sig-container">
+                <div class="sig-box">
+                    <p>Mengetahui,</p>
+                    <p>Orang Tua/Wali Murid</p>
+                    <br><br><br>
+                    <p>.......................................</p>
+                </div>
+                <div class="sig-box">
+                    <p>Cingambul, <?= date('d F Y') ?></p>
+                    <p>Plt. Kepala Madrasah,</p>
+                    <br><br><br>
+                    <p><strong>H. Dede Apip Mustopa</strong></p>
+                    <p>NIP. ........................................</p>
                 </div>
             </div>
         </div>

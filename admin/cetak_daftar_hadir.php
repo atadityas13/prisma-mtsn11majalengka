@@ -48,7 +48,7 @@ $bulan_map = ['','Januari','Februari','Maret','April','Mei','Juni',
     <title>Daftar Hadir Ujian Praktik — <?= SCHOOL_NAME ?></title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Times New Roman', Times, serif; font-size: 11pt; background: #eee; color: #000; }
+        body { font-family: 'Times New Roman', Times, serif; font-size: 11pt; background: #f0f0f0; color: #000; }
 
         @page {
             size: A4 portrait;
@@ -60,98 +60,56 @@ $bulan_map = ['','Januari','Februari','Maret','April','Mei','Juni',
             padding: 8mm;
             margin: 0 auto 8mm;
             background: #fff;
-            box-shadow: 0 0 5px rgba(0,0,0,.08);
+            box-shadow: 0 0 8px rgba(0,0,0,.08);
             page-break-after: always;
         }
         .page:last-of-type { page-break-after: auto; }
 
-        .header-table {
-            width: 100%;
-            border-bottom: 3px double #000;
-            padding-bottom: 10px;
-            margin-bottom: 18px;
-        }
-
-        .header-table td {
-            vertical-align: middle;
-            text-align: center;
-            border: none !important;
-        }
-
-        .logo-left, .logo-right { width: 70px; }
-        .logo-left { text-align: left !important; }
-        .logo-right { text-align: right !important; }
+        /* ── Kop ── */
+        .kop { display: flex; align-items: center; border-bottom: 3px double #000; padding-bottom: 10px; margin-bottom: 14px; }
+        .kop img { height: 72px; }
+        .kop-text { flex: 1; text-align: center; line-height: 1.45; }
+        .kop-text h3 { font-size: 12pt; text-transform: uppercase; margin-bottom: 2px; }
+        .kop-text h2 { font-size: 14pt; font-weight: 900; text-transform: uppercase; margin-bottom: 2px; }
+        .kop-text p  { font-size: 9pt; }
 
         /* ── Judul ── */
-        .judul { text-align: center; margin-bottom: 20px; }
-        .judul h4 { font-size: 13pt; text-transform: uppercase; text-decoration: underline; font-weight: 700; margin: 0; }
+        .judul { text-align: center; margin-bottom: 14px; }
+        .judul h4 { font-size: 13pt; text-transform: uppercase; text-decoration: underline; font-weight: 700; letter-spacing: .5px; margin: 0; }
 
         /* ── Info Grid ── */
-        .info-rows {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6px 24px;
-            margin-bottom: 15px;
-        }
-
-        .info-column {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            min-width: 0;
-        }
-
-        .info-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-            min-width: 0;
-        }
-
-        .info-label {
-            flex: 0 0 120px;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        .info-separator {
-            width: 10px;
-            flex: 0 0 auto;
-        }
-
-        .info-value {
-            flex: 1 1 auto;
-            min-width: 0;
-            word-break: break-word;
-        }
+        .info-table { width: 100%; margin-bottom: 14px; border-collapse: collapse; font-size: 10.5pt; }
+        .info-table td { padding: 2px 0; vertical-align: top; }
+        .info-table td:nth-child(2) { width: 12px; text-align: center; }
+        .info-label { width: 150px; }
 
         /* ── Tabel Hadir ── */
-        table.hadir { width: 100%; border-collapse: collapse; font-size: 10pt; table-layout: fixed; margin-bottom: 20px; }
-        table.hadir th, table.hadir td { border: 1px solid #000; padding: 6px 7px; vertical-align: middle; text-align: center; }
-        table.hadir thead th { background: #f9f9f9; font-weight: 700; }
-        table.hadir td.left { text-align: left; padding-left: 10px; }
-        
-        table.hadir th:nth-child(1), table.hadir td:nth-child(1) { width: 35px; }
-        table.hadir th:nth-child(2), table.hadir td:nth-child(2) { width: 130px; }
-        table.hadir th:nth-child(3), table.hadir td:nth-child(3) { width: auto; }
-        table.hadir th:nth-child(4), table.hadir td:nth-child(4) { width: 60px; }
-        table.hadir th:nth-child(5), table.hadir td:nth-child(5) { width: 100px; }
+        table.hadir { width: 100%; border-collapse: collapse; font-size: 10pt; table-layout: fixed; }
+        table.hadir th, table.hadir td { border: 1px solid #000; padding: 6px 7px; vertical-align: middle; }
+        table.hadir thead th { background: #f0f0f0; text-align: center; font-weight: 700; }
+        table.hadir tbody td.center { text-align: center; }
+        table.hadir tbody tr { min-height: 30px; }
+        table.hadir th:nth-child(1), table.hadir td:nth-child(1) { width: 32px; }
+        table.hadir th:nth-child(2), table.hadir td:nth-child(2) { width: 70px; white-space: nowrap; }
+        table.hadir th:nth-child(3), table.hadir td:nth-child(3) { width: auto; word-break: break-word; overflow-wrap: anywhere; }
+        table.hadir th:nth-child(4), table.hadir td:nth-child(4) { width: 55px; }
+        table.hadir th:nth-child(5), table.hadir td:nth-child(5) { width: 90px; }
 
         /* ── TTD ── */
-        .footer { margin-top: 24px; }
-        .ttd-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; }
-        .ttd-box { width: 220px; text-align: left; }
-        .ttd-space { height: 60px; }
+        .ttd { margin-top: 24px; display: flex; justify-content: space-between; }
+        .ttd-box { width: 240px; text-align: center; }
+        .ttd-box .ttd-space { height: 65px; }
         .ttd-box p { margin: 2px 0; font-size: 10.5pt; }
 
         /* ── Print ── */
         .no-print {
             position: fixed; top: 0; left: 0; right: 0;
-            background: #333; color: #fff; padding: 12px;
-            text-align: center; z-index: 1000;
+            background: #333; color: #fff; padding: 10px;
+            text-align: center; z-index: 999;
+            font-family: Arial, sans-serif; font-size: 13px;
         }
         .no-print button {
-            padding: 8px 16px; margin: 0 5px; border: none;
+            padding: 7px 18px; margin: 0 5px; border: none;
             border-radius: 4px; font-weight: bold; cursor: pointer;
         }
         .btn-print { background: #28a745; color: #fff; }
@@ -159,7 +117,7 @@ $bulan_map = ['','Januari','Februari','Maret','April','Mei','Juni',
 
         @media print {
             .no-print { display: none !important; }
-            body { background: white; padding: 0; }
+            body { background: white; }
             .page { margin: 0; box-shadow: none; width: auto; }
         }
     </style>
@@ -198,24 +156,17 @@ $bulan_map = ['','Januari','Februari','Maret','April','Mei','Juni',
 ?>
 <div class="page">
     <!-- Kop Surat -->
-    <table class="header-table">
-        <tr>
-            <td class="logo-left">
-                <img src="<?= base_url('assets/img/logo-kemenag.png') ?>" height="70" alt="Logo Kemenag">
-            </td>
-            <td>
-                <h4 style="margin:0; font-weight: bold;">KEMENTERIAN AGAMA REPUBLIK INDONESIA</h4>
-                <h4 style="margin:0; font-weight: bold;">KANTOR KEMENTERIAN AGAMA KABUPATEN MAJALENGKA</h4>
-                <h3 style="margin:5px 0; font-weight: bold; text-transform: uppercase;"><?= SCHOOL_NAME ?></h3>
-                <p style="font-size: 10pt; margin:0;">Kp. Sindanghurip Desa Maniis Kec. Cingambul Kab. Majalengka
-                    <br> Telp. (0233) 3600020 email: mtsn11majalengka@gmail.com
-                </p>
-            </td>
-            <td class="logo-right">
-                <img src="<?= base_url('assets/img/logo-mtsn11.png') ?>" height="70" alt="Logo MTsN 11">
-            </td>
-        </tr>
-    </table>
+    <div class="kop">
+        <img src="<?= base_url('assets/img/logo-kemenag.png') ?>" alt="Logo Kemenag">
+        <div class="kop-text">
+            <h3>Kementerian Agama Republik Indonesia</h3>
+            <h3>Kantor Kementerian Agama Kabupaten Majalengka</h3>
+            <h2><?= SCHOOL_NAME ?></h2>
+            <p>Kp. Sindanghurip Desa Maniis Kec. Cingambul Kab. Majalengka<br>
+               Telp. (0233) 3600020 &nbsp;|&nbsp; mtsn11majalengka@gmail.com</p>
+        </div>
+        <img src="<?= base_url('assets/img/logo-mtsn11.png') ?>" alt="Logo MTsN 11">
+    </div>
 
     <!-- Judul -->
     <div class="judul">
@@ -223,52 +174,49 @@ $bulan_map = ['','Januari','Februari','Maret','April','Mei','Juni',
     </div>
 
     <!-- Info -->
-    <div class="info-rows">
-        <div class="info-column">
-            <div class="info-item">
-                <span class="info-label">Mata Pelajaran</span>
-                <span class="info-separator">:</span>
-                <span class="info-value"><strong><?= htmlspecialchars($j['nama_mapel']) ?></strong></span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">Guru Penguji</span>
-                <span class="info-separator">:</span>
-                <span class="info-value"><?= htmlspecialchars($j['nama_guru']) ?></span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">Tahun Pelajaran</span>
-                <span class="info-separator">:</span>
-                <span class="info-value"><?= DEFAULT_YEAR ?></span>
-            </div>
-        </div>
-        <div class="info-column">
-            <div class="info-item">
-                <span class="info-label">Hari/Tanggal</span>
-                <span class="info-separator">:</span>
-                <span class="info-value"><?= $tgl_fmt ?></span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">Waktu</span>
-                <span class="info-separator">:</span>
-                <span class="info-value"><?= $jam_fmt ?></span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">Ruangan</span>
-                <span class="info-separator">:</span>
-                <span class="info-value"><?= htmlspecialchars($j['ruangan']) ?></span>
-            </div>
-        </div>
-    </div>
+    <table class="info-table">
+        <tr>
+            <td class="info-label">Mata Pelajaran</td>
+            <td>:</td>
+            <td><strong><?= htmlspecialchars($j['nama_mapel']) ?></strong></td>
+            <td class="info-label" style="padding-left:24px;">Tanggal</td>
+            <td>:</td>
+            <td><?= $tgl_fmt ?></td>
+        </tr>
+        <tr>
+            <td class="info-label">Guru Penguji</td>
+            <td>:</td>
+            <td><?= htmlspecialchars($j['nama_guru']) ?></td>
+            <td class="info-label" style="padding-left:24px;">Waktu</td>
+            <td>:</td>
+            <td><?= $jam_fmt ?></td>
+        </tr>
+        <tr>
+            <td class="info-label">Tahun Pelajaran</td>
+            <td>:</td>
+            <td><?= DEFAULT_YEAR ?></td>
+            <td class="info-label" style="padding-left:24px;">Ruangan</td>
+            <td>:</td>
+            <td><?= htmlspecialchars($j['ruangan']) ?></td>
+        </tr>
+        <?php if ($j['keterangan']): ?>
+        <tr>
+            <td class="info-label">Keterangan</td>
+            <td>:</td>
+            <td colspan="4" style="font-style:italic;"><?= htmlspecialchars($j['keterangan']) ?></td>
+        </tr>
+        <?php endif; ?>
+    </table>
 
     <!-- Tabel Daftar Hadir -->
     <table class="hadir">
         <thead>
             <tr>
-                <th>No</th>
-                <th>No. Peserta</th>
+                <th style="width:32px;">No</th>
+                <th style="width:140px;">No. Peserta</th>
                 <th>Nama Siswa</th>
-                <th>Kelas</th>
-                <th>Tanda Tangan</th>
+                <th style="width:55px;">Kelas</th>
+                <th style="width:90px;">Tanda Tangan</th>
             </tr>
         </thead>
         <tbody>
@@ -281,39 +229,36 @@ $bulan_map = ['','Januari','Februari','Maret','April','Mei','Juni',
             <?php else: ?>
                 <?php foreach ($siswas as $i => $s): ?>
                 <tr>
-                    <td><?= $i + 1 ?></td>
-                    <td><?= htmlspecialchars($s['nomor_peserta'] ?? '-') ?></td>
-                    <td class="left"><?= htmlspecialchars($s['nama_lengkap']) ?></td>
-                    <td><?= htmlspecialchars($s['kelas']) ?></td>
+                    <td class="center"><?= $i + 1 ?></td>
+                    <td class="center"><?= htmlspecialchars($s['nomor_peserta'] ?? '-') ?></td>
+                    <td><?= htmlspecialchars($s['nama_lengkap']) ?></td>
+                    <td class="center"><?= htmlspecialchars($s['kelas']) ?></td>
                     <td></td><!-- kolom tanda tangan -->
                 </tr>
                 <?php endforeach; ?>
                 <!-- Baris kosong extra jika siswa sedikit -->
-                <?php if (count($siswas) < 10): 
-                    for ($x = count($siswas); $x < 10; $x++): ?>
-                    <tr><td><?= $x + 1 ?></td><td></td><td></td><td></td><td></td></tr>
-                <?php endfor; endif; ?>
+                <?php for ($x = count($siswas); $x < 5; $x++): ?>
+                <tr><td class="center"><?= $x + 1 ?></td><td></td><td></td><td></td><td></td></tr>
+                <?php endfor; ?>
             <?php endif; ?>
         </tbody>
     </table>
 
     <!-- Tanda Tangan -->
-    <div class="footer">
-        <div class="ttd-row">
-            <div class="ttd-box">
-                <p>Mengetahui,</p>
-                <p>Plt. Kepala Madrasah,</p>
-                <div class="ttd-space"></div>
-                <p><strong><u>H. Dede Apip Mustopa, S.Ag.</u></strong></p>
-                <p>NIP. 196801171992031002</p>
-            </div>
-            <div class="ttd-box">
-                <p>Cingambul, <?= $tgl_obj->format('d') . ' ' . $bulan_map[(int)$tgl_obj->format('m')] . ' ' . $tgl_obj->format('Y') ?></p>
-                <p>Guru Penguji,</p>
-                <div class="ttd-space"></div>
-                <p><strong><u><?= htmlspecialchars($j['nama_guru']) ?></u></strong></p>
-                <p>NIP. <?= htmlspecialchars($j['nip']) ?></p>
-            </div>
+    <div class="ttd">
+        <div class="ttd-box" style="text-align:left;">
+            <p>Mengetahui,</p>
+            <p>Plt. Kepala Madrasah</p>
+            <div class="ttd-space"></div>
+            <p><strong><u>H. Dede Apip Mustopa, S.Ag.</u></strong></p>
+            <p>NIP. 196801171992031002</p>
+        </div>
+        <div class="ttd-box" style="text-align:left;">
+            <p>Cingambul, <?= $tgl_obj->format('d') . ' ' . $bulan_map[(int)$tgl_obj->format('m')] . ' ' . $tgl_obj->format('Y') ?></p>
+            <p>Guru Penguji,</p>
+            <div class="ttd-space"></div>
+            <p><strong><u><?= htmlspecialchars($j['nama_guru']) ?></u></strong></p>
+            <p>NIP. <?= htmlspecialchars($j['nip']) ?></p>
         </div>
     </div>
 </div>

@@ -60,8 +60,7 @@ $siswas = $db->resultSet();
 <head>
     <meta charset="UTF-8">
     <title>Borang Penilaian - <?= htmlspecialchars($ploting['nama_mapel']) ?> - <?= htmlspecialchars($ploting['nama_guru']) ?></title>
-    <style>
-        body {
+    <style>body {
             font-family: 'Times New Roman', serif;
             font-size: 11pt;
             padding: 0;
@@ -72,13 +71,13 @@ $siswas = $db->resultSet();
 
         @page {
             size: A4 portrait;
-            margin: 10mm;
+            margin: 8mm;
         }
 
         .page {
-            width: calc(210mm - 20mm);
-            padding: 10mm;
-            margin: 0 auto 10mm;
+            width: calc(210mm - 16mm);
+            padding: 8mm;
+            margin: 0 auto 8mm;
             background: white;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.08);
         }
@@ -87,7 +86,7 @@ $siswas = $db->resultSet();
             width: 100%;
             border-bottom: 3px double #000;
             padding-bottom: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .header-table td {
@@ -96,18 +95,29 @@ $siswas = $db->resultSet();
             border: none !important;
         }
 
-        .logo-left, .logo-right { width: 75px; }
-        .logo-left { text-align: left !important; }
-        .logo-right { text-align: right !important; }
+        .header-table h2,
+        .header-table h3,
+        .header-table p {
+            margin: 2px 0;
+        }
+
+        .logo-left {
+            width: 70px;
+            text-align: left !important;
+        }
+
+        .logo-right {
+            width: 70px;
+            text-align: right !important;
+        }
 
         .title {
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .title h4 {
             margin: 0;
-            font-size: 14pt;
             text-transform: uppercase;
             text-decoration: underline;
         }
@@ -115,14 +125,14 @@ $siswas = $db->resultSet();
         .info-rows {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px 30px;
-            margin-bottom: 20px;
+            gap: 6px 24px;
+            margin-bottom: 15px;
         }
 
         .info-column {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
             min-width: 0;
         }
 
@@ -134,7 +144,7 @@ $siswas = $db->resultSet();
         }
 
         .info-label {
-            flex: 0 0 115px;
+            flex: 0 0 110px;
             font-weight: 600;
             white-space: nowrap;
         }
@@ -153,43 +163,103 @@ $siswas = $db->resultSet();
         table.data-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             table-layout: fixed;
         }
 
         table.data-table th,
         table.data-table td {
             border: 1px solid #000;
-            padding: 6px 5px;
+            padding: 4px 5px;
             text-align: center;
             word-break: break-word;
-            line-height: 1.3;
+            line-height: 1.2;
         }
 
-        table.data-table th { background-color: #f9f9f9; font-weight: 700; }
+        table.data-table td {
+            min-height: 18px;
+        }
 
         table.data-table th:first-child,
-        table.data-table td:first-child { width: 35px; }
+        table.data-table td:first-child {
+            width: 30px;
+        }
 
         table.data-table th:nth-child(2),
         table.data-table td:nth-child(2) {
-            width: 32%;
+            width: 35%;
             text-align: left;
-            padding-left: 10px;
+            padding-left: 8px;
         }
 
-        .text-left { text-align: left !important; }
+        table.data-table th:nth-child(3),
+        table.data-table td:nth-child(3) {
+            width: 15%;
+        }
 
-        .footer { margin-top: 30px; }
-        .ttd-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; }
-        .ttd-box { width: 220px; text-align: left; }
-        .ttd-space { height: 60px; }
-        .ttd-box p { margin: 2px 0; font-size: 11pt; }
+        table.data-table th:nth-last-child(2),
+        table.data-table td:nth-last-child(2) {
+            width: 60px;
+        }
+
+        table.data-table th:last-child,
+        table.data-table td:last-child {
+            width: 120px;
+        }
+
+        /* Space for handwriting */
+        .text-left {
+            text-align: left !important;
+        }
+
+        .footer {
+            margin-top: 20px;
+        }
+
+        .footer-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .keterangan-aspek {
+            flex: 1 1 60%;
+            min-width: 0;
+            font-size: 10pt;
+        }
+
+        .keterangan-aspek ul {
+            margin: 5px 0 0;
+            padding-left: 20px;
+        }
+
+        .sig-box {
+            flex: 0 0 35%;
+            min-width: 180px;
+            text-align: left;
+            padding-left: 0;
+        }
+
+        .sig-box p {
+            margin: 2px 0;
+        }
 
         @media print {
-            .no-print { display: none; }
-            body { background: white; padding: 0; }
-            .page { margin: 0; box-shadow: none; width: auto; }
+            .no-print {
+                display: none;
+            }
+
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .page {
+                margin: 0;
+                box-shadow: none;
+                width: auto;
+            }
         }
     </style>
 </head>
@@ -315,7 +385,7 @@ $siswas = $db->resultSet();
         </table>
 
         <div class="footer">
-            <div class="ttd-row">
+            <div class="footer-row">
                 <?php if (count($aspeks) > 0): ?>
                 <div class="keterangan-aspek">
                     <strong>Keterangan Aspek Penilaian:</strong>
@@ -327,11 +397,11 @@ $siswas = $db->resultSet();
                 </div>
                 <?php endif; ?>
 
-                <div class="ttd-box">
+                <div class="sig-box">
                     <p>Cingambul, <?= $jadwal_tanggal_formatted ? htmlspecialchars($jadwal_tanggal_formatted) : date('d/m/Y') ?></p>
-                    <p>Guru Penguji,</p>
-                    <div class="ttd-space"></div>
-                    <p><strong><u><?= htmlspecialchars($ploting['nama_guru']) ?></u></strong></p>
+                    <p>Penguji,</p>
+                    <div style="height: 70px;"></div>
+                    <p><strong><?= htmlspecialchars($ploting['nama_guru']) ?></strong></p>
                     <p>NIP. <?= htmlspecialchars($ploting['nip']) ?></p>
                 </div>
             </div>

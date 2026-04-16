@@ -35,81 +35,73 @@ $hari_map = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
     <title>Jadwal Ujian Praktik — <?= SCHOOL_NAME ?></title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Times New Roman', Times, serif; font-size: 11pt; background: #eee; color: #000; }
+        body { font-family: 'Times New Roman', Times, serif; font-size: 11pt; background: #f0f0f0; color: #000; }
 
         @page {
             size: A4 landscape;
             margin: 8mm;
         }
-
         .page {
             width: calc(297mm - 16mm);
             padding: 8mm;
             margin: 0 auto 8mm;
-            background: white;
-            box-shadow: 0 0 5px rgba(0,0,0,0.08);
+            background: #fff;
+            box-shadow: 0 0 8px rgba(0,0,0,0.08);
+        }
+        @media print {
+            .page { width: calc(297mm - 16mm); }
         }
 
-        .header-table {
-            width: 100%;
-            border-bottom: 3px double #000;
-            padding-bottom: 10px;
-            margin-bottom: 18px;
-        }
-
-        .header-table td {
-            vertical-align: middle;
-            text-align: center;
-            border: none !important;
-        }
-
-        .logo-left, .logo-right { width: 70px; }
-        .logo-left { text-align: left !important; }
-        .logo-right { text-align: right !important; }
+        /* ── Kop Surat ── */
+        .kop { display: flex; align-items: center; border-bottom: 3px double #000; padding-bottom: 10px; margin-bottom: 18px; }
+        .kop img { height: 75px; }
+        .kop-text { flex: 1; text-align: center; line-height: 1.4; }
+        .kop-text h3 { font-size: 13pt; text-transform: uppercase; margin-bottom: 2px; }
+        .kop-text h4 { font-size: 10pt; text-transform: uppercase; margin-bottom: 2px; }
+        .kop-text h2 { font-size: 15pt; font-weight: 900; text-transform: uppercase; margin-bottom: 2px; }
+        .kop-text p  { font-size: 9pt; }
 
         /* ── Judul ── */
-        .judul { text-align: center; margin-bottom: 20px; }
-        .judul h4 { font-size: 14pt; text-transform: uppercase; text-decoration: underline; font-weight: 700; margin: 0; }
-        .judul p  { font-size: 11pt; margin-top: 5px; }
+        .judul { text-align: center; margin-bottom: 16px; }
+        .judul h4 { font-size: 13pt; text-transform: uppercase; text-decoration: underline; font-weight: 700; letter-spacing: 1px; margin: 0; }
+        .judul p  { font-size: 10pt; color: #333; margin-top: 3px; }
 
         /* ── Tabel ── */
-        table.data-table { width: 100%; border-collapse: collapse; font-size: 10.5pt; table-layout: fixed; margin-bottom: 25px; }
-        table.data-table th, table.data-table td { border: 1px solid #000; padding: 8px 10px; vertical-align: middle; word-break: break-word; }
-        table.data-table thead th { background: #f9f9f9; text-align: center; font-weight: 700; text-transform: uppercase; }
-        
+        table { width: 100%; border-collapse: collapse; font-size: 10pt; table-layout: fixed; }
+        table th, table td { border: 1px solid #000; padding: 5px 7px; vertical-align: middle; word-break: break-word; }
+        table thead th { background: #f0f0f0; text-align: center; font-weight: 700; }
+        table tbody td { min-height: 24px; }
         .center { text-align: center; }
         .nowrap { white-space: nowrap; }
 
-        /* Columns */
-        table.data-table th:nth-child(1) { width: 40px; }
-        table.data-table th:nth-child(2) { width: 22%; }
-        table.data-table th:nth-child(3) { width: 22%; }
-        table.data-table th:nth-child(4) { width: 18%; }
-        table.data-table th:nth-child(5) { width: 120px; }
-        table.data-table th:nth-child(6) { width: auto; }
+        table thead th:first-child { width: 30px; }
+        table thead th:nth-child(4) { width: 140px; }
+        table thead th:nth-child(5) { width: 90px; }
+        table thead th:nth-child(6) { width: 140px; }
 
         /* ── Tanda Tangan ── */
-        .footer { margin-top: 30px; display: flex; justify-content: flex-end; }
+        .ttd { margin-top: 30px; display: flex; justify-content: flex-end; }
         .ttd-box { width: 260px; text-align: left; }
-        .ttd-space { height: 65px; }
-        .ttd-box p { margin: 2px 0; font-size: 11pt; }
+        .ttd-box .ttd-space { height: 65px; }
+        .ttd-box p { margin: 2px 0; font-size: 10.5pt; }
 
         /* ── Print / No-print ── */
         .no-print {
             position: fixed; top: 0; left: 0; right: 0;
-            background: #333; color: #fff; padding: 12px;
-            text-align: center; z-index: 1000;
+            background: #333; color: #fff; padding: 10px;
+            text-align: center; z-index: 999;
+            font-family: Arial, sans-serif;
         }
         .no-print button {
-            padding: 8px 16px; margin: 0 5px; border: none; border-radius: 4px;
-            font-weight: bold; cursor: pointer;
+            padding: 7px 18px; margin: 0 5px; border: none; border-radius: 4px;
+            font-weight: bold; cursor: pointer; font-size: 13px;
         }
-        .btn-print { background: #28a745; color: #fff; }
-        .btn-back  { background: #6c757d; color: #fff; }
+        .no-print .btn-print { background: #28a745; color: #fff; }
+        .no-print .btn-back  { background: #6c757d; color: #fff; }
 
         @media print {
             .no-print { display: none !important; }
-            body { background: white; padding: 0; }
+            body { background: white; }
             .page { margin: 0; box-shadow: none; width: auto; }
         }
     </style>
@@ -123,24 +115,17 @@ $hari_map = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
 
 <div class="page">
     <!-- Kop Surat -->
-    <table class="header-table">
-        <tr>
-            <td class="logo-left">
-                <img src="<?= base_url('assets/img/logo-kemenag.png') ?>" height="70" alt="Logo Kemenag">
-            </td>
-            <td>
-                <h4 style="margin:0; font-weight: bold;">KEMENTERIAN AGAMA REPUBLIK INDONESIA</h4>
-                <h4 style="margin:0; font-weight: bold;">KANTOR KEMENTERIAN AGAMA KABUPATEN MAJALENGKA</h4>
-                <h3 style="margin:5px 0; font-weight: bold; text-transform: uppercase;"><?= SCHOOL_NAME ?></h3>
-                <p style="font-size: 10pt; margin:0;">Kp. Sindanghurip Desa Maniis Kec. Cingambul Kab. Majalengka
-                    <br> Telp. (0233) 3600020 email: mtsn11majalengka@gmail.com
-                </p>
-            </td>
-            <td class="logo-right">
-                <img src="<?= base_url('assets/img/logo-mtsn11.png') ?>" height="70" alt="Logo MTsN 11">
-            </td>
-        </tr>
-    </table>
+    <div class="kop">
+        <img src="<?= base_url('assets/img/logo-kemenag.png') ?>" alt="Logo Kemenag">
+        <div class="kop-text">
+            <h3>Kementerian Agama Republik Indonesia</h3>
+            <h4>Kantor Kementerian Agama Kabupaten Majalengka</h4>
+            <h2><?= SCHOOL_NAME ?></h2>
+            <p>Kp. Sindanghurip Desa Maniis Kec. Cingambul Kab. Majalengka<br>
+               Telp. (0233) 3600020 &nbsp;|&nbsp; email: mtsn11majalengka@gmail.com</p>
+        </div>
+        <img src="<?= base_url('assets/img/logo-mtsn11.png') ?>" alt="Logo MTsN 11">
+    </div>
 
     <!-- Judul -->
     <div class="judul">
@@ -149,15 +134,15 @@ $hari_map = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
     </div>
 
     <!-- Tabel Jadwal -->
-    <table class="data-table">
+    <table>
         <thead>
             <tr>
-                <th>No</th>
-                <th>Mata Pelajaran</th>
-                <th>Guru Penguji</th>
-                <th>Hari / Tanggal</th>
-                <th>Waktu</th>
-                <th>Ruangan</th>
+                <th style="width:40px;">No</th>
+                <th style="width:180px;">Mata Pelajaran</th>
+                <th style="width:180px;">Guru Penguji</th>
+                <th style="width:140px;">Hari / Tanggal</th>
+                <th style="width:90px;">Jam</th>
+                <th style="width:180px;">Ruangan</th>
             </tr>
         </thead>
         <tbody>
@@ -175,10 +160,10 @@ $hari_map = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
                 ?>
                 <tr>
                     <td class="center"><?= $i + 1 ?></td>
-                    <td style="font-weight: 500; font-size: 11pt;"><?= htmlspecialchars($j['nama_mapel']) ?></td>
+                    <td><?= htmlspecialchars($j['nama_mapel']) ?></td>
                     <td><?= htmlspecialchars($j['nama_guru']) ?></td>
                     <td class="nowrap"><?= $hari ?>, <?= $tgl->format('d/m/Y') ?></td>
-                    <td class="center nowrap"><?= substr($j['jam_mulai'],0,5) ?> – <?= substr($j['jam_selesai'],0,5) ?> WIB</td>
+                    <td class="center nowrap"><?= substr($j['jam_mulai'],0,5) ?> – <?= substr($j['jam_selesai'],0,5) ?></td>
                     <td><?= htmlspecialchars($j['ruangan']) ?></td>
                 </tr>
                 <?php endforeach; ?>
@@ -187,13 +172,13 @@ $hari_map = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
     </table>
 
     <!-- Tanda Tangan -->
-    <div class="footer">
+    <div class="ttd">
         <div class="ttd-box">
             <p>Cingambul, <?= date('d') ?> <?= ['', 'Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'][(int)date('m')] ?> <?= date('Y') ?></p>
             <p>Plt. Kepala Madrasah,</p>
             <div class="ttd-space"></div>
             <p><strong><u>H. Dede Apip Mustopa, S.Ag.</u></strong></p>
-            <p>NIP. 196801171992031002</p>
+            <p>NIP. 196801171992031002<p>
         </div>
     </div>
 </div>
