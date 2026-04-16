@@ -314,8 +314,15 @@ $bulan_map = [
                 ORDER BY s.nomor_peserta ASC");
         $siswas = $db->resultSet();
 
+        // Bagi siswa ke dalam kelompok (Halaman) agar pas 3 halaman untuk 67 orang (sekitar 22-23 per hal)
+        $porsi_halaman = 23;
+        $chunks = array_chunk($siswas, $porsi_halaman);
+        $total_chunks = count($chunks);
+
         // Titimangsa gunakan tanggal hari ini atau tanggal awal ujian
         $tgl_titimangsa = date('d') . ' ' . $bulan_map[(int) date('m')] . ' ' . date('Y');
+        
+        foreach ($chunks as $chunkIndex => $chunkSiswas):
         ?>
         <div class="page">
             <div class="kop">
@@ -337,6 +344,9 @@ $bulan_map = [
 
             <div class="info-bar">
                 RUANG : <?= htmlspecialchars($j['ruangan'] ?: '-') ?>
+                <?php if ($total_chunks > 1): ?>
+                    <span style="float:right; font-weight:normal; font-size:9pt;">Halaman <?= $chunkIndex + 1 ?> dari <?= $total_chunks ?></span>
+                <?php endif; ?>
             </div>
 
             <table class="peserta">
@@ -350,14 +360,16 @@ $bulan_map = [
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if (empty($siswas)): ?>
+                    <?php if (empty($chunkSiswas)): ?>
                         <tr>
                             <td colspan="5" class="center" style="padding:15px; color:#888;">Belum ada peserta.</td>
                         </tr>
                     <?php else: ?>
-                        <?php foreach ($siswas as $idx => $s): ?>
+                        <?php foreach ($chunkSiswas as $idx => $s): 
+                            $real_no = ($chunkIndex * $porsi_halaman) + $idx + 1;
+                        ?>
                             <tr>
-                                <td class="center"><?= $idx + 1 ?></td>
+                                <td class="center"><?= $real_no ?></td>
                                 <td class="center"><?= htmlspecialchars($s['nomor_peserta']) ?></td>
                                 <td class="center"><?= htmlspecialchars($s['nisn']) ?></td>
                                 <td><?= htmlspecialchars($s['nama_lengkap']) ?></td>
@@ -368,6 +380,7 @@ $bulan_map = [
                 </tbody>
             </table>
 
+            <?php if ($chunkIndex === $total_chunks - 1): ?>
             <div class="ttd-container">
                 <div class="ttd-box">
                     <p>Cingambul, <?= $tgl_titimangsa ?></p>
@@ -380,8 +393,10 @@ $bulan_map = [
                     <p>NIP. 196801171992031002</p>
                 </div>
             </div>
+            <?php endif; ?>
         </div>
-    <?php endforeach; ?>
+        <?php endforeach; ?>
+<?php endforeach; ?>
 
 </body>
 
