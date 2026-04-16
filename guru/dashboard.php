@@ -18,13 +18,13 @@ $db->query("SELECT COUNT(ps.id) as count
             WHERE pp.guru_id = :guru_id AND pp.mapel_id = :mapel_id");
 $db->bind(':guru_id', $guru_id);
 $db->bind(':mapel_id', $mapel_id);
-$total_siswa_assigned = (int)($db->single()['count'] ?? 0);
+$total_siswa_assigned = (int) ($db->single()['count'] ?? 0);
 
 // Count Graded
 $db->query("SELECT COUNT(DISTINCT siswa_id) as count FROM nilai_praktik WHERE guru_id = :guru_id AND mapel_id = :mapel_id");
 $db->bind(':guru_id', $guru_id);
 $db->bind(':mapel_id', $mapel_id);
-$total_graded = (int)($db->single()['count'] ?? 0);
+$total_graded = (int) ($db->single()['count'] ?? 0);
 
 $percent = $total_siswa_assigned > 0 ? round(($total_graded / $total_siswa_assigned) * 100, 1) : 0;
 
@@ -41,7 +41,7 @@ $jadwal = $db->resultSet();
 // Check if aspects are already set
 $db->query("SELECT COUNT(*) as count FROM aspek_penilaian WHERE mapel_id = :mapel_id");
 $db->bind(':mapel_id', $mapel_id);
-$total_aspek = (int)($db->single()['count'] ?? 0);
+$total_aspek = (int) ($db->single()['count'] ?? 0);
 
 // Fetch Colleagues (Teachers with the same mapel)
 $db->query("SELECT nama_lengkap FROM guru WHERE mapel_id = :mapel_id AND id != :guru_id");
@@ -56,15 +56,19 @@ $colleagues = $db->resultSet();
             <div class="alert alert-warning d-flex align-items-center" role="alert">
                 <span class="badge badge-center rounded-pill bg-warning me-3"><i class="bx bx-error bx-sm"></i></span>
                 <div class="d-flex flex-column ps-1">
-                    <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">Perhatian: Kriteria Penilaian Belum Ada!</h6>
-                    <span>Anda belum menambahkan <strong>Aspek Penilaian</strong> untuk mata pelajaran <?= $mapel_name ?>. Silakan tambahkan kriteria terlebih dahulu sebelum menginput nilai.</span>
-                    
+                    <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">Perhatian: Kriteria Penilaian Belum
+                        Ada!</h6>
+                    <span>Anda belum menambahkan <strong>Aspek Penilaian</strong> untuk mata pelajaran <?= $mapel_name ?>.
+                        Silakan tambahkan kriteria terlebih dahulu sebelum menginput nilai.</span>
+
                     <?php if (!empty($colleagues)): ?>
                         <div class="mt-2 text-sm border-top pt-2 border-dark border-opacity-10">
-                            <strong>Rekan Penguji Anda:</strong> 
-                            <span class="text-muted" style="font-style: italic;"><?= implode(', ', array_column($colleagues, 'nama_lengkap')) ?></span>
+                            <strong>Rekan Penguji Anda:</strong>
+                            <span class="text-muted"
+                                style="font-weight: bold;"><?= implode(', ', array_column($colleagues, 'nama_lengkap')) ?></span>
                             <br>
-                            <small>* Disarankan berkoordinasi dengan rekan di atas agar kriteria penilaian seragam.</small>
+                            <small>* Silahkan berkoordinasi dengan rekan Anda untuk menentukan kriteria penilaian yang
+                                seragam.</small>
                         </div>
                     <?php endif; ?>
 
