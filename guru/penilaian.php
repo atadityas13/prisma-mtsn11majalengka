@@ -159,7 +159,7 @@ foreach ($materis as $m) {
                     <label class="form-label small mb-1">Catatan (Opsional)</label>
                     <textarea name="catatan" class="form-control form-control-sm" rows="1" placeholder="Catatan..."></textarea>
                 </div>
-                <div class="row g-2 mt-2">
+                <div class="row g-2 mt-2" id="qgMultiButtons">
                     <div class="col-6">
                         <button type="button" class="btn btn-outline-secondary btn-sm w-100" id="qgNext">
                             <i class="bx bx-skip-next me-1"></i> Lewati
@@ -172,7 +172,19 @@ foreach ($materis as $m) {
                     </div>
                     <div class="col-12">
                         <button type="button" id="qgSubmitSelesai" class="btn btn-success btn-sm w-100">
-                            <i class="bx bx-check-double me-1"></i> SELESAI
+                            <i class="bx bx-check-double me-1"></i> SIMPAN & SELESAIKAN SISWA
+                        </button>
+                    </div>
+                </div>
+                <div class="row g-2 mt-2" id="qgSingleButtons" style="display: none;">
+                    <div class="col-6">
+                        <button type="button" class="btn btn-outline-secondary btn-sm w-100 qgNextSingle">
+                            <i class="bx bx-skip-next me-1"></i> Lewati
+                        </button>
+                    </div>
+                    <div class="col-6">
+                        <button type="submit" class="btn btn-success btn-sm w-100">
+                             Simpan Nilai <i class="bx bx-check me-1"></i>
                         </button>
                     </div>
                 </div>
@@ -201,7 +213,7 @@ foreach ($materis as $m) {
                 </a>
             </li>
             <li class="nav-item">
-                <a href="javascript:void(0);" class="nav-link" data-filter="Selesai" style="cursor: pointer !important;">
+                <a href="javascript:void(0);" class="nav-link" data-filter="Lengkap" style="cursor: pointer !important;">
                     Lengkap <span class="badge badge-center rounded-pill bg-label-success ms-1"><?= $count_sudah ?></span>
                 </a>
             </li>
@@ -255,11 +267,13 @@ foreach ($materis as $m) {
                         <td><?= $s['kelas'] ?></td>
                         <td>
                             <div class="d-flex align-items-center">
-                                <span class="badge <?= ($count_done_materis == $total_materi) ? 'bg-label-success' : 'bg-label-warning' ?> me-2">
-                                    <?= $count_done_materis ?>/<?= $total_materi ?> Materi
-                                </span>
                                 <?php if ($count_done_materis == $total_materi): ?>
+                                    <span class="d-none">Lengkap</span>
+                                    <span class="badge bg-label-success me-2"><?= $count_done_materis ?>/<?= $total_materi ?> Materi</span>
                                     <span class="badge bg-label-success">Lengkap</span>
+                                <?php else: ?>
+                                    <span class="d-none">Belum</span>
+                                    <span class="badge bg-label-warning me-2"><?= $count_done_materis ?>/<?= $total_materi ?> Materi</span>
                                 <?php endif; ?>
                             </div>
                         </td>
@@ -383,9 +397,9 @@ $(document).ready(function() {
         $('#filterTabs .nav-link').removeClass('active');
         $(this).addClass('active');
         const filterValue = $(this).attr('data-filter');
-        // Filter is now symbolic based on PHP count, but let's keep basic DT search if needed
-        // Since the column structure changed, we'll just check if 'Lengkap' text is in the cell
-        gradingTable.search(filterValue).draw();
+        
+        // Filter specific column (Index 2: Progress)
+        gradingTable.column(2).search(filterValue).draw();
     });
 
     // Mobile Quick Grading Logic Refined
@@ -451,6 +465,15 @@ $(document).ready(function() {
         $('#qgKelas').text(s.kelas);
         $('#qgMateriName').text(m.nama);
         
+        // Show/Hide buttons based on materi count
+        if (materis.length > 1) {
+            $('#qgMultiButtons').show();
+            $('#qgSingleButtons').hide();
+        } else {
+            $('#qgMultiButtons').hide();
+            $('#qgSingleButtons').show();
+        }
+
         let fieldsHtml = '';
         m.aspeks.forEach(a => {
             fieldsHtml += `
@@ -468,7 +491,7 @@ $(document).ready(function() {
 
     renderQuickGrading();
 
-    $('#qgNext').on('click', function() {
+    $(document).on('click', '#qgNext, .qgNextSingle', function() {
         currentStudentIdx++;
         if (currentStudentIdx >= students.length) currentStudentIdx = 0;
         renderQuickGrading();
