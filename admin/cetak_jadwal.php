@@ -15,15 +15,18 @@ $db->query("SELECT pp.id as ploting_id,
                    j.jam_mulai,
                    j.jam_selesai,
                    j.ruangan,
-                   j.keterangan
+                   j.keterangan,
+                   MIN(s.nomor_peserta) as no_awal,
+                   MAX(s.nomor_peserta) as no_akhir
             FROM jadwal_praktik j
             JOIN ploting_penguji pp ON j.ploting_id  = pp.id
             JOIN guru g             ON pp.guru_id     = g.id
             JOIN mapel m            ON pp.mapel_id    = m.id
             LEFT JOIN ploting_siswa ps ON ps.ploting_id = pp.id
+            LEFT JOIN siswa s       ON ps.siswa_id = s.id
             GROUP BY pp.id, g.nama_lengkap, g.nip, m.nama_mapel,
                      j.tanggal, j.jam_mulai, j.jam_selesai, j.ruangan, j.keterangan
-            ORDER BY j.tanggal ASC, j.ruangan ASC, m.nama_mapel ASC");
+            ORDER BY j.tanggal ASC, j.ruangan ASC, j.jam_mulai ASC");
 $jadwals = $db->resultSet();
 
 $hari_map = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
@@ -164,21 +167,13 @@ $hari_map = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
             white-space: nowrap;
         }
 
-        table thead th:first-child {
-            width: 30px;
-        }
-
-        table thead th:nth-child(4) {
-            width: 140px;
-        }
-
-        table thead th:nth-child(5) {
-            width: 90px;
-        }
-
-        table thead th:nth-child(6) {
-            width: 140px;
-        }
+        table thead th:nth-child(1) { width: 40px; }
+        table thead th:nth-child(2) { width: 140px; }
+        table thead th:nth-child(3) { width: 160px; }
+        table thead th:nth-child(4) { width: 110px; }
+        table thead th:nth-child(5) { width: 130px; }
+        table thead th:nth-child(6) { width: 90px; }
+        table thead th:nth-child(7) { width: 130px; }
 
         /* ── Tanda Tangan ── */
         .ttd {
@@ -301,18 +296,19 @@ $hari_map = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
     <table>
         <thead>
             <tr>
-                <th style="width:40px;">No</th>
-                <th style="width:180px;">Mata Pelajaran</th>
-                <th style="width:180px;">Guru Penguji</th>
-                <th style="width:140px;">Hari / Tanggal</th>
-                <th style="width:90px;">Jam</th>
-                <th style="width:180px;">Ruangan</th>
+                <th>No</th>
+                <th>Mata Pelajaran</th>
+                <th>Guru Penguji</th>
+                <th>Peserta</th>
+                <th>Hari / Tanggal</th>
+                <th>Jam</th>
+                <th>Ruangan</th>
             </tr>
         </thead>
         <tbody>
             <?php if (empty($jadwals)): ?>
             <tr>
-                <td colspan="6" class="center" style="padding:20px; color:#888;">
+                <td colspan="7" class="center" style="padding:20px; color:#888;">
                     Belum ada jadwal yang diatur.
                 </td>
             </tr>
@@ -320,15 +316,21 @@ $hari_map = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
                 // Pre-calculate rowspans for groups
                 $spans_mapel = [];
                 $spans_hari = [];
+                $spans_jam = [];
                 foreach ($jadwals as $j) {
                     $key_hari = $j['tanggal'];
                     $key_mapel = $j['tanggal'] . '_' . $j['nama_mapel'];
+                    $key_jam = $j['tanggal'] . '_' . $j['ruangan'] . '_' . $j['jam_mulai'];
+
                     $spans_hari[$key_hari] = ($spans_hari[$key_hari] ?? 0) + 1;
                     $spans_mapel[$key_mapel] = ($spans_mapel[$key_mapel] ?? 0) + 1;
+                    $spans_jam[$key_jam] = ($spans_jam[$key_jam] ?? 0) + 1;
                 }
 
                 $rendered_hari = [];
                 $rendered_mapel = [];
+                $rendered_jam = [];
+                $no_counter = 0;
                 
                 foreach ($jadwals as $i => $j): 
                     $tgl = new DateTime($j['tanggal']);
@@ -337,11 +339,14 @@ $hari_map = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
                     
                     $key_hari = $j['tanggal'];
                     $key_mapel = $j['tanggal'] . '_' . $j['nama_mapel'];
+                    $key_jam = $j['tanggal'] . '_' . $j['ruangan'] . '_' . $j['jam_mulai'];
                 ?>
                 <tr>
-                    <td class="center"><?= $i + 1 ?></td>
-                    
-                    <?php if (!isset($rendered_mapel[$key_mapel])): ?>
+                    <?php if (!isset($rendered_mapel[$key_mapel])): 
+                        $no_counter++; ?>
+                        <td rowspan="<?= $spans_mapel[$key_mapel] ?>" class="center" style="vertical-align: middle;">
+                            <?= $no_counter ?>
+                        </td>
                         <td rowspan="<?= $spans_mapel[$key_mapel] ?>" style="vertical-align: middle;">
                             <strong><?= htmlspecialchars($j['nama_mapel']) ?></strong>
                         </td>
@@ -349,6 +354,13 @@ $hari_map = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
                     <?php endif; ?>
 
                     <td><?= htmlspecialchars($j['nama_guru']) ?></td>
+                    <td class="center">
+                        <?php if ($j['no_awal'] && $j['no_akhir']): ?>
+                            <?= $j['no_awal'] ?> – <?= $j['no_akhir'] ?>
+                        <?php else: ?>
+                            -
+                        <?php endif; ?>
+                    </td>
 
                     <?php if (!isset($rendered_hari[$key_hari])): ?>
                         <td rowspan="<?= $spans_hari[$key_hari] ?>" class="nowrap center" style="vertical-align: middle;">
@@ -357,7 +369,13 @@ $hari_map = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
                         <?php $rendered_hari[$key_hari] = true; ?>
                     <?php endif; ?>
 
-                    <td class="center nowrap"><?= substr($j['jam_mulai'],0,5) ?> – <?= substr($j['jam_selesai'],0,5) ?></td>
+                    <?php if (!isset($rendered_jam[$key_jam])): ?>
+                        <td rowspan="<?= $spans_jam[$key_jam] ?>" class="center nowrap" style="vertical-align: middle;">
+                            <?= substr($j['jam_mulai'],0,5) ?> – <?= substr($j['jam_selesai'],0,5) ?>
+                        </td>
+                        <?php $rendered_jam[$key_jam] = true; ?>
+                    <?php endif; ?>
+
                     <td><?= htmlspecialchars($j['ruangan']) ?></td>
                 </tr>
                 <?php endforeach; ?>
