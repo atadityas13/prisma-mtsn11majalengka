@@ -14,17 +14,32 @@ $db->query("SELECT * FROM mapel WHERE id = :id");
 $db->bind(':id', $mapel_id);
 $mapel = $db->single();
 
-// Fetch All Aspects for this mapel (Global)
-$db->query("SELECT * FROM aspek_penilaian WHERE mapel_id = :mid ORDER BY id ASC");
+// Fetch Materis
+$db->query("SELECT * FROM materi_penilaian WHERE mapel_id = :id ORDER BY id ASC");
+$db->bind(':id', $mapel_id);
+$materis = $db->resultSet();
+
+// Fetch Aspects joined with Materi
+$db->query("SELECT a.*, m.id as m_id, m.nama_materi FROM aspek_penilaian a 
+            JOIN materi_penilaian m ON a.materi_id = m.id
+            WHERE a.mapel_id = :mid 
+            ORDER BY m.id ASC, a.id ASC");
 $db->bind(':mid', $mapel_id);
 $aspeks = $db->resultSet();
+
+// Group aspects by Materi
+$grouped_aspeks = [];
+foreach ($aspeks as $a) {
+    if (!isset($grouped_aspeks[$a['m_id']])) $grouped_aspeks[$a['m_id']] = [];
+    $grouped_aspeks[$a['m_id']][] = $a;
+}
 
 // Fetch Students assigned to this guru via ploting_siswa
 $db->query("SELECT s.* FROM siswa s
             JOIN ploting_siswa ps  ON ps.siswa_id = s.id
             JOIN ploting_penguji pp ON ps.ploting_id = pp.id
             WHERE pp.guru_id = :gid AND pp.mapel_id = :mid
-            ORDER BY s.nomor_peserta ASC");
+            ORDER BY s.nama_lengkap ASC");
 $db->bind(':gid', $guru_id);
 $db->bind(':mid', $mapel_id);
 $siswas = $db->resultSet();
@@ -117,59 +132,84 @@ $siswas = $db->resultSet();
         <table class="data-table">
             <thead>
                 <tr>
-                    <th rowspan="2" width="30">No</th>
-                    <th rowspan="2">Nama Siswa</th>
-                    <th rowspan="2" width="60">Kelas</th>
-                    <th colspan="<?= count($aspeks) > 0 ? count($aspeks) : 1 ?>">Aspek Penilaian</th>
-                    <th rowspan="2" width="80">Rata-rata</th>
+                    <th rowspan="3" width="30">No</th>
+                    <th rowspan="3">Nama Siswa</th>
+                    <th rowspan="3" width="60">Kelas</th>
+                    <th colspan="<?= count($aspeks) ?>">Aspek Penilaian</th>
+                    <th rowspan="3" width="80">Nilai Akhir</th>
+                </tr>
+                <tr>
+                    <?php if (!empty($materis)): ?>
+                        <?php foreach ($materis as $m): 
+                            $m_aspect_count = count($grouped_aspeks[$m['id']] ?? []);
+                            if ($m_aspect_count == 0) continue;
+                        ?>
+                            <th colspan="<?= $m_aspect_count ?>" style="font-size: 8pt;"><?= htmlspecialchars($m['nama_materi']) ?></th>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <th colspan="3">Aspek</th>
+                    <?php endif; ?>
                 </tr>
                 <tr>
                     <?php if (count($aspeks) > 0): ?>
-                        <?php foreach($aspeks as $idx => $a): ?>
-                            <th width="70" style="font-size: 9pt;">A<?= $idx + 1 ?></th>
+                        <?php foreach ($aspeks as $idx => $a): ?>
+                            <th width="40" style="font-size: 8pt;">A<?= $idx + 1 ?></th>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <th>-</th>
+                        <th width="40">A1</th>
                     <?php endif; ?>
                 </tr>
             </thead>
             <tbody>
                 <?php if (count($siswas) > 0): ?>
                     <?php foreach ($siswas as $idx => $s): 
-                        $total_row = 0;
-                        $count_row = 0;
-                        
                         // Fetch scores
-                        $db->query("SELECT aspek_id, nilai_angka FROM nilai_praktik WHERE siswa_id = :sid AND guru_id = :gid AND mapel_id = :mid");
+                        $db->query("SELECT aspek_id, nilai_angka FROM nilai_praktik WHERE siswa_id = :sid AND mapel_id = :mid");
                         $db->bind(':sid', $s['id']);
-                        $db->bind(':gid', $guru_id);
                         $db->bind(':mid', $mapel_id);
                         $scores = $db->resultSet();
                         $score_map = [];
                         foreach ($scores as $scr) { $score_map[$scr['aspek_id']] = $scr['nilai_angka']; }
+
+                        $materi_avgs = [];
                     ?>
                         <tr>
                             <td><?= $idx + 1 ?></td>
                             <td class="text-left" style="padding-left: 10px;"><?= $s['nama_lengkap'] ?></td>
                             <td><?= $s['kelas'] ?></td>
                             <?php if (count($aspeks) > 0): ?>
-                                <?php foreach ($aspeks as $a): 
-                                    $n = $score_map[$a['id']] ?? null;
-                                    if (!is_null($n)) { $total_row += $n; $count_row++; }
-                                ?>
-                                    <td><?= !is_null($n) ? round($n, 2) : '-' ?></td>
-                                <?php endforeach; ?>
+                                <?php foreach ($materis as $m): 
+                                    $m_sum = 0; $m_count = 0; 
+                                    $m_aspeks = $grouped_aspeks[$m['id']] ?? [];
+                                    if (empty($m_aspeks)) continue;
+
+                                    foreach ($m_aspeks as $a): 
+                                        $n = $score_map[$a['id']] ?? null;
+                                        if (!is_null($n)) { $m_sum += $n; $m_count++; }
+                                    ?>
+                                        <td><?= !is_null($n) ? round($n, 2) : '-' ?></td>
+                                    <?php endforeach; 
+
+                                    // Store Materi Average
+                                    if ($m_count > 0) {
+                                        $m_avg = $m_sum / count($m_aspeks); // Divided by aspect count for standard
+                                        $materi_avgs[] = $m_avg;
+                                    }
+                                endforeach; ?>
                             <?php else: ?>
                                 <td>-</td>
                             <?php endif; ?>
-                            <td style="font-weight: bold;">
-                                <?= ($count_row > 0) ? round($total_row / $count_row, 2) : '-' ?>
+                            <td style="font-weight: bold; font-size: 11pt; background-color: #f9f9f9;">
+                                <?php 
+                                    $final_score = (!empty($materi_avgs) && count($materis) > 0) ? array_sum($materi_avgs) / count($materis) : null;
+                                    echo !is_null($final_score) ? round($final_score, 2) : '-';
+                                ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="<?= 4 + (count($aspeks) > 0 ? count($aspeks) : 1) ?>" style="padding: 20px; color: #888;">Belum ada data siswa yang diploting untuk Anda.</td>
+                        <td colspan="<?= 4 + count($aspeks) ?>" style="padding: 20px; color: #888;">Belum ada data siswa.</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
