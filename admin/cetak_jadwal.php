@@ -320,7 +320,7 @@ $hari_map = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
                 foreach ($jadwals as $j) {
                     $key_hari = $j['tanggal'];
                     $key_mapel = $j['tanggal'] . '_' . $j['nama_mapel'];
-                    $key_jam = $j['tanggal'] . '_' . $j['ruangan'] . '_' . $j['jam_mulai'];
+                    $key_jam = $j['tanggal'] . '_' . $j['jam_mulai'];
 
                     $spans_hari[$key_hari] = ($spans_hari[$key_hari] ?? 0) + 1;
                     $spans_mapel[$key_mapel] = ($spans_mapel[$key_mapel] ?? 0) + 1;
@@ -339,7 +339,7 @@ $hari_map = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
                     
                     $key_hari = $j['tanggal'];
                     $key_mapel = $j['tanggal'] . '_' . $j['nama_mapel'];
-                    $key_jam = $j['tanggal'] . '_' . $j['ruangan'] . '_' . $j['jam_mulai'];
+                    $key_jam = $j['tanggal'] . '_' . $j['jam_mulai'];
                 ?>
                 <tr>
                     <?php if (!isset($rendered_mapel[$key_mapel])): 
