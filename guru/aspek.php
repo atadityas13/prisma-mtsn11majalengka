@@ -111,9 +111,17 @@ $materi_no_aspek = $db->resultSet();
                                         <td><strong><?= htmlspecialchars($a['nama_aspek']) ?></strong></td>
                                         <td><?= $a['bobot_nilai'] ?></td>
                                         <td>
-                                            <button class="btn btn-sm btn-outline-danger delete-aspek-btn" data-id="<?= $a['id'] ?>">
-                                                <i class="bx bx-trash"></i>
-                                            </button>
+                                            <div class="d-flex gap-2">
+                                                <button class="btn btn-sm btn-outline-warning edit-aspek-btn" 
+                                                        data-id="<?= $a['id'] ?>" 
+                                                        data-nama="<?= htmlspecialchars($a['nama_aspek']) ?>"
+                                                        data-bobot="<?= $a['bobot_nilai'] ?>">
+                                                    <i class="bx bx-edit-alt me-1"></i> Edit
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger delete-aspek-btn" data-id="<?= $a['id'] ?>">
+                                                    <i class="bx bx-trash"></i>
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -165,6 +173,35 @@ $materi_no_aspek = $db->resultSet();
     </div>
 </div>
 
+<!-- Edit Modal -->
+<div class="modal fade" id="editAspekModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form id="editAspekForm">
+            <input type="hidden" name="id" id="edit_aspek_id">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Aspek Penilaian</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Nama Aspek</label>
+                        <input type="text" name="nama_aspek" id="edit_nama_aspek" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Bobot Nilai</label>
+                        <input type="number" name="bobot_nilai" id="edit_bobot_nilai" class="form-control" min="1" required />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-warning">Perbarui</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Save
@@ -174,9 +211,30 @@ $materi_no_aspek = $db->resultSet();
             formData.append('action', 'add');
             fetch('../ajax/aspek_action.php', { method: 'POST', body: formData })
                 .then(r => r.json()).then(data => {
-                    if (data.status === 'success') location.reload();
-                    else alert(data.message);
-                });
+                if (data.status === 'success') location.reload();
+                else alert(data.message);
+            });
+        });
+
+        // Open Edit Modal
+        document.querySelectorAll('.edit-aspek-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.getElementById('edit_aspek_id').value = this.dataset.id;
+                document.getElementById('edit_nama_aspek').value = this.dataset.nama;
+                document.getElementById('edit_bobot_nilai').value = this.dataset.bobot;
+                bootstrap.Modal.getOrCreateInstance(document.getElementById('editAspekModal')).show();
+            });
+        });
+
+        // Save Edit
+        document.getElementById('editAspekForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            formData.append('action', 'edit');
+            fetch('../ajax/aspek_action.php', { method: 'POST', body: formData })
+            .then(r => r.json()).then(data => {
+                if (data.status === 'success') location.reload(); else alert(data.message);
+            });
         });
 
         // Delete

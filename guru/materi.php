@@ -61,10 +61,16 @@ $colleagues = $db->resultSet();
                         <tr>
                             <td><?= $idx + 1 ?></td>
                             <td><strong><?= htmlspecialchars($m['nama_materi']) ?></strong></td>
-                            <td>
-                                <button class="btn btn-sm btn-outline-danger delete-materi-btn" data-id="<?= $m['id'] ?>">
-                                    <i class="bx bx-trash me-1"></i> Hapus
-                                </button>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-sm btn-outline-warning edit-materi-btn" 
+                                            data-id="<?= $m['id'] ?>" 
+                                            data-nama="<?= htmlspecialchars($m['nama_materi']) ?>">
+                                        <i class="bx bx-edit-alt me-1"></i> Edit
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger delete-materi-btn" data-id="<?= $m['id'] ?>">
+                                        <i class="bx bx-trash me-1"></i> Hapus
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -99,6 +105,31 @@ $colleagues = $db->resultSet();
     </div>
 </div>
 
+<!-- Edit Modal -->
+<div class="modal fade" id="editMateriModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form id="editMateriForm">
+            <input type="hidden" name="id" id="edit_materi_id">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Materi Uji</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Nama Materi</label>
+                        <input type="text" name="nama_materi" id="edit_nama_materi" class="form-control" required />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-warning">Perbarui</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Save
@@ -106,6 +137,27 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
         const formData = new FormData(this);
         formData.append('action', 'add');
+        fetch('../ajax/materi_action.php', { method: 'POST', body: formData })
+        .then(r => r.json()).then(data => {
+            if (data.status === 'success') location.reload();
+            else alert(data.message);
+        });
+    });
+
+    // Open Edit Modal
+    document.querySelectorAll('.edit-materi-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.getElementById('edit_materi_id').value = this.dataset.id;
+            document.getElementById('edit_nama_materi').value = this.dataset.nama;
+            bootstrap.Modal.getOrCreateInstance(document.getElementById('editMateriModal')).show();
+        });
+    });
+
+    // Save Edit
+    document.getElementById('editMateriForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        formData.append('action', 'edit');
         fetch('../ajax/materi_action.php', { method: 'POST', body: formData })
         .then(r => r.json()).then(data => {
             if (data.status === 'success') location.reload();

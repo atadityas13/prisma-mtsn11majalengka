@@ -61,4 +61,34 @@ if ($action === 'add') {
     } catch (Exception $e) {
         echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
     }
+} elseif ($action === 'edit') {
+    $id = $_POST['id'] ?? '';
+    $nama = $_POST['nama_aspek'] ?? '';
+    $bobot = $_POST['bobot_nilai'] ?? 1;
+
+    if (empty($id) || empty($nama)) {
+        echo json_encode(['status' => 'error', 'message' => 'Data tidak lengkap.']);
+        exit;
+    }
+
+    try {
+        if ($role === 'guru') {
+            $db->query("UPDATE aspek_penilaian SET nama_aspek = :nama, bobot_nilai = :bobot WHERE id = :id AND mapel_id = :mapel_id");
+            $db->bind(':id', $id);
+            $db->bind(':nama', $nama);
+            $db->bind(':bobot', $bobot);
+            $db->bind(':mapel_id', $mapel_id);
+        } else {
+            // Admin
+            $db->query("UPDATE aspek_penilaian SET nama_aspek = :nama, bobot_nilai = :bobot WHERE id = :id");
+            $db->bind(':id', $id);
+            $db->bind(':nama', $nama);
+            $db->bind(':bobot', $bobot);
+        }
+        $db->execute();
+        Auth::log("Mengubah aspek penilaian ID: $id menjadi $nama", 'assessment', $db);
+        echo json_encode(['status' => 'success']);
+    } catch (Exception $e) {
+        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+    }
 }

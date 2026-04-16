@@ -54,4 +54,32 @@ if ($action === 'add') {
     } catch (Exception $e) {
         echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
     }
+
+} elseif ($action === 'edit') {
+    $id = $_POST['id'] ?? '';
+    $nama = $_POST['nama_materi'] ?? '';
+
+    if (empty($id) || empty($nama)) {
+        echo json_encode(['status' => 'error', 'message' => 'Data tidak lengkap.']);
+        exit;
+    }
+
+    try {
+        if ($role === 'guru') {
+            $db->query("UPDATE materi_penilaian SET nama_materi = :nama WHERE id = :id AND mapel_id = :mapel_id");
+            $db->bind(':id', $id);
+            $db->bind(':nama', $nama);
+            $db->bind(':mapel_id', $mapel_id);
+        } else {
+            $db->query("UPDATE materi_penilaian SET nama_materi = :nama WHERE id = :id");
+            $db->bind(':id', $id);
+            $db->bind(':nama', $nama);
+        }
+        $db->execute();
+        
+        Auth::log("Mengubah materi penilaian ID: $id menjadi $nama", 'assessment', $db);
+        echo json_encode(['status' => 'success']);
+    } catch (Exception $e) {
+        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+    }
 }

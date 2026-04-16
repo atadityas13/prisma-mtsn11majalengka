@@ -280,11 +280,19 @@ foreach ($materis as $m) {
                         <td class="fw-bold text-center"><?= !is_null($final_avg) ? round($final_avg, 2) : '-' ?></td>
                         <td>
                             <div class="d-flex gap-2">
-                                <button class="btn btn-sm btn-primary grade-btn" 
-                                        data-id="<?= $s['id'] ?>" 
-                                        data-nama="<?= $s['nama_lengkap'] ?>">
-                                    <i class="bx bx-edit-alt me-1"></i> Nilai
-                                </button>
+                                <?php if ($count_done_materis > 0): ?>
+                                    <button class="btn btn-sm btn-warning grade-btn" 
+                                            data-id="<?= $s['id'] ?>" 
+                                            data-nama="<?= $s['nama_lengkap'] ?>">
+                                        <i class="bx bx-edit-alt me-1"></i> Edit Nilai
+                                    </button>
+                                <?php else: ?>
+                                    <button class="btn btn-sm btn-primary grade-btn" 
+                                            data-id="<?= $s['id'] ?>" 
+                                            data-nama="<?= $s['nama_lengkap'] ?>">
+                                        <i class="bx bx-edit-alt me-1"></i> Input Nilai
+                                    </button>
+                                <?php endif; ?>
                                 <?php if ($count_done_materis > 0): ?>
                                     <button class="btn btn-sm btn-outline-danger reset-btn" 
                                             data-id="<?= $s['id'] ?>" 
