@@ -10,6 +10,12 @@ $mapel_id = $_SESSION['mapel_id'];
 $db->query("SELECT * FROM aspek_penilaian WHERE mapel_id = :mapel_id ORDER BY id ASC");
 $db->bind(':mapel_id', $mapel_id);
 $aspeks = $db->resultSet();
+
+// Fetch Colleagues (Teachers with the same mapel)
+$db->query("SELECT nama_lengkap FROM guru WHERE mapel_id = :mapel_id AND id != :guru_id");
+$db->bind(':mapel_id', $mapel_id);
+$db->bind(':guru_id', $guru_id);
+$colleagues = $db->resultSet();
 ?>
 
 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -17,6 +23,23 @@ $aspeks = $db->resultSet();
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAspekModal">
         <i class="bx bx-plus me-1"></i> Tambah Aspek
     </button>
+</div>
+
+<!-- Coordination Info -->
+<div class="alert alert-info d-flex" role="alert">
+    <span class="badge badge-center rounded-pill bg-info me-3"><i class="bx bx-info-circle"></i></span>
+    <div class="d-flex flex-column ps-1">
+        <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">Informasi Koordinasi</h6>
+        <span>Aspek penilaian ini berlaku <strong>secara global</strong> untuk mata pelajaran yang Anda uji. Perubahan pada aspek ini akan memengaruhi penilaian seluruh siswa di mata pelajaran tersebut.</span>
+        <?php if (!empty($colleagues)): ?>
+            <div class="mt-2 text-sm">
+                <strong>Rekan Penguji Lainnya:</strong> 
+                <span class="text-muted"><?= implode(', ', array_column($colleagues, 'nama_lengkap')) ?></span>
+                <br>
+                <small>* Silakan berkoordinasi dengan rekan Anda untuk menentukan kriteria penilaian yang seragam.</small>
+            </div>
+        <?php endif; ?>
+    </div>
 </div>
 
 <!-- Alert for Empty Aspek -->
