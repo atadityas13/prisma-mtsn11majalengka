@@ -75,8 +75,8 @@ $hari_map = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
             display: flex;
             align-items: center;
             border-bottom: 3px double #000;
-            padding-bottom: 10px;
-            margin-bottom: 18px;
+            padding-bottom: 8px;
+            margin-bottom: 10px;
         }
 
         .kop img {
@@ -115,7 +115,7 @@ $hari_map = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
         /* ── Judul ── */
         .judul {
             text-align: center;
-            margin-bottom: 16px;
+            margin-bottom: 10px;
         }
 
         .judul h4 {
@@ -177,7 +177,7 @@ $hari_map = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
 
         /* ── Tanda Tangan ── */
         .ttd {
-            margin-top: 30px;
+            margin-top: 15px;
             display: flex;
             justify-content: flex-end;
         }
