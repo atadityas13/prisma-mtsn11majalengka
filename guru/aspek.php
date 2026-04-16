@@ -29,12 +29,14 @@ $colleagues = $db->resultSet();
 <div class="alert alert-info d-flex" role="alert">
     <span class="badge badge-center rounded-pill bg-info me-3"><i class="bx bx-info-circle"></i></span>
     <div class="d-flex flex-column ps-1">
-        <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">Informasi Koordinasi</h6>
-        <span>Aspek penilaian ini berlaku <strong>secara global</strong> untuk mata pelajaran yang Anda uji. Perubahan pada aspek ini akan memengaruhi penilaian seluruh siswa di mata pelajaran tersebut.</span>
+        <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">Informasi</h6>
+        <span>Aspek penilaian ini berlaku <strong>secara global</strong> untuk mata pelajaran yang Anda uji. Perubahan
+            pada aspek ini akan memengaruhi penilaian seluruh siswa di mata pelajaran tersebut.</span>
         <?php if (!empty($colleagues)): ?>
             <div class="mt-2 text-sm">
-                <strong>Rekan Penguji Lainnya:</strong> 
-                <span class="text-muted"><?= implode(', ', array_column($colleagues, 'nama_lengkap')) ?></span>
+                <strong>Rekan Penguji :</strong>
+                <span class="text-muted"
+                    style="font-style: italic;"><?= implode(', ', array_column($colleagues, 'nama_lengkap')) ?></span>
                 <br>
                 <small>* Silakan berkoordinasi dengan rekan Anda untuk menentukan kriteria penilaian yang seragam.</small>
             </div>
@@ -48,7 +50,8 @@ $colleagues = $db->resultSet();
         <span class="badge badge-center rounded-pill bg-warning me-3"><i class="bx bx-error"></i></span>
         <div class="d-flex flex-column ps-1">
             <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">Peringatan: Aspek Belum Diisi</h6>
-            <span>Anda belum menambahkan aspek penilaian. Silakan tambah minimal 1 aspek agar bisa mulai menilai siswa.</span>
+            <span>Anda belum menambahkan aspek penilaian. Silakan tambah minimal 1 aspek agar bisa mulai menilai
+                siswa.</span>
         </div>
     </div>
 <?php endif; ?>
@@ -67,16 +70,16 @@ $colleagues = $db->resultSet();
                 </thead>
                 <tbody class="table-border-bottom-0">
                     <?php foreach ($aspeks as $idx => $a): ?>
-                    <tr>
-                        <td><?= $idx + 1 ?></td>
-                        <td><strong><?= $a['nama_aspek'] ?></strong></td>
-                        <td><?= $a['bobot_nilai'] ?></td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-danger delete-aspek-btn" data-id="<?= $a['id'] ?>">
-                                <i class="bx bx-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td><?= $idx + 1 ?></td>
+                            <td><strong><?= $a['nama_aspek'] ?></strong></td>
+                            <td><?= $a['bobot_nilai'] ?></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-danger delete-aspek-btn" data-id="<?= $a['id'] ?>">
+                                    <i class="bx bx-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
@@ -96,7 +99,8 @@ $colleagues = $db->resultSet();
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label">Nama Aspek</label>
-                        <input type="text" name="nama_aspek" class="form-control" placeholder="Misal: Kelancaran Membaca" required />
+                        <input type="text" name="nama_aspek" class="form-control"
+                            placeholder="Misal: Kelancaran Membaca" required />
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Bobot Nilai</label>
@@ -114,34 +118,34 @@ $colleagues = $db->resultSet();
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Save
-    document.getElementById('addAspekForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const formData = new FormData(this);
-        formData.append('action', 'add');
-        fetch('../ajax/aspek_action.php', { method: 'POST', body: formData })
-        .then(r => r.json()).then(data => {
-            if (data.status === 'success') location.reload();
-            else alert(data.message);
-        });
-    });
-
-    // Delete
-    document.querySelectorAll('.delete-aspek-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            if (confirm('Hapus aspek ini? Nilai siswa yang terkait aspek ini juga akan terhapus.')) {
-                const formData = new FormData();
-                formData.append('action', 'delete');
-                formData.append('id', this.dataset.id);
-                fetch('../ajax/aspek_action.php', { method: 'POST', body: formData })
+    document.addEventListener('DOMContentLoaded', function () {
+        // Save
+        document.getElementById('addAspekForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            formData.append('action', 'add');
+            fetch('../ajax/aspek_action.php', { method: 'POST', body: formData })
                 .then(r => r.json()).then(data => {
                     if (data.status === 'success') location.reload();
+                    else alert(data.message);
                 });
-            }
+        });
+
+        // Delete
+        document.querySelectorAll('.delete-aspek-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                if (confirm('Hapus aspek ini? Nilai siswa yang terkait aspek ini juga akan terhapus.')) {
+                    const formData = new FormData();
+                    formData.append('action', 'delete');
+                    formData.append('id', this.dataset.id);
+                    fetch('../ajax/aspek_action.php', { method: 'POST', body: formData })
+                        .then(r => r.json()).then(data => {
+                            if (data.status === 'success') location.reload();
+                        });
+                }
+            });
         });
     });
-});
 </script>
 
 <?php include_once __DIR__ . '/layout/footer.php'; ?>
