@@ -171,15 +171,15 @@ $bulan_map = [
         }
 
         table.peserta th:nth-child(1) {
-            width: 35px;
+            width: 40px;
         }
 
         table.peserta th:nth-child(2) {
-            width: 140px;
+            width: 150px;
         }
 
         table.peserta th:nth-child(3) {
-            width: 110px;
+            width: 120px;
         }
 
         table.peserta th:nth-child(4) {
@@ -187,11 +187,7 @@ $bulan_map = [
         }
 
         table.peserta th:nth-child(5) {
-            width: 60px;
-        }
-
-        table.peserta th:nth-child(6) {
-            width: 100px;
+            width: 80px;
         }
 
         /* ── TTD Overlay ── */
@@ -222,8 +218,8 @@ $bulan_map = [
 
         .img-cap {
             position: absolute;
-            top: -40px;
-            left: -50px;
+            top: -30px;
+            left: -100px;
             width: 150px;
             z-index: 2;
             opacity: 0.9;
@@ -231,9 +227,9 @@ $bulan_map = [
 
         .img-ttd {
             position: absolute;
-            top: -15px;
-            left: 45px;
-            width: 160px;
+            top: 0px;
+            left: -20px;
+            width: 200px;
             z-index: 3;
         }
 
@@ -350,13 +346,12 @@ $bulan_map = [
                         <th>NISN</th>
                         <th>Nama Siswa</th>
                         <th>Kelas</th>
-                        <th>Keterangan</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (empty($siswas)): ?>
                         <tr>
-                            <td colspan="6" class="center" style="padding:15px; color:#888;">Belum ada peserta.</td>
+                            <td colspan="5" class="center" style="padding:15px; color:#888;">Belum ada peserta.</td>
                         </tr>
                     <?php else: ?>
                         <?php foreach ($siswas as $idx => $s): ?>
@@ -366,7 +361,6 @@ $bulan_map = [
                                 <td class="center"><?= htmlspecialchars($s['nisn']) ?></td>
                                 <td><?= htmlspecialchars($s['nama_lengkap']) ?></td>
                                 <td class="center"><?= htmlspecialchars($s['kelas']) ?></td>
-                                <td></td>
                             </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>
