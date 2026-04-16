@@ -9,19 +9,19 @@ $db = new Database();
 $ploting_id = (int) ($_GET['ploting_id'] ?? 0);
 
 if ($ploting_id) {
-    $db->query("SELECT pp.id as ploting_id, m.nama_mapel, j.tanggal, j.ruangan
+    // Jika cetak satu ploting (tetap tampilkan di halaman ruangnya)
+    $db->query("SELECT j.ruangan, GROUP_CONCAT(j.ploting_id) as pids, MIN(j.tanggal) as tgl_awal
                 FROM jadwal_praktik j
-                JOIN ploting_penguji pp ON j.ploting_id = pp.id
-                JOIN mapel m            ON pp.mapel_id   = m.id
-                WHERE j.ploting_id = :pid");
+                WHERE j.ploting_id = :pid
+                GROUP BY j.ruangan");
     $db->bind(':pid', $ploting_id);
     $jadwals = $db->resultSet();
 } else {
-    $db->query("SELECT pp.id as ploting_id, m.nama_mapel, j.tanggal, j.ruangan
+    // Cetak semua, kelompokkan per Ruang
+    $db->query("SELECT j.ruangan, GROUP_CONCAT(j.ploting_id) as pids, MIN(j.tanggal) as tgl_awal
                 FROM jadwal_praktik j
-                JOIN ploting_penguji pp ON j.ploting_id = pp.id
-                JOIN mapel m            ON pp.mapel_id   = m.id
-                ORDER BY j.tanggal ASC, j.ruangan ASC");
+                GROUP BY j.ruangan
+                ORDER BY j.ruangan ASC");
     $jadwals = $db->resultSet();
 }
 
@@ -156,7 +156,7 @@ $bulan_map = [
         table.peserta th,
         table.peserta td {
             border: 1px solid #000;
-            padding: 5px 6px;
+            padding: 11px 6px; /* Diperbesar agar 67 siswa pas 3 halaman */
             vertical-align: middle;
         }
 
@@ -304,17 +304,17 @@ $bulan_map = [
     <?php endif; ?>
 
     <?php foreach ($jadwals as $j):
-        // List siswa for this ploting
-        $db->query("SELECT s.nomor_peserta, s.nama_lengkap, s.kelas, s.nisn
+        $pids = $j['pids'];
+        // List siswa gabungan untuk semua ploting di RUANGAN ini
+        $db->query("SELECT DISTINCT s.nomor_peserta, s.nama_lengkap, s.kelas, s.nisn
                 FROM ploting_siswa ps
                 JOIN siswa s ON ps.siswa_id = s.id
-                WHERE ps.ploting_id = :pid
+                WHERE ps.ploting_id IN ($pids)
                 ORDER BY s.nomor_peserta ASC");
-        $db->bind(':pid', $j['ploting_id']);
         $siswas = $db->resultSet();
 
-        $tgl_obj = new DateTime($j['tanggal']);
-        $tgl_fmt = $tgl_obj->format('d') . ' ' . $bulan_map[(int) $tgl_obj->format('m')] . ' ' . $tgl_obj->format('Y');
+        // Titimangsa gunakan tanggal hari ini atau tanggal awal ujian
+        $tgl_titimangsa = date('d') . ' ' . $bulan_map[(int)date('m')] . ' ' . date('Y');
         ?>
         <div class="page">
             <div class="kop">
@@ -369,7 +369,7 @@ $bulan_map = [
 
             <div class="ttd-container">
                 <div class="ttd-box">
-                    <p>Cingambul, <?= $tgl_fmt ?></p>
+                    <p>Cingambul, <?= $tgl_titimangsa ?></p>
                     <p>Plt. Kepala Madrasah,</p>
                     <div class="sig-overlay">
                         <img src="<?= base_url('assets/img/cap.png') ?>" class="img-cap">
