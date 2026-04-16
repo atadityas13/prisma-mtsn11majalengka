@@ -31,6 +31,11 @@ $db->query("SELECT nama_lengkap FROM guru WHERE mapel_id = :mapel_id AND id != :
 $db->bind(':mapel_id', $mapel_id);
 $db->bind(':guru_id', $guru_id);
 $colleagues = $db->resultSet();
+
+// Check for Materials without Aspects
+$db->query("SELECT nama_materi FROM materi_penilaian WHERE mapel_id = :mid AND id NOT IN (SELECT DISTINCT materi_id FROM aspek_penilaian WHERE materi_id IS NOT NULL)");
+$db->bind(':mid', $mapel_id);
+$materi_no_aspek = $db->resultSet();
 ?>
 
 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -57,6 +62,17 @@ $colleagues = $db->resultSet();
         <?php endif; ?>
     </div>
 </div>
+
+<!-- Warning for Empty Materi -->
+<?php if (!empty($materi_no_aspek)): ?>
+    <div class="alert alert-warning d-flex align-items-center mb-3" role="alert">
+        <span class="badge badge-center rounded-pill bg-warning me-3"><i class="bx bx-error bx-xs"></i></span>
+        <div>
+            Materi berikut belum memiliki aspek penilaian: <strong><?= implode(', ', array_column($materi_no_aspek, 'nama_materi')) ?></strong>. 
+            Silakan tambahkan aspek untuk masing-masing materi.
+        </div>
+    </div>
+<?php endif; ?>
 
 <!-- Warning for Missing Materi -->
 <?php if (empty($materis)): ?>

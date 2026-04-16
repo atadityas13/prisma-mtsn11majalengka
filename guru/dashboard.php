@@ -53,6 +53,11 @@ $db->query("SELECT nama_lengkap FROM guru WHERE mapel_id = :mapel_id AND id != :
 $db->bind(':mapel_id', $mapel_id);
 $db->bind(':guru_id', $guru_id);
 $colleagues = $db->resultSet();
+
+// Check for Materials without Aspects
+$db->query("SELECT nama_materi FROM materi_penilaian WHERE mapel_id = :mid AND id NOT IN (SELECT DISTINCT materi_id FROM aspek_penilaian WHERE materi_id IS NOT NULL)");
+$db->bind(':mid', $mapel_id);
+$materi_no_aspek = $db->resultSet();
 ?>
 
 <?php if ($total_materi === 0): ?>
@@ -100,6 +105,24 @@ $colleagues = $db->resultSet();
 
                     <div class="mt-2 text-end">
                         <a href="aspek.php" class="btn btn-sm btn-dark">Atur Aspek Sekarang</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+
+<?php if (!empty($materi_no_aspek)): ?>
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="alert alert-warning d-flex align-items-center" role="alert">
+                <span class="badge badge-center rounded-pill bg-warning me-3"><i class="bx bx-error bx-sm"></i></span>
+                <div class="d-flex flex-column ps-1">
+                    <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">Peringatan: Ada Materi Tanpa Aspek!</h6>
+                    <span>Materi berikut belum memiliki aspek penilaian: <strong><?= implode(', ', array_column($materi_no_aspek, 'nama_materi')) ?></strong>.</span>
+                    <small class="mt-1">Siswa tidak akan mendapatkan nilai untuk materi ini jika aspeknya kosong.</small>
+                    <div class="mt-2 text-end">
+                        <a href="aspek.php" class="btn btn-sm btn-dark">Lengkapi Aspek</a>
                     </div>
                 </div>
             </div>
