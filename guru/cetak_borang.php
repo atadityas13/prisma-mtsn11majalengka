@@ -351,23 +351,34 @@ $siswas = $db->resultSet();
             <thead>
                 <tr>
                     <th rowspan="3" class="col-no">No</th>
-                    <th rowspan="3" class="col-nama">Nama Siswa</th>
+                    <th rowspan="3" class="col-nama">Nama Peserta</th>
                     <th rowspan="3" class="col-kelas">Kelas</th>
-                    <th colspan="<?= count($aspeks) > 0 ? count($aspeks) : 3 ?>" class="col-assessment">Penilaian</th>
+                    <?php 
+                    $total_cols = count($aspeks);
+                    // Add columns for materis with 0 aspects so they aren't completely hidden
+                    foreach ($materis as $m) {
+                        if (empty($grouped_aspeks[$m['id']])) {
+                            $total_cols += 1;
+                        }
+                    }
+                    if ($total_cols > 0): ?>
+                        <th colspan="<?= $total_cols ?>">Aspek Penilaian</th>
+                    <?php else: ?>
+                        <th colspan="3">Aspek Belum Diisi</th>
+                    <?php endif; ?>
                     <th rowspan="3" class="col-final">Nilai Akhir</th>
                     <th rowspan="3" class="col-ket">Keterangan</th>
                 </tr>
                 <tr>
                     <?php
                     // Render headers for defined materials
-                    if (count($aspeks) > 0):
+                    if ($total_cols > 0):
                         if (!empty($materis)):
                             foreach ($materis as $m_idx => $m):
                                 $m_aspect_count = count($grouped_aspeks[$m['id']] ?? []);
-                                if ($m_aspect_count == 0)
-                                    continue;
+                                $colspan = $m_aspect_count > 0 ? $m_aspect_count : 1;
                                 ?>
-                                <th colspan="<?= $m_aspect_count ?>" style="font-size: 8pt;">M<?= $m_idx + 1 ?></th>
+                                <th colspan="<?= $colspan ?>" style="font-size: 8pt;">M<?= $m_idx + 1 ?></th>
                             <?php endforeach;
                         endif;
 
@@ -380,15 +391,19 @@ $siswas = $db->resultSet();
                     <?php endif; ?>
                 </tr>
                 <tr>
-                    <?php if (count($aspeks) > 0): ?>
+                    <?php if ($total_cols > 0): ?>
                         <?php
                         // Per-materi numbering restart as requested
                         if (!empty($materis)):
                             foreach ($materis as $m):
                                 $m_aspeks = $grouped_aspeks[$m['id']] ?? [];
-                                foreach ($m_aspeks as $a_idx => $a): ?>
-                                    <th class="col-aspek" style="font-size: 9pt;">A<?= $a_idx + 1 ?></th>
-                                <?php endforeach;
+                                if (empty($m_aspeks)) {
+                                    echo '<th class="col-aspek">-</th>';
+                                } else {
+                                    foreach ($m_aspeks as $a_idx => $a): ?>
+                                        <th class="col-aspek" style="font-size: 9pt;">A<?= $a_idx + 1 ?></th>
+                                    <?php endforeach;
+                                }
                             endforeach;
                         endif;
 
@@ -413,9 +428,24 @@ $siswas = $db->resultSet();
                             <td class="col-no"><?= $idx + 1 ?></td>
                             <td class="col-nama"><?= $s['nama_lengkap'] ?></td>
                             <td class="col-kelas"><?= $s['kelas'] ?></td>
-                            <?php if (count($aspeks) > 0): ?>
-                                <?php foreach ($aspeks as $a): ?>
-                                    <td class="col-aspek"></td><?php endforeach; ?>
+                            <?php if ($total_cols > 0): ?>
+                                <?php 
+                                foreach ($materis as $m) {
+                                    $m_aspeks = $grouped_aspeks[$m['id']] ?? [];
+                                    if (empty($m_aspeks)) {
+                                        echo '<td class="col-aspek"></td>';
+                                    } else {
+                                        foreach ($m_aspeks as $a) {
+                                            echo '<td class="col-aspek"></td>';
+                                        }
+                                    }
+                                }
+                                if (!empty($grouped_aspeks[0])) {
+                                    foreach ($grouped_aspeks[0] as $a) {
+                                        echo '<td class="col-aspek"></td>';
+                                    }
+                                }
+                                ?>
                             <?php else: ?>
                                 <td class="col-aspek"></td>
                                 <td class="col-aspek"></td>
@@ -427,8 +457,8 @@ $siswas = $db->resultSet();
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="<?= 5 + (count($aspeks) > 0 ? count($aspeks) : 3) ?>"
-                            style="padding: 20px; color: #888;">Belum ada data siswa yang diploting untuk Anda.</td>
+                        <td colspan="<?= 3 + ($total_cols > 0 ? $total_cols : 3) + 2 ?>"
+                            style="padding: 20px; color: #888;">Belum ada data siswa di ploting ini.</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
@@ -444,18 +474,19 @@ $siswas = $db->resultSet();
                         if (!empty($materis)):
                             foreach ($materis as $m_idx => $m):
                                 $m_aspeks = $grouped_aspeks[$m['id']] ?? [];
-                                if (empty($m_aspeks))
-                                    continue;
                                 ?>
                                 <div style="font-weight: bold; margin-top: 5px;">M<?= $m_idx + 1 ?>
                                     (<?= htmlspecialchars($m['nama_materi']) ?>):</div>
                                 <ul style="margin-top: 2px;">
-                                    <?php foreach ($m_aspeks as $a_idx => $a): ?>
-                                        <li>A<?= $a_idx + 1 ?>: <?= htmlspecialchars($a['nama_aspek']) ?></li>
-                                    <?php endforeach; ?>
+                                    <?php if (empty($m_aspeks)): ?>
+                                        <li style="color: #666; font-style: italic;">Belum ada aspek</li>
+                                    <?php else: ?>
+                                        <?php foreach ($m_aspeks as $a_idx => $a): ?>
+                                            <li>A<?= $a_idx + 1 ?>: <?= htmlspecialchars($a['nama_aspek']) ?></li>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
                                 </ul>
-                                <?php
-                            endforeach;
+                            <?php endforeach;
                         endif;
 
                         if (!empty($grouped_aspeks[0])): ?>
