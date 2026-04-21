@@ -357,7 +357,7 @@ $siswas = $db->resultSet();
                                         $count_row++;
                                     }
                                     ?>
-                                    <td class="col-score"><?= !is_null($n) ? round($n, 2) : '-' ?></td>
+                                    <td class="col-score"><?= !is_null($n) ? round($n) : '-' ?></td>
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <td>-</td>
@@ -394,7 +394,7 @@ $siswas = $db->resultSet();
                                     }
                                     
                                     $final_avg = array_sum($m_avgs) / $div;
-                                    echo round($final_avg, 2);
+                                    echo round($final_avg);
                                 }
                                 ?>
                             </td>

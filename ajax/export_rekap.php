@@ -137,19 +137,19 @@ foreach ($siswas as $idx => $s) {
             }
             if ($count > 0) {
                 $avg = $sum / count($a_list);
-                $sheet->setCellValue($materi_avg_col_map[$m['id']][$mid] . $row, round($avg, 2));
+                $sheet->setCellValue($materi_avg_col_map[$m['id']][$mid] . $row, round($avg));
                 $m_avgs[] = $avg;
             }
         }
         if (!empty($m_avgs)) {
             $div = count($m['materis']); if (isset($m['grouped_aspeks'][0]) && $div > 0) $div++;
             $final_avg = array_sum($m_avgs) / max($div, 1);
-            $sheet->setCellValue($mapel_avg_col_map[$m['id']] . $row, round($final_avg, 2));
+            $sheet->setCellValue($mapel_avg_col_map[$m['id']] . $row, round($final_avg));
             $grand_total_scores[] = $final_avg;
         }
     }
     if (!empty($grand_total_scores)) {
-        $sheet->setCellValue($grandAvgColStr . $row, round(array_sum($grand_total_scores) / count($grand_total_scores), 2));
+        $sheet->setCellValue($grandAvgColStr . $row, round(array_sum($grand_total_scores) / count($grand_total_scores)));
     }
     $row++;
 }
