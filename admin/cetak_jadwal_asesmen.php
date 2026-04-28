@@ -142,16 +142,13 @@ $jadwal = [
 
         .judul h4 {
             font-size: 13pt;
-            text-transform: uppercase;
-            text-decoration: underline;
             font-weight: 700;
             letter-spacing: 1px;
             margin: 0;
         }
 
         .judul p {
-            font-size: 14pt;
-            text-transform: uppercase;
+            font-size: 13pt;
             color: #333;
             margin-top: 3px;
         }
@@ -303,8 +300,8 @@ $jadwal = [
 
         <!-- Judul -->
         <div class="judul">
-            <h4>Jadwal Asesmen Akhir Madrasah</h4>
-            <p>Tahun Pelajaran <?= DEFAULT_YEAR ?></p>
+            <h4>JADWAL ASESMEN AKHIR MADRASAH<br>MTsN 11 MAJALENGKA</h4>
+            <p>TAHUN PELAJARAN <?= DEFAULT_YEAR ?></p>
         </div>
 
         <!-- Tabel Jadwal -->
