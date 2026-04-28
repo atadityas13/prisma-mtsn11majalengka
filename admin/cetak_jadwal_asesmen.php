@@ -8,35 +8,35 @@ $jadwal = [
         'hari' => 'Senin',
         'tanggal' => '04 Mei 2026',
         'mapel' => [
-            ['jam_ke' => '1', 'waktu' => '07.00 – 08.30', 'nama' => 'Sejarah Kebudayaan Islam'],
-            ['jam_ke' => '2', 'waktu' => '08.45 – 10.15', 'nama' => 'Bahasa Arab']
+            ['jam_ke' => '1', 'waktu' => '07.30 – 09.00', 'nama' => 'Sejarah Kebudayaan Islam'],
+            ['jam_ke' => '2', 'waktu' => '09.15 – 10.45', 'nama' => 'Bahasa Arab']
         ]
     ],
     [
         'hari' => 'Selasa',
         'tanggal' => '05 Mei 2026',
         'mapel' => [
-            ['jam_ke' => '1', 'waktu' => '07.00 – 08.30', 'nama' => 'Bahasa Sunda'],
-            ['jam_ke' => '2', 'waktu' => '08.45 – 10.15', 'nama' => 'Matematika'],
-            ['jam_ke' => '3', 'waktu' => '10.30 – 12.00', 'nama' => 'Akidah-Akhlak']
+            ['jam_ke' => '1', 'waktu' => '07.30 – 09.00', 'nama' => 'Bahasa Sunda'],
+            ['jam_ke' => '2', 'waktu' => '09.15 – 10.45', 'nama' => 'Matematika'],
+            ['jam_ke' => '3', 'waktu' => '11.00 – 12.30', 'nama' => 'Akidah-Akhlak']
         ]
     ],
     [
         'hari' => 'Rabu',
         'tanggal' => '06 Mei 2026',
         'mapel' => [
-            ['jam_ke' => '1', 'waktu' => '07.00 – 08.30', 'nama' => 'Ilmu Pengetahuan Alam'],
-            ['jam_ke' => '2', 'waktu' => '08.45 – 10.15', 'nama' => 'Fiqih'],
-            ['jam_ke' => '3', 'waktu' => '10.30 – 12.00', 'nama' => 'Ilmu Pengetahuan Sosial']
+            ['jam_ke' => '1', 'waktu' => '07.30 – 09.00', 'nama' => 'Ilmu Pengetahuan Alam'],
+            ['jam_ke' => '2', 'waktu' => '09.15 – 10.45', 'nama' => 'Fiqih'],
+            ['jam_ke' => '3', 'waktu' => '11.00 – 12.30', 'nama' => 'Ilmu Pengetahuan Sosial']
         ]
     ],
     [
         'hari' => 'Kamis',
         'tanggal' => '07 Mei 2026',
         'mapel' => [
-            ['jam_ke' => '1', 'waktu' => '07.00 – 08.30', 'nama' => 'Al-qur\'an-Hadits'],
-            ['jam_ke' => '2', 'waktu' => '08.45 – 10.15', 'nama' => 'Bahasa Inggris'],
-            ['jam_ke' => '3', 'waktu' => '10.30 – 12.00', 'nama' => 'Seni Budaya']
+            ['jam_ke' => '1', 'waktu' => '07.30 – 09.00', 'nama' => 'Al-qur\'an-Hadits'],
+            ['jam_ke' => '2', 'waktu' => '09.15 – 10.45', 'nama' => 'Bahasa Inggris'],
+            ['jam_ke' => '3', 'waktu' => '11.00 – 12.30', 'nama' => 'Seni Budaya']
         ]
     ],
     [
@@ -70,23 +70,25 @@ $jadwal = [
         }
 
         @page {
-            size: A4 landscape;
+            size: A4 portrait;
             margin: 8mm;
         }
 
         .page {
-            width: calc(297mm - 16mm);
+            width: calc(210mm - 16mm);
             padding: 8mm;
             margin: 0 auto 8mm;
             background: #fff;
             box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
+            min-height: calc(297mm - 16mm);
         }
 
         @media print {
             .page {
-                width: calc(297mm - 16mm);
+                width: calc(210mm - 16mm);
                 box-shadow: none;
                 margin: 0 auto;
+                min-height: auto;
             }
         }
 
