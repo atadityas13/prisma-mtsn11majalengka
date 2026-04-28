@@ -8,8 +8,8 @@ $jadwal = [
         'hari' => 'Senin',
         'tanggal' => '04 Mei 2026',
         'mapel' => [
-            ['jam_ke' => '1', 'waktu' => '07.30 – 09.00', 'nama' => 'Sejarah Kebudayaan Islam'],
-            ['jam_ke' => '2', 'waktu' => '09.15 – 10.45', 'nama' => 'Bahasa Arab']
+            ['jam_ke' => '1', 'waktu' => '08.00 – 09.30', 'nama' => 'Sejarah Kebudayaan Islam'],
+            ['jam_ke' => '2', 'waktu' => '10.00 – 11.30', 'nama' => 'Bahasa Arab']
         ]
     ],
     [
@@ -43,8 +43,8 @@ $jadwal = [
         'hari' => 'Jum\'at',
         'tanggal' => '08 Mei 2026',
         'mapel' => [
-            ['jam_ke' => '1', 'waktu' => '07.00 – 08.30', 'nama' => 'Pendidikan Pancasila'],
-            ['jam_ke' => '2', 'waktu' => '08.45 – 10.15', 'nama' => 'Bahasa Indonesia']
+            ['jam_ke' => '1', 'waktu' => '07.15 – 08.45', 'nama' => 'Pendidikan Pancasila'],
+            ['jam_ke' => '2', 'waktu' => '09.00 – 10.30', 'nama' => 'Bahasa Indonesia']
         ]
     ]
 ];
@@ -150,7 +150,7 @@ $jadwal = [
         }
 
         .judul p {
-            font-size: 10pt;
+            font-size: 14pt;
             color: #333;
             margin-top: 3px;
         }
@@ -318,8 +318,8 @@ $jadwal = [
             </thead>
             <tbody>
                 <?php foreach ($jadwal as $hari): ?>
-                    <?php 
-                    $rowspan = count($hari['mapel']); 
+                    <?php
+                    $rowspan = count($hari['mapel']);
                     $first = true;
                     ?>
                     <?php foreach ($hari['mapel'] as $mapel): ?>
@@ -330,7 +330,7 @@ $jadwal = [
                                 </td>
                                 <?php $first = false; ?>
                             <?php endif; ?>
-                            
+
                             <td class="center"><?= $mapel['jam_ke'] ?></td>
                             <td class="center nowrap"><?= $mapel['waktu'] ?></td>
                             <td><?= $mapel['nama'] ?></td>
