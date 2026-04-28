@@ -9,7 +9,7 @@ $jadwal = [
         'tanggal' => '04 Mei 2026',
         'mapel' => [
             ['jam_ke' => '1', 'waktu' => '07.00 – 08.30', 'nama' => 'Sejarah Kebudayaan Islam', 'is_break' => false],
-            ['jam_ke' => '-', 'waktu' => '08.30 – 08.45', 'nama' => 'ISTIRAHAT', 'is_break' => true],
+            ['jam_ke' => '-', 'waktu' => '08.30 – 08.45', 'nama' => 'Istirahat', 'is_break' => true],
             ['jam_ke' => '2', 'waktu' => '08.45 – 10.15', 'nama' => 'Bahasa Arab', 'is_break' => false]
         ]
     ],
@@ -18,9 +18,9 @@ $jadwal = [
         'tanggal' => '05 Mei 2026',
         'mapel' => [
             ['jam_ke' => '1', 'waktu' => '07.00 – 08.30', 'nama' => 'Bahasa Sunda', 'is_break' => false],
-            ['jam_ke' => '-', 'waktu' => '08.30 – 08.45', 'nama' => 'ISTIRAHAT', 'is_break' => true],
+            ['jam_ke' => '-', 'waktu' => '08.30 – 08.45', 'nama' => 'Istirahat', 'is_break' => true],
             ['jam_ke' => '2', 'waktu' => '08.45 – 10.15', 'nama' => 'Matematika', 'is_break' => false],
-            ['jam_ke' => '-', 'waktu' => '10.15 – 10.30', 'nama' => 'ISTIRAHAT', 'is_break' => true],
+            ['jam_ke' => '-', 'waktu' => '10.15 – 10.30', 'nama' => 'Istirahat', 'is_break' => true],
             ['jam_ke' => '3', 'waktu' => '10.30 – 12.00', 'nama' => 'Akidah-Akhlak', 'is_break' => false]
         ]
     ],
@@ -29,9 +29,9 @@ $jadwal = [
         'tanggal' => '06 Mei 2026',
         'mapel' => [
             ['jam_ke' => '1', 'waktu' => '07.00 – 08.30', 'nama' => 'Ilmu Pengetahuan Alam', 'is_break' => false],
-            ['jam_ke' => '-', 'waktu' => '08.30 – 08.45', 'nama' => 'ISTIRAHAT', 'is_break' => true],
+            ['jam_ke' => '-', 'waktu' => '08.30 – 08.45', 'nama' => 'Istirahat', 'is_break' => true],
             ['jam_ke' => '2', 'waktu' => '08.45 – 10.15', 'nama' => 'Fiqih', 'is_break' => false],
-            ['jam_ke' => '-', 'waktu' => '10.15 – 10.30', 'nama' => 'ISTIRAHAT', 'is_break' => true],
+            ['jam_ke' => '-', 'waktu' => '10.15 – 10.30', 'nama' => 'Istirahat', 'is_break' => true],
             ['jam_ke' => '3', 'waktu' => '10.30 – 12.00', 'nama' => 'Ilmu Pengetahuan Sosial', 'is_break' => false]
         ]
     ],
@@ -40,9 +40,9 @@ $jadwal = [
         'tanggal' => '07 Mei 2026',
         'mapel' => [
             ['jam_ke' => '1', 'waktu' => '07.00 – 08.30', 'nama' => 'Al-qur\'an-Hadits', 'is_break' => false],
-            ['jam_ke' => '-', 'waktu' => '08.30 – 08.45', 'nama' => 'ISTIRAHAT', 'is_break' => true],
+            ['jam_ke' => '-', 'waktu' => '08.30 – 08.45', 'nama' => 'Istirahat', 'is_break' => true],
             ['jam_ke' => '2', 'waktu' => '08.45 – 10.15', 'nama' => 'Bahasa Inggris', 'is_break' => false],
-            ['jam_ke' => '-', 'waktu' => '10.15 – 10.30', 'nama' => 'ISTIRAHAT', 'is_break' => true],
+            ['jam_ke' => '-', 'waktu' => '10.15 – 10.30', 'nama' => 'Istirahat', 'is_break' => true],
             ['jam_ke' => '3', 'waktu' => '10.30 – 12.00', 'nama' => 'Seni Budaya', 'is_break' => false]
         ]
     ],
@@ -51,7 +51,7 @@ $jadwal = [
         'tanggal' => '08 Mei 2026',
         'mapel' => [
             ['jam_ke' => '1', 'waktu' => '07.00 – 08.30', 'nama' => 'Pendidikan Pancasila', 'is_break' => false],
-            ['jam_ke' => '-', 'waktu' => '08.30 – 08.45', 'nama' => 'ISTIRAHAT', 'is_break' => true],
+            ['jam_ke' => '-', 'waktu' => '08.30 – 08.45', 'nama' => 'Istirahat', 'is_break' => true],
             ['jam_ke' => '2', 'waktu' => '08.45 – 10.15', 'nama' => 'Bahasa Indonesia', 'is_break' => false]
         ]
     ]
@@ -72,31 +72,29 @@ $jadwal = [
 
         body {
             font-family: 'Times New Roman', Times, serif;
-            font-size: 12pt;
+            font-size: 11pt;
             background: #f0f0f0;
             color: #000;
         }
 
         @page {
-            size: A4 portrait;
-            margin: 10mm;
+            size: A4 landscape;
+            margin: 8mm;
         }
 
         .page {
-            width: calc(210mm - 20mm);
-            padding: 10mm;
-            margin: 0 auto 10mm;
+            width: calc(297mm - 16mm);
+            padding: 8mm;
+            margin: 0 auto 8mm;
             background: #fff;
             box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
-            min-height: 297mm;
         }
 
         @media print {
             .page {
-                width: auto;
-                min-height: auto;
-                margin: 0;
+                width: calc(297mm - 16mm);
                 box-shadow: none;
+                margin: 0 auto;
             }
         }
 
@@ -106,7 +104,7 @@ $jadwal = [
             align-items: center;
             border-bottom: 3px double #000;
             padding-bottom: 8px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .kop img {
@@ -126,30 +124,30 @@ $jadwal = [
         }
 
         .kop-text h4 {
-            font-size: 11pt;
+            font-size: 10pt;
             text-transform: uppercase;
             margin-bottom: 2px;
         }
 
         .kop-text h2 {
-            font-size: 16pt;
+            font-size: 15pt;
             font-weight: 900;
             text-transform: uppercase;
             margin-bottom: 2px;
         }
 
         .kop-text p {
-            font-size: 10pt;
+            font-size: 9pt;
         }
 
         /* ── Judul ── */
         .judul {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         .judul h4 {
-            font-size: 14pt;
+            font-size: 13pt;
             text-transform: uppercase;
             text-decoration: underline;
             font-weight: 700;
@@ -158,65 +156,60 @@ $jadwal = [
         }
 
         .judul p {
-            font-size: 12pt;
+            font-size: 10pt;
             color: #333;
-            margin-top: 5px;
+            margin-top: 3px;
         }
 
         /* ── Tabel ── */
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 12pt;
+            font-size: 10pt;
             table-layout: fixed;
-            margin-bottom: 20px;
         }
 
         table th,
         table td {
             border: 1px solid #000;
-            padding: 8px 10px;
+            padding: 3px 5px;
             vertical-align: middle;
             word-break: break-word;
         }
 
         table thead th {
-            background: #e9ecef;
+            background: #f0f0f0;
             text-align: center;
-            font-weight: bold;
-            text-transform: uppercase;
+            font-weight: 700;
         }
 
         table tbody td {
-            min-height: 30px;
+            min-height: 24px;
         }
 
         .center {
             text-align: center;
         }
-        
-        .break-row td {
-            background: #f8f9fa;
-            font-style: italic;
-            text-align: center;
+
+        .nowrap {
+            white-space: nowrap;
         }
 
-        /* Lebar Kolom */
-        table thead th:nth-child(1) { width: 30%; } /* Hari, Tanggal */
-        table thead th:nth-child(2) { width: 15%; } /* Jam Ke */
-        table thead th:nth-child(3) { width: 25%; } /* Waktu */
-        table thead th:nth-child(4) { width: 30%; } /* Mata Pelajaran */
+        table thead th:nth-child(1) { width: 170px; }
+        table thead th:nth-child(2) { width: 120px; }
+        table thead th:nth-child(3) { width: 150px; }
+        table thead th:nth-child(4) { width: auto; }
 
         /* ── Tanda Tangan ── */
         .ttd {
-            margin-top: 30px;
+            margin-top: 15px;
             display: flex;
             justify-content: flex-end;
         }
 
         .ttd-box p {
-            margin: 3px 0;
-            font-size: 12pt;
+            margin: 2px 0;
+            font-size: 10.5pt;
             position: relative;
             z-index: 5;
         }
@@ -260,13 +253,13 @@ $jadwal = [
         }
 
         .no-print button {
-            padding: 8px 20px;
+            padding: 7px 18px;
             margin: 0 5px;
             border: none;
             border-radius: 4px;
             font-weight: bold;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .no-print .btn-print {
@@ -286,6 +279,12 @@ $jadwal = [
 
             body {
                 background: white;
+            }
+
+            .page {
+                margin: 0;
+                box-shadow: none;
+                width: auto;
             }
         }
     </style>
@@ -335,24 +334,23 @@ $jadwal = [
                     $first = true;
                     ?>
                     <?php foreach ($hari['mapel'] as $mapel): ?>
-                        <tr class="<?= $mapel['is_break'] ? 'break-row' : '' ?>">
+                        <tr>
                             <?php if ($first): ?>
-                                <td rowspan="<?= $rowspan ?>" class="center">
-                                    <strong><?= $hari['hari'] ?></strong>,<br>
-                                    <?= $hari['tanggal'] ?>
+                                <td rowspan="<?= $rowspan ?>" class="center nowrap" style="vertical-align: middle;">
+                                    <?= $hari['hari'] ?>, <?= $hari['tanggal'] ?>
                                 </td>
                                 <?php $first = false; ?>
                             <?php endif; ?>
                             
-                            <?php if ($mapel['is_break']): ?>
-                                <td colspan="3" class="center">
-                                    <strong><?= $mapel['waktu'] ?> — <?= $mapel['nama'] ?></strong>
-                                </td>
-                            <?php else: ?>
-                                <td class="center"><?= $mapel['jam_ke'] ?></td>
-                                <td class="center"><?= $mapel['waktu'] ?></td>
-                                <td><strong><?= $mapel['nama'] ?></strong></td>
-                            <?php endif; ?>
+                            <td class="center"><?= $mapel['jam_ke'] ?></td>
+                            <td class="center nowrap"><?= $mapel['waktu'] ?></td>
+                            <td <?= $mapel['is_break'] ? 'class="center"' : '' ?>>
+                                <?php if ($mapel['is_break']): ?>
+                                    - <?= $mapel['nama'] ?> -
+                                <?php else: ?>
+                                    <?= $mapel['nama'] ?>
+                                <?php endif; ?>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 <?php endforeach; ?>
@@ -361,7 +359,7 @@ $jadwal = [
 
         <!-- Tanda Tangan -->
         <div class="ttd">
-            <div class="ttd-box" style="width: 280px; text-align: left;">
+            <div class="ttd-box" style="width: 260px; text-align: left;">
                 <p>Cingambul, <?= date('d') ?>
                     <?= ['', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'][(int) date('m')] ?>
                     <?= date('Y') ?>
