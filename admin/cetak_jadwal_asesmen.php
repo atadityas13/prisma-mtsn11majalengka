@@ -151,6 +151,7 @@ $jadwal = [
 
         .judul p {
             font-size: 14pt;
+            text-transform: uppercase;
             color: #333;
             margin-top: 3px;
         }
