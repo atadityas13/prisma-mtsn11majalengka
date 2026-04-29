@@ -83,6 +83,18 @@ $jadwal = [
         ]
     ]
 ];
+
+$selected_gurus = ['' => ''];
+$is_cetak_per_guru = false;
+if (isset($_GET['guru']) && $_GET['guru'] !== '') {
+    if ($_GET['guru'] === 'all') {
+        $selected_gurus = $gurus;
+        $is_cetak_per_guru = true;
+    } elseif (isset($gurus[$_GET['guru']])) {
+        $selected_gurus = [$_GET['guru'] => $gurus[$_GET['guru']]];
+        $is_cetak_per_guru = true;
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -341,6 +353,22 @@ $jadwal = [
             color: #fff;
         }
 
+        .highlight-cell {
+            background-color: #90EE90 !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        .footer-guru {
+            position: absolute;
+            bottom: 15px;
+            left: 20px;
+            font-size: 10pt;
+            font-style: italic;
+            font-weight: bold;
+            color: #333;
+        }
+
         @media print {
             .no-print {
                 display: none !important;
@@ -349,6 +377,13 @@ $jadwal = [
             body {
                 background: white;
             }
+
+            .page {
+                page-break-after: always;
+            }
+            .page:last-of-type {
+                page-break-after: auto;
+            }
         }
     </style>
 </head>
@@ -356,10 +391,20 @@ $jadwal = [
 <body>
 
     <div class="no-print">
+        <form method="GET" style="display:inline-block; margin-right:15px;">
+            <select name="guru" onchange="this.form.submit()" style="padding: 6px; border-radius: 4px; font-weight: bold;">
+                <option value="">-- Cetak Jadwal Umum --</option>
+                <option value="all" <?= (isset($_GET['guru']) && $_GET['guru'] == 'all') ? 'selected' : '' ?>>Cetak Semua Guru (<?= count($gurus) ?> Halaman)</option>
+                <?php foreach ($gurus as $k => $n): ?>
+                    <option value="<?= $k ?>" <?= (isset($_GET['guru']) && $_GET['guru'] == $k) ? 'selected' : '' ?>>Cetak Guru <?= $k ?> - <?= $n ?></option>
+                <?php endforeach; ?>
+            </select>
+        </form>
         <button class="btn-print" onclick="window.print()">🖨️ Cetak Jadwal Asesmen</button>
         <button class="btn-back" onclick="window.close()">✕ Tutup</button>
     </div>
 
+    <?php foreach ($selected_gurus as $active_guru_code => $active_guru_name): ?>
     <div class="page">
         <!-- Kop Surat -->
         <div class="kop">
@@ -433,7 +478,8 @@ $jadwal = [
                                     <td class="center nowrap"><?= $mapel['waktu'] ?></td>
                                     <td class="nowrap"><?= $mapel['nama'] ?></td>
                                     <?php foreach ($mapel['pengawas'] as $p): ?>
-                                        <td class="center nowrap"><strong><?= $p ?></strong></td>
+                                        <?php $hl_class = ($is_cetak_per_guru && $p === $active_guru_code) ? 'highlight-cell' : ''; ?>
+                                        <td class="center nowrap <?= $hl_class ?>"><strong><?= $p ?></strong></td>
                                     <?php endforeach; ?>
                                 </tr>
                             <?php endforeach; ?>
@@ -465,12 +511,15 @@ $jadwal = [
                             $n1 = $gurus[$k1];
                             $k2 = isset($keys[$i + $half]) ? $keys[$i + $half] : '';
                             $n2 = isset($keys[$i + $half]) ? $gurus[$keys[$i + $half]] : '';
+                            
+                            $hl1 = ($is_cetak_per_guru && $k1 === $active_guru_code) ? 'highlight-cell' : '';
+                            $hl2 = ($is_cetak_per_guru && $k2 === $active_guru_code) ? 'highlight-cell' : '';
                             ?>
                             <tr>
-                                <td class="center nowrap"><strong><?= $k1 ?></strong></td>
-                                <td class="nowrap"><?= $n1 ?></td>
-                                <td class="center nowrap"><strong><?= $k2 ?></strong></td>
-                                <td class="nowrap"><?= $n2 ?></td>
+                                <td class="center nowrap <?= $hl1 ?>"><strong><?= $k1 ?></strong></td>
+                                <td class="nowrap <?= $hl1 ?>"><?= $n1 ?></td>
+                                <td class="center nowrap <?= $hl2 ?>"><strong><?= $k2 ?></strong></td>
+                                <td class="nowrap <?= $hl2 ?>"><?= $n2 ?></td>
                             </tr>
                         <?php endfor; ?>
                     </tbody>
@@ -495,7 +544,14 @@ $jadwal = [
             </div>
         </div>
 
+        <?php if ($is_cetak_per_guru): ?>
+            <div class="footer-guru">
+                Dicetak untuk guru <?= $active_guru_code ?> : <?= $active_guru_name ?>
+            </div>
+        <?php endif; ?>
+
     </div>
+    <?php endforeach; ?>
 
 </body>
 
