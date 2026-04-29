@@ -195,40 +195,33 @@ $jadwal = [
         /* ── Layout Tabel & Legenda ── */
         .content-wrapper {
             display: flex;
-            gap: 15px;
+            justify-content: space-between; /* Tabel kiri, legenda kanan */
             align-items: flex-start;
         }
 
         .main-table-container {
-            flex: 1;
-            min-width: 0;
+            flex: 0 0 auto;
         }
 
         .legend-container {
-            width: 380px; /* Lebar legenda */
-            flex-shrink: 0;
+            flex: 0 0 auto;
         }
 
-        /* ── Tabel ── */
+        /* ── Tabel Utama ── */
         table {
             border-collapse: collapse;
             font-size: 9pt;
-            table-layout: fixed; /* Memaksa proporsi lebar yang diatur */
+            table-layout: auto;
         }
 
         .main-table {
-            width: 100%; /* Kembali ke 100% agar mengisi celah kosong */
-        }
-
-        .legend-table {
-            width: 100%;
-            font-size: 7.5pt;
+            width: max-content; /* Pas seukuran isi kolom */
         }
 
         table th,
         table td {
             border: 1px solid #000;
-            padding: 4px 5px;
+            padding: 4px 6px;
             vertical-align: middle;
         }
 
@@ -248,20 +241,16 @@ $jadwal = [
 
         .nowrap {
             white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
 
-        /* Pengaturan proporsi lebar kolom tabel utama */
-        .col-hari { width: 130px; }
-        .col-jam { width: 40px; }
-        .col-waktu { width: 90px; }
-        .col-mapel { width: 160px; }
-        /* Sisa lebarnya otomatis akan dibagi merata untuk 6 kolom Ruang (sekitar 35px-45px per ruang) */
-
         /* ── Legenda ── */
+        .legend-table {
+            width: max-content; /* Pas seukuran isi legenda */
+            font-size: 7pt; /* Diperkecil agar ringkas */
+        }
+
         .legend-table th, .legend-table td {
-            padding: 3px 4px;
+            padding: 2px 4px;
         }
 
         /* ── Tanda Tangan ── */
@@ -385,18 +374,6 @@ $jadwal = [
             <!-- Tabel Utama -->
             <div class="main-table-container">
                 <table class="main-table">
-                    <colgroup>
-                        <col class="col-hari">
-                        <col class="col-jam">
-                        <col class="col-waktu">
-                        <col class="col-mapel">
-                        <col>
-                        <col>
-                        <col>
-                        <col>
-                        <col>
-                        <col>
-                    </colgroup>
                     <thead>
                         <tr>
                             <th rowspan="2">Hari, Tanggal</th>
