@@ -218,7 +218,7 @@ $jadwal = [
 
         .main-table {
             width: 100%;
-            font-size: 10pt; /* Optimal */
+            font-size: 9pt; /* Teks diperkecil agar pas dengan kolom */
         }
 
         table th,
@@ -228,7 +228,7 @@ $jadwal = [
         }
         
         .main-table th, .main-table td {
-            padding: 5px 6px; /* Lebih renggang, tapi aman dari overlap halaman 2 */
+            padding: 5px 6px;
         }
 
         table thead th {
@@ -243,8 +243,6 @@ $jadwal = [
 
         .nowrap {
             white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis; /* Jika sangat terpaksa kurang ruang, teks akan menjadi ... (mencegah overlap) */
         }
 
         /* ── Legenda ── */
@@ -261,7 +259,7 @@ $jadwal = [
         .ttd-container {
             display: flex;
             justify-content: flex-end;
-            margin-top: 5px; /* Kurangi margin atas agar tidak terlempar ke halaman 2 */
+            margin-top: -15px; /* Naikkan tanda tangan ke atas sedikit */
             width: 100%;
         }
 
@@ -453,11 +451,12 @@ $jadwal = [
                     <tbody>
                         <?php 
                         $keys = array_keys($gurus);
-                        for ($i = 0; $i < count($keys); $i += 2): 
+                        $half = ceil(count($keys) / 2);
+                        for ($i = 0; $i < $half; $i++): 
                             $k1 = $keys[$i];
                             $n1 = $gurus[$k1];
-                            $k2 = isset($keys[$i+1]) ? $keys[$i+1] : '';
-                            $n2 = isset($keys[$i+1]) ? $gurus[$keys[$i+1]] : '';
+                            $k2 = isset($keys[$i+$half]) ? $keys[$i+$half] : '';
+                            $n2 = isset($keys[$i+$half]) ? $gurus[$keys[$i+$half]] : '';
                         ?>
                             <tr>
                                 <td class="center nowrap"><strong><?= $k1 ?></strong></td>
