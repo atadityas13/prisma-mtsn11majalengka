@@ -3,48 +3,83 @@ require_once __DIR__ . '/../includes/config.php';
 require_once __DIR__ . '/../includes/Auth.php';
 Auth::restrictTo('admin');
 
+$gurus = [
+    'SJ' => 'Drs. H. SIROJUDIN, M.S.I.',
+    'AS' => 'Drs. H. AJI SUHARDI',
+    'AY' => 'H. ASEP S. YASIN, S.Ag., M.Pd.',
+    'AI' => 'ASEP IDRIS SAEPUDIN, S.Ag.',
+    'DS' => 'H. DEDEN SETIADIN, S.Pd.',
+    'NS' => 'NANA SUPRIATNA, S.Ag.',
+    'TE' => 'TETI SUMIATI, S.Ag.,M.Pd.I',
+    'EN' => 'Hj.ELIN NURLINA, S.Pd.',
+    'TS' => 'Hj.TIN SUMARTINI, S.Pd.',
+    'SR' => 'SRI RAHAYU, S.Pd.',
+    'YO' => 'YENI OKTAVIA, S.Pd.',
+    'TM' => 'TETI MULYATI, S.Pd.',
+    'RM' => 'RIYAN MARDIYANA, S.Pd.',
+    'ZN' => 'ZENNY VIRGIAN, S.Pd.',
+    'WK' => 'WAKHIDATUL KHOERUNNISA, S.Pd.',
+    'MS' => 'MAMAN S., S.Sos.',
+    'NR' => 'NORA RISMAYANTI, S.Pd.',
+    'SA' => 'SRI APRINIAWATI, S.Pd.',
+    'NK' => 'NANANG KOSWARA, S.Pd.',
+    'DJ' => 'DJAFAR SHIDIQ M., S.Pd.',
+    'AL' => 'ALKAMIL, S.Pd.I',
+    'ED' => 'ENDANG MA\'SUM, S.Pd.',
+    'DD' => 'DIDIN SOBARUDIN, S.Ag.',
+    'KK' => 'KOKOM KOMARIYAH, S.Pd',
+    'EM' => 'EUIS MARYAMAH, S.Pd',
+    'IK' => 'IKA KARLINA, S.Pd.',
+    'JP' => 'ENDANG JAYA P., S.Ag.',
+    'RF' => 'WINDA RAHMA FAUZIAH, S.Pd.',
+    'EV' => 'ELVA ELVINASARI, S.Sos.',
+    'IQ' => 'M. IQBAL ASHABY SUJUD, S.Pd.',
+    'IR' => 'IRMA RISMAWATI, S.Pd.',
+    'JM' => 'JIHAN MUSTIKA'
+];
+
 $jadwal = [
     [
         'hari' => 'Senin',
         'tanggal' => '04 Mei 2026',
         'mapel' => [
-            ['jam_ke' => '1', 'waktu' => '08.00 – 09.30', 'nama' => 'Sejarah Kebudayaan Islam'],
-            ['jam_ke' => '2', 'waktu' => '10.00 – 11.30', 'nama' => 'Bahasa Arab']
+            ['jam_ke' => '1', 'waktu' => '07.30 – 09.00', 'nama' => 'Sejarah Kebudayaan Islam', 'pengawas' => ['AI', 'AY', 'EM', 'DD', 'RF', 'DJ']],
+            ['jam_ke' => '2', 'waktu' => '09.15 – 10.45', 'nama' => 'Bahasa Arab', 'pengawas' => ['EV', 'KK', 'TM', 'ZN', 'IR', 'JM']]
         ]
     ],
     [
         'hari' => 'Selasa',
         'tanggal' => '05 Mei 2026',
         'mapel' => [
-            ['jam_ke' => '1', 'waktu' => '07.30 – 09.00', 'nama' => 'Bahasa Sunda'],
-            ['jam_ke' => '2', 'waktu' => '09.15 – 10.45', 'nama' => 'Matematika'],
-            ['jam_ke' => '3', 'waktu' => '11.00 – 12.30', 'nama' => 'Akidah-Akhlak']
+            ['jam_ke' => '1', 'waktu' => '07.30 – 09.00', 'nama' => 'Bahasa Sunda', 'pengawas' => ['RF', 'NR', 'DJ', 'MS', 'ZN', 'AS']],
+            ['jam_ke' => '2', 'waktu' => '09.15 – 10.45', 'nama' => 'Matematika', 'pengawas' => ['YO', 'SJ', 'NK', 'MS', 'AI', 'EM']],
+            ['jam_ke' => '3', 'waktu' => '11.00 – 12.30', 'nama' => 'Akidah-Akhlak', 'pengawas' => ['WK', 'AY', 'EN', 'DS', 'NS', 'SA']]
         ]
     ],
     [
         'hari' => 'Rabu',
         'tanggal' => '06 Mei 2026',
         'mapel' => [
-            ['jam_ke' => '1', 'waktu' => '07.30 – 09.00', 'nama' => 'Ilmu Pengetahuan Alam'],
-            ['jam_ke' => '2', 'waktu' => '09.15 – 10.45', 'nama' => 'Fiqih'],
-            ['jam_ke' => '3', 'waktu' => '11.00 – 12.30', 'nama' => 'Ilmu Pengetahuan Sosial']
+            ['jam_ke' => '1', 'waktu' => '07.30 – 09.00', 'nama' => 'Ilmu Pengetahuan Alam', 'pengawas' => ['WK', 'RM', 'TS', 'SR', 'DS', 'AS']],
+            ['jam_ke' => '2', 'waktu' => '09.15 – 10.45', 'nama' => 'Fiqih', 'pengawas' => ['RM', 'TE', 'SR', 'NR', 'SA', 'TS']],
+            ['jam_ke' => '3', 'waktu' => '11.00 – 12.30', 'nama' => 'Ilmu Pengetahuan Sosial', 'pengawas' => ['YO', 'SJ', 'TM', 'MS', 'AI', 'NR']]
         ]
     ],
     [
         'hari' => 'Kamis',
         'tanggal' => '07 Mei 2026',
         'mapel' => [
-            ['jam_ke' => '1', 'waktu' => '07.30 – 09.00', 'nama' => 'Al-qur\'an-Hadits'],
-            ['jam_ke' => '2', 'waktu' => '09.15 – 10.45', 'nama' => 'Bahasa Inggris'],
-            ['jam_ke' => '3', 'waktu' => '11.00 – 12.30', 'nama' => 'Seni Budaya']
+            ['jam_ke' => '1', 'waktu' => '07.30 – 09.00', 'nama' => 'Al-qur\'an-Hadits', 'pengawas' => ['ED', 'AL', 'IK', 'ZN', 'JP', 'IR']],
+            ['jam_ke' => '2', 'waktu' => '09.15 – 10.45', 'nama' => 'Bahasa Inggris', 'pengawas' => ['AL', 'IQ', 'RM', 'AY', 'IK', 'WK']],
+            ['jam_ke' => '3', 'waktu' => '11.00 – 12.30', 'nama' => 'Seni Budaya', 'pengawas' => ['ED', 'AL', 'KK', 'DD', 'NK', 'IQ']]
         ]
     ],
     [
         'hari' => 'Jum\'at',
         'tanggal' => '08 Mei 2026',
         'mapel' => [
-            ['jam_ke' => '1', 'waktu' => '07.15 – 08.45', 'nama' => 'Pendidikan Pancasila'],
-            ['jam_ke' => '2', 'waktu' => '09.00 – 10.30', 'nama' => 'Bahasa Indonesia']
+            ['jam_ke' => '1', 'waktu' => '07.00 – 08.30', 'nama' => 'Pendidikan Pancasila', 'pengawas' => ['JM', 'YO', 'TE', 'EN', 'SA', 'NK']],
+            ['jam_ke' => '2', 'waktu' => '08.45 – 10.15', 'nama' => 'Bahasa Indonesia', 'pengawas' => ['EV', 'ED', 'NS', 'JP', 'DJ', 'RF']]
         ]
     ]
 ];
@@ -70,24 +105,24 @@ $jadwal = [
         }
 
         @page {
-            size: A4 portrait;
-            margin: 8mm;
+            size: A4 landscape;
+            margin: 10mm;
         }
 
         .page {
-            width: calc(210mm - 16mm);
-            padding: 8mm;
-            margin: 0 auto 8mm;
+            width: calc(297mm - 20mm);
+            padding: 10mm;
+            margin: 0 auto 10mm;
             background: #fff;
             box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
-            min-height: calc(297mm - 16mm);
+            min-height: calc(210mm - 20mm);
         }
 
         @media print {
             .page {
-                width: calc(210mm - 16mm);
+                width: auto;
                 box-shadow: none;
-                margin: 0 auto;
+                margin: 0;
                 min-height: auto;
             }
         }
@@ -102,13 +137,13 @@ $jadwal = [
         }
 
         .kop img {
-            height: 75px;
+            height: 70px;
         }
 
         .kop-text {
             flex: 1;
             text-align: center;
-            line-height: 1.4;
+            line-height: 1.3;
         }
 
         .kop-text h3 {
@@ -137,34 +172,52 @@ $jadwal = [
         /* ── Judul ── */
         .judul {
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         .judul h4 {
             font-size: 13pt;
+            text-transform: uppercase;
+            text-decoration: underline;
             font-weight: 700;
             letter-spacing: 1px;
             margin: 0;
         }
 
         .judul p {
-            font-size: 13pt;
+            font-size: 10pt;
             color: #333;
             margin-top: 3px;
         }
 
+        /* ── Layout Tabel & Legenda ── */
+        .content-wrapper {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .main-table-container {
+            flex: 1;
+        }
+
+        .legend-container {
+            width: 320px; /* Diperlebar agar nama guru tidak terlalu terpotong */
+            flex-shrink: 0;
+        }
+
         /* ── Tabel ── */
         table {
-            margin: 0 auto 20px auto;
+            width: 100%;
             border-collapse: collapse;
-            font-size: 11pt;
+            font-size: 10pt;
             table-layout: auto;
         }
 
         table th,
         table td {
             border: 1px solid #000;
-            padding: 8px 20px;
+            padding: 5px 6px;
             vertical-align: middle;
             word-break: break-word;
         }
@@ -186,42 +239,60 @@ $jadwal = [
         .nowrap {
             white-space: nowrap;
         }
+        
+        .main-table th.ruang {
+            width: 35px;
+        }
+
+        /* ── Legenda ── */
+        .legend-table {
+            font-size: 8pt;
+        }
+
+        .legend-table th, .legend-table td {
+            padding: 3px 4px;
+        }
 
         /* ── Tanda Tangan ── */
-        .ttd {
-            margin-top: 15px;
+        .ttd-container {
             display: flex;
             justify-content: flex-end;
+            margin-top: 5px;
+        }
+
+        .ttd-box {
+            width: 250px;
+            text-align: left;
         }
 
         .ttd-box p {
             margin: 2px 0;
-            font-size: 10.5pt;
+            font-size: 10pt;
             position: relative;
             z-index: 5;
         }
 
         .sig-overlay {
             position: relative;
-            height: 100px;
+            height: 80px;
             margin-top: 5px;
             margin-bottom: 5px;
         }
 
         .img-cap {
             position: absolute;
-            top: -30px;
-            left: -100px;
-            width: 150px;
+            top: -20px;
+            left: -80px;
+            width: 120px;
             z-index: 2;
             opacity: 0.9;
         }
 
         .img-ttd {
             position: absolute;
-            top: 0px;
-            left: -25px;
-            width: 200px;
+            top: -10px;
+            left: -15px;
+            width: 150px;
             z-index: 3;
         }
 
@@ -267,12 +338,6 @@ $jadwal = [
             body {
                 background: white;
             }
-
-            .page {
-                margin: 0;
-                box-shadow: none;
-                width: auto;
-            }
         }
     </style>
 </head>
@@ -300,60 +365,111 @@ $jadwal = [
 
         <!-- Judul -->
         <div class="judul">
-            <h4>JADWAL ASESMEN AKHIR MADRASAH<br>MTsN 11 MAJALENGKA</h4>
-            <p>TAHUN PELAJARAN <?= DEFAULT_YEAR ?></p>
+            <h4>Jadwal Asesmen Akhir Madrasah & Pengawas Ruang</h4>
+            <p>Tahun Pelajaran <?= DEFAULT_YEAR ?></p>
         </div>
 
-        <!-- Tabel Jadwal -->
-        <table>
-            <thead>
-                <tr>
-                    <th>Hari, Tanggal</th>
-                    <th>Jam Ke</th>
-                    <th>Waktu</th>
-                    <th>Mata Pelajaran</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($jadwal as $hari): ?>
-                    <?php
-                    $rowspan = count($hari['mapel']);
-                    $first = true;
-                    ?>
-                    <?php foreach ($hari['mapel'] as $mapel): ?>
+        <div class="content-wrapper">
+            <!-- Tabel Utama -->
+            <div class="main-table-container">
+                <table class="main-table">
+                    <thead>
                         <tr>
-                            <?php if ($first): ?>
-                                <td rowspan="<?= $rowspan ?>" class="center nowrap" style="vertical-align: middle;">
-                                    <?= $hari['hari'] ?>, <?= $hari['tanggal'] ?>
-                                </td>
-                                <?php $first = false; ?>
-                            <?php endif; ?>
-
-                            <td class="center"><?= $mapel['jam_ke'] ?></td>
-                            <td class="center nowrap"><?= $mapel['waktu'] ?></td>
-                            <td><?= $mapel['nama'] ?></td>
+                            <th rowspan="2">Hari, Tanggal</th>
+                            <th rowspan="2">Jam</th>
+                            <th rowspan="2">Waktu</th>
+                            <th rowspan="2">Mata Pelajaran</th>
+                            <th colspan="6">Ruang Pengawas</th>
                         </tr>
-                    <?php endforeach; ?>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-
-        <!-- Tanda Tangan -->
-        <div class="ttd">
-            <div class="ttd-box" style="width: 260px; text-align: left;">
-                <p>Cingambul, <?= date('d') ?>
-                    <?= ['', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'][(int) date('m')] ?>
-                    <?= date('Y') ?>
-                </p>
-                <p>Plt. Kepala Madrasah,</p>
-                <div class="sig-overlay">
-                    <img src="<?= base_url('assets/img/cap.png') ?>" class="img-cap">
-                    <img src="<?= base_url('assets/img/ttd-kepala.png') ?>" class="img-ttd">
+                        <tr>
+                            <th class="ruang">01</th>
+                            <th class="ruang">02</th>
+                            <th class="ruang">03</th>
+                            <th class="ruang">04</th>
+                            <th class="ruang">05</th>
+                            <th class="ruang">06</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($jadwal as $hari): ?>
+                            <?php 
+                            $rowspan = count($hari['mapel']); 
+                            $first = true;
+                            ?>
+                            <?php foreach ($hari['mapel'] as $mapel): ?>
+                                <tr>
+                                    <?php if ($first): ?>
+                                        <td rowspan="<?= $rowspan ?>" class="center nowrap" style="vertical-align: middle;">
+                                            <?= $hari['hari'] ?>, <?= $hari['tanggal'] ?>
+                                        </td>
+                                        <?php $first = false; ?>
+                                    <?php endif; ?>
+                                    
+                                    <td class="center"><?= $mapel['jam_ke'] ?></td>
+                                    <td class="center nowrap"><?= $mapel['waktu'] ?></td>
+                                    <td><?= $mapel['nama'] ?></td>
+                                    <?php foreach ($mapel['pengawas'] as $p): ?>
+                                        <td class="center"><strong><?= $p ?></strong></td>
+                                    <?php endforeach; ?>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+                
+                <!-- Tanda Tangan -->
+                <div class="ttd-container">
+                    <div class="ttd-box">
+                        <p>Cingambul, <?= date('d') ?>
+                            <?= ['', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'][(int) date('m')] ?>
+                            <?= date('Y') ?>
+                        </p>
+                        <p>Plt. Kepala Madrasah,</p>
+                        <div class="sig-overlay">
+                            <img src="<?= base_url('assets/img/cap.png') ?>" class="img-cap">
+                            <img src="<?= base_url('assets/img/ttd-kepala.png') ?>" class="img-ttd">
+                        </div>
+                        <p><strong><u>H. Dede Apip Mustopa, S.Ag.</u></strong></p>
+                        <p>NIP. 196801171992031002</p>
+                    </div>
                 </div>
-                <p><strong><u>H. Dede Apip Mustopa, S.Ag.</u></strong></p>
-                <p>NIP. 196801171992031002</p>
+            </div>
+
+            <!-- Tabel Legenda Kode Guru -->
+            <div class="legend-container">
+                <table class="legend-table">
+                    <thead>
+                        <tr>
+                            <th colspan="4" style="background:#ddd; font-size:9pt;">DAFTAR KODE PENGAWAS</th>
+                        </tr>
+                        <tr>
+                            <th style="width:30px;">Kode</th>
+                            <th>Nama Guru</th>
+                            <th style="width:30px;">Kode</th>
+                            <th>Nama Guru</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php 
+                        $keys = array_keys($gurus);
+                        for ($i = 0; $i < count($keys); $i += 2): 
+                            $k1 = $keys[$i];
+                            $n1 = $gurus[$k1];
+                            $k2 = isset($keys[$i+1]) ? $keys[$i+1] : '';
+                            $n2 = isset($keys[$i+1]) ? $gurus[$keys[$i+1]] : '';
+                        ?>
+                            <tr>
+                                <td class="center"><strong><?= $k1 ?></strong></td>
+                                <td style="font-size: 7.5pt;" class="nowrap"><?= $n1 ?></td>
+                                <td class="center"><strong><?= $k2 ?></strong></td>
+                                <td style="font-size: 7.5pt;" class="nowrap"><?= $n2 ?></td>
+                            </tr>
+                        <?php endfor; ?>
+                    </tbody>
+                </table>
             </div>
         </div>
+
     </div>
 
 </body>
