@@ -211,16 +211,24 @@ $jadwal = [
 
         /* ── Tabel ── */
         table {
-            width: 100%;
             border-collapse: collapse;
-            font-size: 9pt; /* Diperkecil */
+            font-size: 9pt;
             table-layout: auto;
+        }
+
+        .main-table {
+            width: max-content;
+        }
+
+        .legend-table {
+            width: 100%;
+            font-size: 7.5pt;
         }
 
         table th,
         table td {
             border: 1px solid #000;
-            padding: 3px 4px; /* Padding sangat tipis */
+            padding: 4px 8px; /* Kembalikan padding normal agar rapi */
             vertical-align: middle;
         }
 
@@ -243,29 +251,26 @@ $jadwal = [
         }
         
         /* ── Legenda ── */
-        .legend-table {
-            font-size: 7.5pt; /* Diperkecil agar tinggi tabel muat 1 halaman */
-        }
-
         .legend-table th, .legend-table td {
-            padding: 2px 3px;
+            padding: 3px 4px; /* Padding legenda tetap kecil */
         }
 
         /* ── Tanda Tangan ── */
         .ttd-container {
             display: flex;
             justify-content: flex-end;
-            margin-top: 5px;
+            margin-top: 15px; /* Jarak dari atas */
+            width: 100%;
         }
 
         .ttd-box {
-            width: 230px;
+            width: 250px;
             text-align: left;
         }
 
         .ttd-box p {
             margin: 1px 0;
-            font-size: 9pt;
+            font-size: 10pt;
             position: relative;
             z-index: 5;
         }
@@ -414,23 +419,6 @@ $jadwal = [
                         <?php endforeach; ?>
                     </tbody>
                 </table>
-                
-                <!-- Tanda Tangan -->
-                <div class="ttd-container">
-                    <div class="ttd-box">
-                        <p>Cingambul, <?= date('d') ?>
-                            <?= ['', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'][(int) date('m')] ?>
-                            <?= date('Y') ?>
-                        </p>
-                        <p>Plt. Kepala Madrasah,</p>
-                        <div class="sig-overlay">
-                            <img src="<?= base_url('assets/img/cap.png') ?>" class="img-cap">
-                            <img src="<?= base_url('assets/img/ttd-kepala.png') ?>" class="img-ttd">
-                        </div>
-                        <p><strong><u>H. Dede Apip Mustopa, S.Ag.</u></strong></p>
-                        <p>NIP. 196801171992031002</p>
-                    </div>
-                </div>
             </div>
 
             <!-- Tabel Legenda Kode Guru -->
@@ -465,6 +453,23 @@ $jadwal = [
                         <?php endfor; ?>
                     </tbody>
                 </table>
+            </div>
+        </div>
+
+        <!-- Tanda Tangan -->
+        <div class="ttd-container">
+            <div class="ttd-box">
+                <p>Cingambul, <?= date('d') ?>
+                    <?= ['', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'][(int) date('m')] ?>
+                    <?= date('Y') ?>
+                </p>
+                <p>Plt. Kepala Madrasah,</p>
+                <div class="sig-overlay">
+                    <img src="<?= base_url('assets/img/cap.png') ?>" class="img-cap">
+                    <img src="<?= base_url('assets/img/ttd-kepala.png') ?>" class="img-ttd">
+                </div>
+                <p><strong><u>H. Dede Apip Mustopa, S.Ag.</u></strong></p>
+                <p>NIP. 196801171992031002</p>
             </div>
         </div>
 
