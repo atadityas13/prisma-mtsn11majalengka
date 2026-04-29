@@ -197,10 +197,12 @@ $jadwal = [
             display: flex;
             justify-content: space-between; /* Tabel kiri, legenda kanan */
             align-items: flex-start;
+            gap: 25px; /* Jarak yang aman antara tabel utama dan legenda */
         }
 
         .main-table-container {
-            flex: 0 0 auto;
+            flex: 1;
+            min-width: 0;
         }
 
         .legend-container {
@@ -215,13 +217,14 @@ $jadwal = [
         }
 
         .main-table {
-            width: max-content; /* Pas seukuran isi kolom */
+            width: 100%; /* Lebar penuh memenuhi container */
+            font-size: 10.5pt; /* Teks diperbesar */
         }
 
         table th,
         table td {
             border: 1px solid #000;
-            padding: 4px 6px;
+            padding: 6px 8px; /* Sel dibuat lebih tinggi dan lebar */
             vertical-align: middle;
         }
 
