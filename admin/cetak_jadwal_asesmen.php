@@ -99,7 +99,7 @@ $jadwal = [
 
         body {
             font-family: 'Times New Roman', Times, serif;
-            font-size: 10pt; /* Diperkecil agar lebih padat */
+            font-size: 10pt;
             background: #f0f0f0;
             color: #000;
         }
@@ -125,7 +125,7 @@ $jadwal = [
                 box-shadow: none;
                 margin: 0;
                 min-height: auto;
-                padding: 0; /* Hindari padding ganda saat diprint */
+                padding: 0;
             }
         }
 
@@ -195,17 +195,17 @@ $jadwal = [
         /* ── Layout Tabel & Legenda ── */
         .content-wrapper {
             display: flex;
-            gap: 10px;
+            gap: 15px;
             align-items: flex-start;
         }
 
         .main-table-container {
             flex: 1;
-            min-width: 0; /* Mencegah flexbox melar melewati batas */
+            min-width: 0;
         }
 
         .legend-container {
-            width: 360px; /* Diperlebar agar aman dari wrapping */
+            width: 380px; /* Lebar legenda */
             flex-shrink: 0;
         }
 
@@ -213,11 +213,11 @@ $jadwal = [
         table {
             border-collapse: collapse;
             font-size: 9pt;
-            table-layout: auto;
+            table-layout: fixed; /* Memaksa proporsi lebar yang diatur */
         }
 
         .main-table {
-            width: max-content;
+            width: 100%; /* Kembali ke 100% agar mengisi celah kosong */
         }
 
         .legend-table {
@@ -228,7 +228,7 @@ $jadwal = [
         table th,
         table td {
             border: 1px solid #000;
-            padding: 4px 8px; /* Kembalikan padding normal agar rapi */
+            padding: 4px 5px;
             vertical-align: middle;
         }
 
@@ -248,18 +248,27 @@ $jadwal = [
 
         .nowrap {
             white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-        
+
+        /* Pengaturan proporsi lebar kolom tabel utama */
+        .col-hari { width: 130px; }
+        .col-jam { width: 40px; }
+        .col-waktu { width: 90px; }
+        .col-mapel { width: 160px; }
+        /* Sisa lebarnya otomatis akan dibagi merata untuk 6 kolom Ruang (sekitar 35px-45px per ruang) */
+
         /* ── Legenda ── */
         .legend-table th, .legend-table td {
-            padding: 3px 4px; /* Padding legenda tetap kecil */
+            padding: 3px 4px;
         }
 
         /* ── Tanda Tangan ── */
         .ttd-container {
             display: flex;
             justify-content: flex-end;
-            margin-top: 15px; /* Jarak dari atas */
+            margin-top: 20px;
             width: 100%;
         }
 
@@ -376,6 +385,18 @@ $jadwal = [
             <!-- Tabel Utama -->
             <div class="main-table-container">
                 <table class="main-table">
+                    <colgroup>
+                        <col class="col-hari">
+                        <col class="col-jam">
+                        <col class="col-waktu">
+                        <col class="col-mapel">
+                        <col>
+                        <col>
+                        <col>
+                        <col>
+                        <col>
+                        <col>
+                    </colgroup>
                     <thead>
                         <tr>
                             <th rowspan="2">Hari, Tanggal</th>
@@ -385,12 +406,12 @@ $jadwal = [
                             <th colspan="6">Ruang Pengawas</th>
                         </tr>
                         <tr>
-                            <th class="nowrap" style="width: 25px;">01</th>
-                            <th class="nowrap" style="width: 25px;">02</th>
-                            <th class="nowrap" style="width: 25px;">03</th>
-                            <th class="nowrap" style="width: 25px;">04</th>
-                            <th class="nowrap" style="width: 25px;">05</th>
-                            <th class="nowrap" style="width: 25px;">06</th>
+                            <th>01</th>
+                            <th>02</th>
+                            <th>03</th>
+                            <th>04</th>
+                            <th>05</th>
+                            <th>06</th>
                         </tr>
                     </thead>
                     <tbody>
