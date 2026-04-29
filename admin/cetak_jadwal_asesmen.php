@@ -99,7 +99,7 @@ $jadwal = [
 
         body {
             font-family: 'Times New Roman', Times, serif;
-            font-size: 11pt;
+            font-size: 10pt; /* Diperkecil agar lebih padat */
             background: #f0f0f0;
             color: #000;
         }
@@ -116,6 +116,7 @@ $jadwal = [
             background: #fff;
             box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
             min-height: calc(210mm - 20mm);
+            position: relative;
         }
 
         @media print {
@@ -124,6 +125,7 @@ $jadwal = [
                 box-shadow: none;
                 margin: 0;
                 min-height: auto;
+                padding: 0; /* Hindari padding ganda saat diprint */
             }
         }
 
@@ -132,22 +134,22 @@ $jadwal = [
             display: flex;
             align-items: center;
             border-bottom: 3px double #000;
-            padding-bottom: 8px;
+            padding-bottom: 5px;
             margin-bottom: 10px;
         }
 
         .kop img {
-            height: 70px;
+            height: 65px;
         }
 
         .kop-text {
             flex: 1;
             text-align: center;
-            line-height: 1.3;
+            line-height: 1.2;
         }
 
         .kop-text h3 {
-            font-size: 13pt;
+            font-size: 12pt;
             text-transform: uppercase;
             margin-bottom: 2px;
         }
@@ -159,24 +161,24 @@ $jadwal = [
         }
 
         .kop-text h2 {
-            font-size: 15pt;
+            font-size: 14pt;
             font-weight: 900;
             text-transform: uppercase;
             margin-bottom: 2px;
         }
 
         .kop-text p {
-            font-size: 9pt;
+            font-size: 8pt;
         }
 
         /* ── Judul ── */
         .judul {
             text-align: center;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .judul h4 {
-            font-size: 13pt;
+            font-size: 12pt;
             text-transform: uppercase;
             text-decoration: underline;
             font-weight: 700;
@@ -185,7 +187,7 @@ $jadwal = [
         }
 
         .judul p {
-            font-size: 10pt;
+            font-size: 9pt;
             color: #333;
             margin-top: 3px;
         }
@@ -193,16 +195,17 @@ $jadwal = [
         /* ── Layout Tabel & Legenda ── */
         .content-wrapper {
             display: flex;
-            gap: 15px;
+            gap: 10px;
             align-items: flex-start;
         }
 
         .main-table-container {
             flex: 1;
+            min-width: 0; /* Mencegah flexbox melar melewati batas */
         }
 
         .legend-container {
-            width: 320px; /* Diperlebar agar nama guru tidak terlalu terpotong */
+            width: 360px; /* Diperlebar agar aman dari wrapping */
             flex-shrink: 0;
         }
 
@@ -210,16 +213,15 @@ $jadwal = [
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 10pt;
+            font-size: 9pt; /* Diperkecil */
             table-layout: auto;
         }
 
         table th,
         table td {
             border: 1px solid #000;
-            padding: 5px 6px;
+            padding: 3px 4px; /* Padding sangat tipis */
             vertical-align: middle;
-            word-break: break-word;
         }
 
         table thead th {
@@ -229,7 +231,7 @@ $jadwal = [
         }
 
         table tbody td {
-            min-height: 24px;
+            min-height: 20px;
         }
 
         .center {
@@ -240,17 +242,13 @@ $jadwal = [
             white-space: nowrap;
         }
         
-        .main-table th.ruang {
-            width: 35px;
-        }
-
         /* ── Legenda ── */
         .legend-table {
-            font-size: 8pt;
+            font-size: 7.5pt; /* Diperkecil agar tinggi tabel muat 1 halaman */
         }
 
         .legend-table th, .legend-table td {
-            padding: 3px 4px;
+            padding: 2px 3px;
         }
 
         /* ── Tanda Tangan ── */
@@ -261,20 +259,20 @@ $jadwal = [
         }
 
         .ttd-box {
-            width: 250px;
+            width: 230px;
             text-align: left;
         }
 
         .ttd-box p {
-            margin: 2px 0;
-            font-size: 10pt;
+            margin: 1px 0;
+            font-size: 9pt;
             position: relative;
             z-index: 5;
         }
 
         .sig-overlay {
             position: relative;
-            height: 80px;
+            height: 70px;
             margin-top: 5px;
             margin-bottom: 5px;
         }
@@ -282,8 +280,8 @@ $jadwal = [
         .img-cap {
             position: absolute;
             top: -20px;
-            left: -80px;
-            width: 120px;
+            left: -70px;
+            width: 110px;
             z-index: 2;
             opacity: 0.9;
         }
@@ -292,7 +290,7 @@ $jadwal = [
             position: absolute;
             top: -10px;
             left: -15px;
-            width: 150px;
+            width: 130px;
             z-index: 3;
         }
 
@@ -382,12 +380,12 @@ $jadwal = [
                             <th colspan="6">Ruang Pengawas</th>
                         </tr>
                         <tr>
-                            <th class="ruang">01</th>
-                            <th class="ruang">02</th>
-                            <th class="ruang">03</th>
-                            <th class="ruang">04</th>
-                            <th class="ruang">05</th>
-                            <th class="ruang">06</th>
+                            <th class="nowrap" style="width: 25px;">01</th>
+                            <th class="nowrap" style="width: 25px;">02</th>
+                            <th class="nowrap" style="width: 25px;">03</th>
+                            <th class="nowrap" style="width: 25px;">04</th>
+                            <th class="nowrap" style="width: 25px;">05</th>
+                            <th class="nowrap" style="width: 25px;">06</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -399,7 +397,7 @@ $jadwal = [
                             <?php foreach ($hari['mapel'] as $mapel): ?>
                                 <tr>
                                     <?php if ($first): ?>
-                                        <td rowspan="<?= $rowspan ?>" class="center nowrap" style="vertical-align: middle;">
+                                        <td rowspan="<?= $rowspan ?>" class="center nowrap">
                                             <?= $hari['hari'] ?>, <?= $hari['tanggal'] ?>
                                         </td>
                                         <?php $first = false; ?>
@@ -407,9 +405,9 @@ $jadwal = [
                                     
                                     <td class="center"><?= $mapel['jam_ke'] ?></td>
                                     <td class="center nowrap"><?= $mapel['waktu'] ?></td>
-                                    <td><?= $mapel['nama'] ?></td>
+                                    <td class="nowrap"><?= $mapel['nama'] ?></td>
                                     <?php foreach ($mapel['pengawas'] as $p): ?>
-                                        <td class="center"><strong><?= $p ?></strong></td>
+                                        <td class="center nowrap"><strong><?= $p ?></strong></td>
                                     <?php endforeach; ?>
                                 </tr>
                             <?php endforeach; ?>
@@ -440,13 +438,13 @@ $jadwal = [
                 <table class="legend-table">
                     <thead>
                         <tr>
-                            <th colspan="4" style="background:#ddd; font-size:9pt;">DAFTAR KODE PENGAWAS</th>
+                            <th colspan="4" style="background:#ddd; font-size:8pt;">DAFTAR KODE PENGAWAS</th>
                         </tr>
                         <tr>
-                            <th style="width:30px;">Kode</th>
-                            <th>Nama Guru</th>
-                            <th style="width:30px;">Kode</th>
-                            <th>Nama Guru</th>
+                            <th class="nowrap" style="width:30px;">Kode</th>
+                            <th class="nowrap">Nama Guru</th>
+                            <th class="nowrap" style="width:30px;">Kode</th>
+                            <th class="nowrap">Nama Guru</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -459,10 +457,10 @@ $jadwal = [
                             $n2 = isset($keys[$i+1]) ? $gurus[$keys[$i+1]] : '';
                         ?>
                             <tr>
-                                <td class="center"><strong><?= $k1 ?></strong></td>
-                                <td style="font-size: 7.5pt;" class="nowrap"><?= $n1 ?></td>
-                                <td class="center"><strong><?= $k2 ?></strong></td>
-                                <td style="font-size: 7.5pt;" class="nowrap"><?= $n2 ?></td>
+                                <td class="center nowrap"><strong><?= $k1 ?></strong></td>
+                                <td class="nowrap"><?= $n1 ?></td>
+                                <td class="center nowrap"><strong><?= $k2 ?></strong></td>
+                                <td class="nowrap"><?= $n2 ?></td>
                             </tr>
                         <?php endfor; ?>
                     </tbody>
