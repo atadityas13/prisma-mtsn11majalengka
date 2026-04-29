@@ -135,17 +135,17 @@ $jadwal = [
             align-items: center;
             border-bottom: 3px double #000;
             padding-bottom: 5px;
-            margin-bottom: 10px;
+            margin-bottom: 5px; /* Kurangi margin bawah */
         }
 
         .kop img {
-            height: 65px;
+            height: 60px; /* Sedikit dikecilkan agar hemat ruang */
         }
 
         .kop-text {
             flex: 1;
             text-align: center;
-            line-height: 1.2;
+            line-height: 1.1;
         }
 
         .kop-text h3 {
@@ -189,20 +189,21 @@ $jadwal = [
         .judul p {
             font-size: 9pt;
             color: #333;
-            margin-top: 3px;
+            margin-top: 2px;
         }
 
         /* ── Layout Tabel & Legenda ── */
         .content-wrapper {
             display: flex;
-            justify-content: space-between; /* Tabel kiri, legenda kanan */
+            justify-content: space-between;
             align-items: flex-start;
-            gap: 25px; /* Jarak yang aman antara tabel utama dan legenda */
+            gap: 15px; /* Jarak aman */
+            width: 100%;
         }
 
         .main-table-container {
-            flex: 1;
-            min-width: 0;
+            flex: 1; /* Memastikan tabel utama mengisi semua ruang sisa */
+            min-width: 0; /* Penting untuk mencegah tabel meluap dari flex */
         }
 
         .legend-container {
@@ -212,20 +213,22 @@ $jadwal = [
         /* ── Tabel Utama ── */
         table {
             border-collapse: collapse;
-            font-size: 9pt;
-            table-layout: auto;
+            table-layout: fixed; /* Mencegah kolom melar tanpa kendali yang menyebabkan overlap */
         }
 
         .main-table {
-            width: 100%; /* Lebar penuh memenuhi container */
-            font-size: 10.5pt; /* Teks diperbesar */
+            width: 100%;
+            font-size: 10pt; /* Optimal */
         }
 
         table th,
         table td {
             border: 1px solid #000;
-            padding: 6px 8px; /* Sel dibuat lebih tinggi dan lebar */
             vertical-align: middle;
+        }
+        
+        .main-table th, .main-table td {
+            padding: 5px 6px; /* Lebih renggang, tapi aman dari overlap halaman 2 */
         }
 
         table thead th {
@@ -234,22 +237,20 @@ $jadwal = [
             font-weight: 700;
         }
 
-        table tbody td {
-            min-height: 20px;
-        }
-
         .center {
             text-align: center;
         }
 
         .nowrap {
             white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis; /* Jika sangat terpaksa kurang ruang, teks akan menjadi ... (mencegah overlap) */
         }
 
         /* ── Legenda ── */
         .legend-table {
-            width: max-content; /* Pas seukuran isi legenda */
-            font-size: 7pt; /* Diperkecil agar ringkas */
+            width: max-content;
+            font-size: 7pt;
         }
 
         .legend-table th, .legend-table td {
@@ -260,7 +261,7 @@ $jadwal = [
         .ttd-container {
             display: flex;
             justify-content: flex-end;
-            margin-top: 20px;
+            margin-top: 5px; /* Kurangi margin atas agar tidak terlempar ke halaman 2 */
             width: 100%;
         }
 
@@ -279,7 +280,7 @@ $jadwal = [
         .sig-overlay {
             position: relative;
             height: 70px;
-            margin-top: 5px;
+            margin-top: 0;
             margin-bottom: 5px;
         }
 
@@ -377,6 +378,19 @@ $jadwal = [
             <!-- Tabel Utama -->
             <div class="main-table-container">
                 <table class="main-table">
+                    <colgroup>
+                        <!-- Mengatur lebar persentase agar tabel pas 100% dan tidak tumpang tindih -->
+                        <col style="width: 17%;">
+                        <col style="width: 5%;">
+                        <col style="width: 13%;">
+                        <col style="width: 23%;">
+                        <col style="width: 7%;">
+                        <col style="width: 7%;">
+                        <col style="width: 7%;">
+                        <col style="width: 7%;">
+                        <col style="width: 7%;">
+                        <col style="width: 7%;">
+                    </colgroup>
                     <thead>
                         <tr>
                             <th rowspan="2">Hari, Tanggal</th>
@@ -430,9 +444,9 @@ $jadwal = [
                             <th colspan="4" style="background:#ddd; font-size:8pt;">DAFTAR KODE PENGAWAS</th>
                         </tr>
                         <tr>
-                            <th class="nowrap" style="width:30px;">Kode</th>
+                            <th class="nowrap" style="width:25px;">Kode</th>
                             <th class="nowrap">Nama Guru</th>
-                            <th class="nowrap" style="width:30px;">Kode</th>
+                            <th class="nowrap" style="width:25px;">Kode</th>
                             <th class="nowrap">Nama Guru</th>
                         </tr>
                     </thead>
