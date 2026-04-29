@@ -19,7 +19,7 @@ $gurus = [
     'RM' => 'RIYAN MARDIYANA, S.Pd.',
     'ZN' => 'ZENNY VIRGIAN, S.Pd.',
     'WK' => 'WAKHIDATUL KHOERUNNISA, S.Pd.',
-    'MS' => 'MAMAN S., S.Sos.',
+    'MS' => 'MAMAN SUPRATMAN, S.Sos.',
     'NR' => 'NORA RISMAYANTI, S.Pd.',
     'SA' => 'SRI APRINIAWATI, S.Pd.',
     'NK' => 'NANANG KOSWARA, S.Pd.',
@@ -78,7 +78,7 @@ $jadwal = [
         'hari' => 'Jum\'at',
         'tanggal' => '08 Mei 2026',
         'mapel' => [
-            ['jam_ke' => '1', 'waktu' => '07.00 – 08.30', 'nama' => 'Pendidikan Pancasila', 'pengawas' => ['MS', 'DD', 'WK', 'AI', 'RF', 'ZN']],
+            ['jam_ke' => '1', 'waktu' => '07.00 – 08.30', 'nama' => 'Pendidikan Pancasila', 'pengawas' => ['MS', 'DD', 'WK', 'IQ', 'RF', 'ZN']],
             ['jam_ke' => '2', 'waktu' => '08.45 – 10.15', 'nama' => 'Bahasa Indonesia', 'pengawas' => ['EV', 'ED', 'JM', 'YO', 'NR', 'IR']]
         ]
     ]
@@ -135,11 +135,13 @@ $jadwal = [
             align-items: center;
             border-bottom: 3px double #000;
             padding-bottom: 5px;
-            margin-bottom: 5px; /* Kurangi margin bawah */
+            margin-bottom: 5px;
+            /* Kurangi margin bawah */
         }
 
         .kop img {
-            height: 60px; /* Sedikit dikecilkan agar hemat ruang */
+            height: 60px;
+            /* Sedikit dikecilkan agar hemat ruang */
         }
 
         .kop-text {
@@ -179,15 +181,13 @@ $jadwal = [
 
         .judul h4 {
             font-size: 12pt;
-            text-transform: uppercase;
-            text-decoration: underline;
             font-weight: 700;
             letter-spacing: 1px;
             margin: 0;
         }
 
         .judul p {
-            font-size: 9pt;
+            font-size: 10pt;
             color: #333;
             margin-top: 2px;
         }
@@ -197,13 +197,16 @@ $jadwal = [
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            gap: 15px; /* Jarak aman */
+            gap: 15px;
+            /* Jarak aman */
             width: 100%;
         }
 
         .main-table-container {
-            flex: 1; /* Memastikan tabel utama mengisi semua ruang sisa */
-            min-width: 0; /* Penting untuk mencegah tabel meluap dari flex */
+            flex: 1;
+            /* Memastikan tabel utama mengisi semua ruang sisa */
+            min-width: 0;
+            /* Penting untuk mencegah tabel meluap dari flex */
         }
 
         .legend-container {
@@ -213,12 +216,14 @@ $jadwal = [
         /* ── Tabel Utama ── */
         table {
             border-collapse: collapse;
-            table-layout: fixed; /* Mencegah kolom melar tanpa kendali yang menyebabkan overlap */
+            table-layout: fixed;
+            /* Mencegah kolom melar tanpa kendali yang menyebabkan overlap */
         }
 
         .main-table {
             width: 100%;
-            font-size: 9pt; /* Teks diperkecil agar pas dengan kolom */
+            font-size: 9pt;
+            /* Teks diperkecil agar pas dengan kolom */
         }
 
         table th,
@@ -226,8 +231,9 @@ $jadwal = [
             border: 1px solid #000;
             vertical-align: middle;
         }
-        
-        .main-table th, .main-table td {
+
+        .main-table th,
+        .main-table td {
             padding: 5px 6px;
         }
 
@@ -251,7 +257,8 @@ $jadwal = [
             font-size: 7pt;
         }
 
-        .legend-table th, .legend-table td {
+        .legend-table th,
+        .legend-table td {
             padding: 2px 4px;
         }
 
@@ -259,7 +266,8 @@ $jadwal = [
         .ttd-container {
             display: flex;
             justify-content: flex-end;
-            margin-top: -15px; /* Naikkan tanda tangan ke atas sedikit */
+            margin-top: -15px;
+            /* Naikkan tanda tangan ke atas sedikit */
             width: 100%;
         }
 
@@ -368,8 +376,8 @@ $jadwal = [
 
         <!-- Judul -->
         <div class="judul">
-            <h4>Jadwal Asesmen Akhir Madrasah & Pengawas Ruang</h4>
-            <p>Tahun Pelajaran <?= DEFAULT_YEAR ?></p>
+            <h4>JADWAL PENGAWAS ASESMEN AKHIR MADRASAH</h4>
+            <h4>TAHUN AJARAN <?= DEFAULT_YEAR ?></h4>
         </div>
 
         <div class="content-wrapper">
@@ -408,8 +416,8 @@ $jadwal = [
                     </thead>
                     <tbody>
                         <?php foreach ($jadwal as $hari): ?>
-                            <?php 
-                            $rowspan = count($hari['mapel']); 
+                            <?php
+                            $rowspan = count($hari['mapel']);
                             $first = true;
                             ?>
                             <?php foreach ($hari['mapel'] as $mapel): ?>
@@ -420,7 +428,7 @@ $jadwal = [
                                         </td>
                                         <?php $first = false; ?>
                                     <?php endif; ?>
-                                    
+
                                     <td class="center"><?= $mapel['jam_ke'] ?></td>
                                     <td class="center nowrap"><?= $mapel['waktu'] ?></td>
                                     <td class="nowrap"><?= $mapel['nama'] ?></td>
@@ -449,15 +457,15 @@ $jadwal = [
                         </tr>
                     </thead>
                     <tbody>
-                        <?php 
+                        <?php
                         $keys = array_keys($gurus);
                         $half = ceil(count($keys) / 2);
-                        for ($i = 0; $i < $half; $i++): 
+                        for ($i = 0; $i < $half; $i++):
                             $k1 = $keys[$i];
                             $n1 = $gurus[$k1];
-                            $k2 = isset($keys[$i+$half]) ? $keys[$i+$half] : '';
-                            $n2 = isset($keys[$i+$half]) ? $gurus[$keys[$i+$half]] : '';
-                        ?>
+                            $k2 = isset($keys[$i + $half]) ? $keys[$i + $half] : '';
+                            $n2 = isset($keys[$i + $half]) ? $gurus[$keys[$i + $half]] : '';
+                            ?>
                             <tr>
                                 <td class="center nowrap"><strong><?= $k1 ?></strong></td>
                                 <td class="nowrap"><?= $n1 ?></td>
