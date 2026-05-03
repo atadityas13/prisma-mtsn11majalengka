@@ -269,7 +269,7 @@ foreach ($all_entries as $entry):
     <table class="hadir">
         <thead>
             <tr>
-                <th>No</th>
+                <th>Hari ke</th>
                 <th>Hari / Tanggal</th>
                 <th>Jam</th>
                 <th>Ruang</th>
