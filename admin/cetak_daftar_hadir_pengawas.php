@@ -156,7 +156,7 @@ $bulan_ind_to_eng = [
 
         /* ── TTD ── */
         .ttd { margin-top: 18px; display: flex; justify-content: flex-end; }
-        .ttd-box { width: 260px; text-align: center; }
+        .ttd-box { width: 260px; text-align: left; }
         .ttd-box .ttd-space { height: 60px; }
         .ttd-box p { margin: 2px 0; font-size: 10pt; }
 
@@ -166,7 +166,8 @@ $bulan_ind_to_eng = [
             background: #333; color: #fff; padding: 10px;
             text-align: center; z-index: 999;
             font-family: Arial, sans-serif; font-size: 13px;
-        
+        }
+
         .no-print button {
             padding: 7px 18px; margin: 0 5px; border: none;
             border-radius: 4px; font-weight: bold; cursor: pointer;
