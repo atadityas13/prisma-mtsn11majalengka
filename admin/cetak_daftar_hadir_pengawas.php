@@ -150,10 +150,13 @@ $bulan_ind_to_eng = [
         table.hadir th, table.hadir td { border: 1px solid #000; padding: 6px 7px; vertical-align: middle; }
         table.hadir thead th { background: #f0f0f0; text-align: center; font-weight: 700; }
         table.hadir tbody td.center { text-align: center; }
-        table.hadir tbody tr { min-height: 30px; }
-        table.hadir th:nth-child(1), table.hadir td:nth-child(1) { width: 32px; }
-        table.hadir th:nth-child(2), table.hadir td:nth-child(2) { width: auto; word-break: break-word; overflow-wrap: anywhere; }
-        table.hadir th:nth-child(3), table.hadir td:nth-child(3) { width: 120px; }
+        table.hadir tbody tr { min-height: 26px; }
+        table.hadir th:nth-child(1), table.hadir td:nth-child(1) { width: 28px; }
+        table.hadir th:nth-child(2), table.hadir td:nth-child(2) { width: 140px; }
+        table.hadir th:nth-child(3), table.hadir td:nth-child(3) { width: 50px; }
+        table.hadir th:nth-child(4), table.hadir td:nth-child(4) { width: 48px; }
+        table.hadir th:nth-child(5), table.hadir td:nth-child(5) { width: auto; }
+        table.hadir th:nth-child(6), table.hadir td:nth-child(6) { width: 130px; }
 
         /* ── TTD ── */
         .ttd { margin-top: 24px; display: flex; justify-content: space-between; }
@@ -267,18 +270,27 @@ foreach ($all_entries as $entry):
         <thead>
             <tr>
                 <th>No</th>
+                <th>Hari / Tanggal</th>
+                <th>Jam</th>
+                <th>Ruang</th>
                 <th>Nama Pengawas</th>
                 <th>Tanda Tangan</th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($pengawas_list as $index => $nama): ?>
-            <tr>
-                <td class="center"><?= $index + 1 ?></td>
-                <td><?= htmlspecialchars($nama) ?></td>
-                <td></td>
-            </tr>
-            <?php endforeach; ?>
+            <?php $room_count = count($pengawas_list); ?>
+            <?php for ($i = 0; $i < $room_count; $i++): ?>
+                <tr>
+                    <?php if ($i === 0): ?>
+                        <td class="center" rowspan="<?= $room_count ?>">1</td>
+                        <td class="center" rowspan="<?= $room_count ?>"><?= $tgl_fmt ?></td>
+                        <td class="center" rowspan="<?= $room_count ?>"><?= htmlspecialchars($entry['jam_ke']) ?></td>
+                    <?php endif; ?>
+                    <td class="center"><?= $i + 1 ?></td>
+                    <td><?= htmlspecialchars($pengawas_list[$i]) ?></td>
+                    <td></td>
+                </tr>
+            <?php endfor; ?>
         </tbody>
     </table>
 
