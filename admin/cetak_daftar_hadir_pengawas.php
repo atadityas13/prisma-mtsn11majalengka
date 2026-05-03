@@ -300,8 +300,8 @@ foreach ($all_entries as $entry):
             <p>Mengetahui,</p>
             <p>Kepala Sekolah</p>
             <div class="ttd-space"></div>
-            <p><strong>Drs. H. AJI SUHARDI</strong></p>
-            <p>NIP. 19651231 199003 1 012</p>
+            <p><strong>H. Dede Apip Mustopa, S.Ag.</strong></p>
+            <p>NIP. 196801171992031002</p>
         </div>
         <div class="ttd-box">
             <p>Majalengka, <?= $tgl_fmt ?></p>
