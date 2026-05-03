@@ -87,6 +87,21 @@ $jadwal = [
 $hari_map  = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
 $bulan_map = ['','Januari','Februari','Maret','April','Mei','Juni',
               'Juli','Agustus','September','Oktober','November','Desember'];
+
+$bulan_ind_to_eng = [
+    'Januari' => 'January',
+    'Februari' => 'February',
+    'Maret' => 'March',
+    'April' => 'April',
+    'Mei' => 'May',
+    'Juni' => 'June',
+    'Juli' => 'July',
+    'Agustus' => 'August',
+    'September' => 'September',
+    'Oktober' => 'October',
+    'November' => 'November',
+    'Desember' => 'December'
+];
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -194,10 +209,8 @@ foreach ($all_entries as $entry):
         return isset($gurus[$kode]) ? $gurus[$kode] : $kode;
     }, $entry['pengawas']);
 
-    $tgl_obj  = DateTime::createFromFormat('d M Y', $entry['tanggal']);
-    if (!$tgl_obj) {
-        $tgl_obj = new DateTime($entry['tanggal']);
-    }
+    $entry['tanggal'] = str_replace(array_keys($bulan_ind_to_eng), array_values($bulan_ind_to_eng), $entry['tanggal']);
+    $tgl_obj = new DateTime($entry['tanggal']);
     $hari     = $entry['hari'];
     $tgl_fmt  = $hari . ', ' . $tgl_obj->format('d') . ' ' . $bulan_map[(int)$tgl_obj->format('m')] . ' ' . $tgl_obj->format('Y');
     $jam_fmt  = $entry['waktu'] . ' WIB';
