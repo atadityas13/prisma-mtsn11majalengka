@@ -119,6 +119,7 @@ $bulan_ind_to_eng = [
 
         .page {
             width: calc(210mm - 16mm);
+            min-height: calc(297mm - 16mm);
             padding: 8mm;
             margin: 0 auto 8mm;
             background: #fff;
@@ -128,41 +129,29 @@ $bulan_ind_to_eng = [
         .page:last-of-type { page-break-after: auto; }
 
         /* ── Kop ── */
-        .kop { display: flex; align-items: center; border-bottom: 3px double #000; padding-bottom: 10px; margin-bottom: 14px; }
-        .kop img { height: 72px; }
-        .kop-text { flex: 1; text-align: center; line-height: 1.45; }
+        .kop { display: flex; align-items: center; border-bottom: 3px double #000; padding-bottom: 8px; margin-bottom: 8px; }
+        .kop img { height: 60px; }
+        .kop-text { flex: 1; text-align: center; line-height: 1.1; }
         .kop-text h3 { font-size: 12pt; text-transform: uppercase; margin-bottom: 2px; }
         .kop-text h2 { font-size: 14pt; font-weight: 900; text-transform: uppercase; margin-bottom: 2px; }
-        .kop-text p  { font-size: 9pt; }
+        .kop-text p  { font-size: 8pt; }
 
         /* ── Judul ── */
-        .judul { text-align: center; margin-bottom: 14px; }
-        .judul h4 { font-size: 13pt; text-transform: uppercase; text-decoration: underline; font-weight: 700; letter-spacing: .5px; margin: 0; }
-
-        /* ── Info Grid ── */
-        .info-table { width: 100%; margin-bottom: 14px; border-collapse: collapse; font-size: 10.5pt; }
-        .info-table td { padding: 2px 0; vertical-align: top; }
-        .info-table td:nth-child(2) { width: 12px; text-align: center; }
-        .info-label { width: 150px; }
+        .judul { text-align: center; margin-bottom: 10px; }
+        .judul h4 { font-size: 13pt; text-transform: uppercase; letter-spacing: 1px; margin: 0; }
 
         /* ── Tabel Hadir ── */
-        table.hadir { width: 100%; border-collapse: collapse; font-size: 10pt; table-layout: fixed; }
-        table.hadir th, table.hadir td { border: 1px solid #000; padding: 6px 7px; vertical-align: middle; }
+        table.hadir { width: 100%; border-collapse: collapse; font-size: 9pt; table-layout: fixed; }
+        table.hadir th, table.hadir td { border: 1px solid #000; padding: 5px 6px; vertical-align: middle; }
         table.hadir thead th { background: #f0f0f0; text-align: center; font-weight: 700; }
         table.hadir tbody td.center { text-align: center; }
-        table.hadir tbody tr { min-height: 26px; }
-        table.hadir th:nth-child(1), table.hadir td:nth-child(1) { width: 28px; }
-        table.hadir th:nth-child(2), table.hadir td:nth-child(2) { width: 140px; }
-        table.hadir th:nth-child(3), table.hadir td:nth-child(3) { width: 50px; }
-        table.hadir th:nth-child(4), table.hadir td:nth-child(4) { width: 48px; }
+        table.hadir tbody tr { min-height: 24px; }
+        table.hadir th:nth-child(1), table.hadir td:nth-child(1) { width: 34px; }
+        table.hadir th:nth-child(2), table.hadir td:nth-child(2) { width: 170px; }
+        table.hadir th:nth-child(3), table.hadir td:nth-child(3) { width: 48px; }
+        table.hadir th:nth-child(4), table.hadir td:nth-child(4) { width: 42px; }
         table.hadir th:nth-child(5), table.hadir td:nth-child(5) { width: auto; }
-        table.hadir th:nth-child(6), table.hadir td:nth-child(6) { width: 130px; }
-
-        /* ── TTD ── */
-        .ttd { margin-top: 24px; display: flex; justify-content: space-between; }
-        .ttd-box { width: 240px; text-align: center; }
-        .ttd-box .ttd-space { height: 65px; }
-        .ttd-box p { margin: 2px 0; font-size: 10.5pt; }
+        table.hadir th:nth-child(6), table.hadir td:nth-child(6) { width: 145px; }
 
         /* ── Print ── */
         .no-print {
@@ -207,16 +196,7 @@ foreach ($jadwal as $hari) {
     }
 }
 
-foreach ($all_entries as $entry):
-    $pengawas_list = array_map(function($kode) use ($gurus) {
-        return isset($gurus[$kode]) ? $gurus[$kode] : $kode;
-    }, $entry['pengawas']);
-
-    $entry['tanggal'] = str_replace(array_keys($bulan_ind_to_eng), array_values($bulan_ind_to_eng), $entry['tanggal']);
-    $tgl_obj = new DateTime($entry['tanggal']);
-    $hari     = $entry['hari'];
-    $tgl_fmt  = $hari . ', ' . $tgl_obj->format('d') . ' ' . $bulan_map[(int)$tgl_obj->format('m')] . ' ' . $tgl_obj->format('Y');
-    $jam_fmt  = $entry['waktu'] . ' WIB';
+$session_no = 1;
 ?>
 <div class="page">
     <!-- Kop Surat -->
@@ -237,39 +217,11 @@ foreach ($all_entries as $entry):
         <h4>Daftar Hadir Pengawas Asesmen</h4>
     </div>
 
-    <!-- Info -->
-    <table class="info-table">
-        <tr>
-            <td class="info-label">Mata Pelajaran</td>
-            <td>:</td>
-            <td><strong><?= htmlspecialchars($entry['nama_mapel']) ?></strong></td>
-            <td class="info-label" style="padding-left:24px;">Tanggal</td>
-            <td>:</td>
-            <td><?= $tgl_fmt ?></td>
-        </tr>
-        <tr>
-            <td class="info-label">Jam Ke</td>
-            <td>:</td>
-            <td><?= htmlspecialchars($entry['jam_ke']) ?></td>
-            <td class="info-label" style="padding-left:24px;">Waktu</td>
-            <td>:</td>
-            <td><?= $jam_fmt ?></td>
-        </tr>
-        <tr>
-            <td class="info-label">Tahun Pelajaran</td>
-            <td>:</td>
-            <td><?= DEFAULT_YEAR ?></td>
-            <td class="info-label" style="padding-left:24px;"></td>
-            <td></td>
-            <td></td>
-        </tr>
-    </table>
-
     <!-- Tabel Hadir -->
     <table class="hadir">
         <thead>
             <tr>
-                <th>Hari ke</th>
+                <th>No Urut</th>
                 <th>Hari / Tanggal</th>
                 <th>Jam</th>
                 <th>Ruang</th>
@@ -278,40 +230,34 @@ foreach ($all_entries as $entry):
             </tr>
         </thead>
         <tbody>
-            <?php $room_count = count($pengawas_list); ?>
-            <?php for ($i = 0; $i < $room_count; $i++): ?>
-                <tr>
-                    <?php if ($i === 0): ?>
-                        <td class="center" rowspan="<?= $room_count ?>">1</td>
-                        <td class="center" rowspan="<?= $room_count ?>"><?= $tgl_fmt ?></td>
-                        <td class="center" rowspan="<?= $room_count ?>"><?= htmlspecialchars($entry['jam_ke']) ?></td>
-                    <?php endif; ?>
-                    <td class="center"><?= $i + 1 ?></td>
-                    <td><?= htmlspecialchars($pengawas_list[$i]) ?></td>
-                    <td></td>
-                </tr>
-            <?php endfor; ?>
+            <?php foreach ($all_entries as $entry): ?>
+                <?php
+                $pengawas_list = array_map(function($kode) use ($gurus) {
+                    return isset($gurus[$kode]) ? $gurus[$kode] : $kode;
+                }, $entry['pengawas']);
+                $entry['tanggal'] = str_replace(array_keys($bulan_ind_to_eng), array_values($bulan_ind_to_eng), $entry['tanggal']);
+                $tgl_obj = new DateTime($entry['tanggal']);
+                $tgl_fmt  = $entry['hari'] . ', ' . $tgl_obj->format('d') . ' ' . $bulan_map[(int)$tgl_obj->format('m')] . ' ' . $tgl_obj->format('Y');
+                $jam_label = htmlspecialchars($entry['jam_ke']);
+                $rowspan = count($pengawas_list);
+                ?>
+                <?php foreach ($pengawas_list as $index => $nama): ?>
+                    <tr>
+                        <?php if ($index === 0): ?>
+                            <td class="center" rowspan="<?= $rowspan ?>"><?= $session_no ?></td>
+                            <td rowspan="<?= $rowspan ?>"><?= $tgl_fmt ?></td>
+                            <td class="center" rowspan="<?= $rowspan ?>"><?= $jam_label ?></td>
+                        <?php endif; ?>
+                        <td class="center"><?= $index + 1 ?></td>
+                        <td><?= htmlspecialchars($nama) ?></td>
+                        <td></td>
+                    </tr>
+                <?php endforeach; ?>
+                <?php $session_no++; ?>
+            <?php endforeach; ?>
         </tbody>
     </table>
-
-    <!-- TTD -->
-    <div class="ttd">
-        <div class="ttd-box">
-            <p>Mengetahui,</p>
-            <p>Kepala Sekolah</p>
-            <div class="ttd-space"></div>
-            <p><strong>H. Dede Apip Mustopa, S.Ag.</strong></p>
-            <p>NIP. 196801171992031002</p>
-        </div>
-        <div class="ttd-box">
-            <p>Majalengka, <?= $tgl_fmt ?></p>
-            <p>Koordinator Asesmen</p>
-            <div class="ttd-space"></div>
-            <p><strong>................................</strong></p>
-        </div>
-    </div>
 </div>
-<?php endforeach; ?>
 
 </body>
 </html>
