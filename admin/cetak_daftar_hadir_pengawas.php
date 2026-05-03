@@ -146,12 +146,19 @@ $bulan_ind_to_eng = [
         table.hadir thead th { background: #f0f0f0; text-align: center; font-weight: 700; }
         table.hadir tbody td.center { text-align: center; }
         table.hadir tbody tr { min-height: 24px; }
-        table.hadir th:nth-child(1), table.hadir td:nth-child(1) { width: 34px; }
-        table.hadir th:nth-child(2), table.hadir td:nth-child(2) { width: 170px; }
+        .day-group { page-break-inside: avoid; break-inside: avoid; }
+        table.hadir th:nth-child(1), table.hadir td:nth-child(1) { width: 32px; }
+        table.hadir th:nth-child(2), table.hadir td:nth-child(2) { width: 160px; }
         table.hadir th:nth-child(3), table.hadir td:nth-child(3) { width: 48px; }
         table.hadir th:nth-child(4), table.hadir td:nth-child(4) { width: 42px; }
         table.hadir th:nth-child(5), table.hadir td:nth-child(5) { width: auto; }
         table.hadir th:nth-child(6), table.hadir td:nth-child(6) { width: 145px; }
+
+        /* ── TTD ── */
+        .ttd { margin-top: 18px; display: flex; justify-content: flex-end; }
+        .ttd-box { width: 260px; text-align: center; }
+        .ttd-box .ttd-space { height: 60px; }
+        .ttd-box p { margin: 2px 0; font-size: 10pt; }
 
         /* ── Print ── */
         .no-print {
@@ -159,7 +166,7 @@ $bulan_ind_to_eng = [
             background: #333; color: #fff; padding: 10px;
             text-align: center; z-index: 999;
             font-family: Arial, sans-serif; font-size: 13px;
-        }
+        
         .no-print button {
             padding: 7px 18px; margin: 0 5px; border: none;
             border-radius: 4px; font-weight: bold; cursor: pointer;
@@ -221,42 +228,85 @@ $session_no = 1;
     <table class="hadir">
         <thead>
             <tr>
-                <th>No Urut</th>
+                <th>Hari ke</th>
                 <th>Hari / Tanggal</th>
-                <th>Jam</th>
+                <th>Jam ke</th>
                 <th>Ruang</th>
                 <th>Nama Pengawas</th>
                 <th>Tanda Tangan</th>
             </tr>
         </thead>
-        <tbody>
-            <?php foreach ($all_entries as $entry): ?>
-                <?php
-                $pengawas_list = array_map(function($kode) use ($gurus) {
-                    return isset($gurus[$kode]) ? $gurus[$kode] : $kode;
-                }, $entry['pengawas']);
-                $entry['tanggal'] = str_replace(array_keys($bulan_ind_to_eng), array_values($bulan_ind_to_eng), $entry['tanggal']);
-                $tgl_obj = new DateTime($entry['tanggal']);
-                $tgl_fmt  = $entry['hari'] . ', ' . $tgl_obj->format('d') . ' ' . $bulan_map[(int)$tgl_obj->format('m')] . ' ' . $tgl_obj->format('Y');
-                $jam_label = htmlspecialchars($entry['jam_ke']);
-                $rowspan = count($pengawas_list);
-                ?>
-                <?php foreach ($pengawas_list as $index => $nama): ?>
-                    <tr>
-                        <?php if ($index === 0): ?>
-                            <td class="center" rowspan="<?= $rowspan ?>"><?= $session_no ?></td>
-                            <td rowspan="<?= $rowspan ?>"><?= $tgl_fmt ?></td>
-                            <td class="center" rowspan="<?= $rowspan ?>"><?= $jam_label ?></td>
-                        <?php endif; ?>
-                        <td class="center"><?= $index + 1 ?></td>
-                        <td><?= htmlspecialchars($nama) ?></td>
-                        <td></td>
-                    </tr>
+        <?php
+        // Group sessions per day and keep hari/tanggal merged
+        $days = [];
+        foreach ($all_entries as $entry) {
+            $day_key = $entry['hari'] . '|' . $entry['tanggal'];
+            if (!isset($days[$day_key])) {
+                $days[$day_key] = [
+                    'hari' => $entry['hari'],
+                    'tanggal' => $entry['tanggal'],
+                    'sessions' => []
+                ];
+            }
+            $days[$day_key]['sessions'][] = [
+                'jam_ke' => $entry['jam_ke'],
+                'waktu' => $entry['waktu'],
+                'pengawas' => $entry['pengawas']
+            ];
+        }
+        $day_number = 0;
+        ?>
+        <?php foreach ($days as $day): ?>
+            <?php
+            $day_number++;
+            $day_rows = 0;
+            foreach ($day['sessions'] as $session) {
+                $day_rows += count($session['pengawas']);
+            }
+            $day_rows = max(1, $day_rows);
+            $day_date = str_replace(array_keys($bulan_ind_to_eng), array_values($bulan_ind_to_eng), $day['tanggal']);
+            $tgl_obj = new DateTime($day_date);
+            $tgl_fmt = $day['hari'] . ', ' . $tgl_obj->format('d') . ' ' . $bulan_map[(int)$tgl_obj->format('m')] . ' ' . $tgl_obj->format('Y');
+            $first_day_row = true;
+            ?>
+            <tbody class="day-group">
+                <?php foreach ($day['sessions'] as $session): ?>
+                    <?php
+                    $pengawas_list = array_map(function($kode) use ($gurus) {
+                        return isset($gurus[$kode]) ? $gurus[$kode] : $kode;
+                    }, $session['pengawas']);
+                    $session_rows = count($pengawas_list);
+                    $jam_label = htmlspecialchars($session['jam_ke']);
+                    ?>
+                    <?php foreach ($pengawas_list as $index => $nama): ?>
+                        <tr>
+                            <?php if ($index === 0 && $first_day_row): ?>
+                                <td class="center" rowspan="<?= $day_rows ?>"><?= $day_number ?></td>
+                                <td rowspan="<?= $day_rows ?>"><?= $tgl_fmt ?></td>
+                                <?php $first_day_row = false; ?>
+                            <?php endif; ?>
+                            <?php if ($index === 0): ?>
+                                <td class="center" rowspan="<?= $session_rows ?>"><?= $jam_label ?></td>
+                            <?php endif; ?>
+                            <td class="center"><?= $index + 1 ?></td>
+                            <td><?= htmlspecialchars($nama) ?></td>
+                            <td></td>
+                        </tr>
+                    <?php endforeach; ?>
                 <?php endforeach; ?>
-                <?php $session_no++; ?>
-            <?php endforeach; ?>
-        </tbody>
+            </tbody>
+        <?php endforeach; ?>
     </table>
+
+    <div class="ttd">
+        <div class="ttd-box">
+            <p>Majalengka, <?= date('d') ?> <?= ['', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'][(int) date('m')] ?> <?= date('Y') ?></p>
+            <p>Plt. Kepala Madrasah</p>
+            <div class="ttd-space"></div>
+            <p><strong><u>H. Dede Apip Mustopa, S.Ag.</u></strong></p>
+            <p>NIP. 196801171992031002</p>
+        </div>
+    </div>
 </div>
 
 </body>
