@@ -273,24 +273,35 @@ $session_no = 1;
             <tbody class="day-group">
                 <?php foreach ($day['sessions'] as $session): ?>
                     <?php
-                    $pengawas_list = array_map(function($kode) use ($gurus) {
-                        return isset($gurus[$kode]) ? $gurus[$kode] : $kode;
-                    }, $session['pengawas']);
-                    $session_rows = count($pengawas_list);
+                    $codes = $session['pengawas'];
+                    $room_count = count($codes);
+                    $room_pairs = [];
+                    for ($i = 0; $i < $room_count; $i++) {
+                        $first = $codes[$i];
+                        $second = $codes[($i + 1) % $room_count];
+                        $room_pairs[] = [
+                            'kode1' => $first,
+                            'kode2' => $second,
+                            'nama' => htmlspecialchars(implode(', ', [
+                                isset($gurus[$first]) ? $gurus[$first] : $first,
+                                isset($gurus[$second]) ? $gurus[$second] : $second
+                            ]))
+                        ];
+                    }
                     $jam_label = htmlspecialchars($session['jam_ke']);
                     ?>
-                    <?php foreach ($pengawas_list as $index => $nama): ?>
+                    <?php foreach ($room_pairs as $room_index => $room): ?>
                         <tr>
-                            <?php if ($index === 0 && $first_day_row): ?>
+                            <?php if ($room_index === 0 && $first_day_row): ?>
                                 <td class="center" rowspan="<?= $day_rows ?>"><?= $day_number ?></td>
                                 <td rowspan="<?= $day_rows ?>"><?= $tgl_fmt ?></td>
                                 <?php $first_day_row = false; ?>
                             <?php endif; ?>
-                            <?php if ($index === 0): ?>
-                                <td class="center" rowspan="<?= $session_rows ?>"><?= $jam_label ?></td>
+                            <?php if ($room_index === 0): ?>
+                                <td class="center" rowspan="<?= $room_count ?>"><?= $jam_label ?></td>
                             <?php endif; ?>
-                            <td class="center"><?= $index + 1 ?></td>
-                            <td><?= htmlspecialchars($nama) ?></td>
+                            <td class="center"><?= $room_index + 1 ?></td>
+                            <td><?= $room['nama'] ?></td>
                             <td></td>
                         </tr>
                     <?php endforeach; ?>
