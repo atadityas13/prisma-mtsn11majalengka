@@ -273,33 +273,24 @@ $session_no = 1;
             <tbody class="day-group">
                 <?php foreach ($day['sessions'] as $session): ?>
                     <?php
-                    $codes = $session['pengawas'];
-                    $room_pairs = array_chunk($codes, 2);
-                    $session_rows = count($room_pairs) * 2;
+                    $pengawas_list = array_map(function($kode) use ($gurus) {
+                        return isset($gurus[$kode]) ? $gurus[$kode] : $kode;
+                    }, $session['pengawas']);
+                    $session_rows = count($pengawas_list);
                     $jam_label = htmlspecialchars($session['jam_ke']);
                     ?>
-                    <?php foreach ($room_pairs as $room_index => $pair): ?>
-                        <?php
-                        $first_code = $pair[0] ?? null;
-                        $second_code = $pair[1] ?? null;
-                        $first_name = $first_code ? (isset($gurus[$first_code]) ? $gurus[$first_code] : $first_code) : '';
-                        $second_name = $second_code ? (isset($gurus[$second_code]) ? $gurus[$second_code] : $second_code) : '';
-                        ?>
+                    <?php foreach ($pengawas_list as $index => $nama): ?>
                         <tr>
-                            <?php if ($room_index === 0 && $first_day_row): ?>
+                            <?php if ($index === 0 && $first_day_row): ?>
                                 <td class="center" rowspan="<?= $day_rows ?>"><?= $day_number ?></td>
                                 <td rowspan="<?= $day_rows ?>"><?= $tgl_fmt ?></td>
                                 <?php $first_day_row = false; ?>
                             <?php endif; ?>
-                            <?php if ($room_index === 0): ?>
+                            <?php if ($index === 0): ?>
                                 <td class="center" rowspan="<?= $session_rows ?>"><?= $jam_label ?></td>
                             <?php endif; ?>
-                            <td class="center" rowspan="2"><?= $room_index + 1 ?></td>
-                            <td><?= htmlspecialchars($first_name) ?></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td><?= htmlspecialchars($second_name) ?></td>
+                            <td class="center"><?= $index + 1 ?></td>
+                            <td><?= htmlspecialchars($nama) ?></td>
                             <td></td>
                         </tr>
                     <?php endforeach; ?>
