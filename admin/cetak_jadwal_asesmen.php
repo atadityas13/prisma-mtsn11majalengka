@@ -216,7 +216,7 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
 
         .legend-container {
             width: 100%;
-            margin-top: 12px;
+            margin-top: 5px; /* Margin atas dikurangi untuk hemat ruang vertikal */
         }
 
         /* ── Tabel Utama ── */
@@ -240,7 +240,7 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
 
         .main-table th,
         .main-table td {
-            padding: 5px 6px;
+            padding: 3px 4px; /* Padding diperkecil agar baris lebih rapat */
         }
 
         table thead th {
@@ -260,19 +260,13 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
         /* ── Legenda ── */
         .legend-table {
             width: 100%;
-            table-layout: fixed;
             font-size: 7pt;
         }
 
         .legend-table th,
         .legend-table td {
-            padding: 4px 6px;
-            word-break: break-word;
-            vertical-align: top;
-        }
-
-        .legend-table td {
-            width: 25%;
+            padding: 2px 4px; /* Padding diminimalkan */
+            vertical-align: middle;
         }
 
         /* ── Tanda Tangan ── */
@@ -508,13 +502,13 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
                         <th colspan="8" style="background:#ddd; font-size:8pt; padding:3px;">DAFTAR KODE PENGAWAS</th>
                     </tr>
                     <tr>
-                        <th class="nowrap" style="width:25px;">Kode</th>
+                        <th class="nowrap" style="width:20px;">Kode</th>
                         <th class="nowrap">Nama Guru</th>
-                        <th class="nowrap" style="width:25px;">Kode</th>
+                        <th class="nowrap" style="width:20px;">Kode</th>
                         <th class="nowrap">Nama Guru</th>
-                        <th class="nowrap" style="width:25px;">Kode</th>
+                        <th class="nowrap" style="width:20px;">Kode</th>
                         <th class="nowrap">Nama Guru</th>
-                        <th class="nowrap" style="width:25px;">Kode</th>
+                        <th class="nowrap" style="width:20px;">Kode</th>
                         <th class="nowrap">Nama Guru</th>
                     </tr>
                 </thead>
