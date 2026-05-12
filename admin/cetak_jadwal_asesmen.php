@@ -43,43 +43,43 @@ $jadwal = [
         'hari' => 'Senin',
         'tanggal' => '04 Mei 2026',
         'mapel' => [
-            ['jam_ke' => '1', 'waktu' => '07.30 – 09.00', 'nama' => 'Sejarah Kebudayaan Islam', 'pengawas' => ['JP', 'TM', 'IQ', 'SA', 'YO', 'NR']],
-            ['jam_ke' => '2', 'waktu' => '09.15 – 10.45', 'nama' => 'Bahasa Arab', 'pengawas' => ['RM', 'TE', 'AY', 'IQ', 'SR', 'EM']]
+            ['jam_ke' => '1', 'waktu' => '07.30 – 09.00', 'nama' => 'Sejarah Kebudayaan Islam', 'pengawas' => ['JP', 'SJ', 'TM', 'AS', 'IQ', 'AY', 'SA', 'AI', 'YO', 'DS', 'NR', 'NS']],
+            ['jam_ke' => '2', 'waktu' => '09.15 – 10.45', 'nama' => 'Bahasa Arab', 'pengawas' => ['RM', 'SJ', 'TE', 'AS', 'AY', 'AI', 'IQ', 'DS', 'SR', 'NS', 'EM', 'EN']]
         ]
     ],
     [
         'hari' => 'Selasa',
         'tanggal' => '05 Mei 2026',
         'mapel' => [
-            ['jam_ke' => '1', 'waktu' => '07.30 – 09.00', 'nama' => 'Bahasa Sunda', 'pengawas' => ['EM', 'SJ', 'ZN', 'DJ', 'WK', 'NS']],
-            ['jam_ke' => '2', 'waktu' => '09.15 – 10.45', 'nama' => 'Matematika', 'pengawas' => ['ZN', 'RF', 'DS', 'AS', 'MS', 'EN']],
-            ['jam_ke' => '3', 'waktu' => '11.00 – 12.30', 'nama' => 'Akidah-Akhlak', 'pengawas' => ['KK', 'AY', 'IK', 'AI', 'IR', 'AS']]
+            ['jam_ke' => '1', 'waktu' => '07.30 – 09.00', 'nama' => 'Bahasa Sunda', 'pengawas' => ['EM', 'AS', 'SJ', 'AY', 'ZN', 'AI', 'DJ', 'DS', 'WK', 'TE', 'NS', 'EN']],
+            ['jam_ke' => '2', 'waktu' => '09.15 – 10.45', 'nama' => 'Matematika', 'pengawas' => ['ZN', 'SJ', 'RF', 'AY', 'DS', 'AI', 'AS', 'NS', 'MS', 'TE', 'EN', 'TS']],
+            ['jam_ke' => '3', 'waktu' => '11.00 – 12.30', 'nama' => 'Akidah-Akhlak', 'pengawas' => ['KK', 'SJ', 'AY', 'DS', 'IK', 'NS', 'AI', 'TE', 'IR', 'EN', 'AS', 'TS']]
         ]
     ],
     [
         'hari' => 'Rabu',
         'tanggal' => '06 Mei 2026',
         'mapel' => [
-            ['jam_ke' => '1', 'waktu' => '07.30 – 09.00', 'nama' => 'Ilmu Pengetahuan Alam', 'pengawas' => ['SR', 'YO', 'NR', 'NK', 'EN', 'RF']],
-            ['jam_ke' => '2', 'waktu' => '09.15 – 10.45', 'nama' => 'Fiqih', 'pengawas' => ['SJ', 'TS', 'SA', 'DD', 'JP', 'DJ']],
-            ['jam_ke' => '3', 'waktu' => '11.00 – 12.30', 'nama' => 'Ilmu Pengetahuan Sosial', 'pengawas' => ['DJ', 'WK', 'TM', 'RM', 'JM', 'TE']]
+            ['jam_ke' => '1', 'waktu' => '07.30 – 09.00', 'nama' => 'Ilmu Pengetahuan Alam', 'pengawas' => ['SR', 'SJ', 'YO', 'AS', 'NR', 'AY', 'NK', 'AI', 'EN', 'DS', 'RF', 'NS']],
+            ['jam_ke' => '2', 'waktu' => '09.15 – 10.45', 'nama' => 'Fiqih', 'pengawas' => ['SJ', 'AS', 'TS', 'AY', 'SA', 'AI', 'DD', 'DS', 'JP', 'NS', 'DJ', 'TE']],
+            ['jam_ke' => '3', 'waktu' => '11.00 – 12.30', 'nama' => 'Ilmu Pengetahuan Sosial', 'pengawas' => ['DJ', 'SJ', 'WK', 'AS', 'TM', 'AY', 'RM', 'AI', 'JM', 'DS', 'TE', 'NS']]
         ]
     ],
     [
         'hari' => 'Kamis',
         'tanggal' => '07 Mei 2026',
         'mapel' => [
-            ['jam_ke' => '1', 'waktu' => '07.30 – 09.00', 'nama' => 'Al-qur\'an-Hadits', 'pengawas' => ['ED', 'AL', 'RM', 'NS', 'AY', 'DS']],
-            ['jam_ke' => '2', 'waktu' => '09.15 – 10.45', 'nama' => 'Bahasa Inggris', 'pengawas' => ['EV', 'AL', 'KK', 'AI', 'IK', 'NK']],
-            ['jam_ke' => '3', 'waktu' => '11.00 – 12.30', 'nama' => 'Seni Budaya', 'pengawas' => ['AL', 'ED', 'TS', 'SA', 'NK', 'MS']]
+            ['jam_ke' => '1', 'waktu' => '07.30 – 09.00', 'nama' => 'Al-qur\'an-Hadits', 'pengawas' => ['ED', 'SJ', 'AL', 'AS', 'RM', 'AI', 'NS', 'TE', 'AY', 'EN', 'DS', 'TS']],
+            ['jam_ke' => '2', 'waktu' => '09.15 – 10.45', 'nama' => 'Bahasa Inggris', 'pengawas' => ['EV', 'SJ', 'AL', 'AS', 'KK', 'AY', 'AI', 'DS', 'IK', 'NS', 'NK', 'TE']],
+            ['jam_ke' => '3', 'waktu' => '11.00 – 12.30', 'nama' => 'Seni Budaya', 'pengawas' => ['AL', 'SJ', 'ED', 'AS', 'TS', 'AY', 'SA', 'AI', 'NK', 'DS', 'MS', 'NS']]
         ]
     ],
     [
         'hari' => 'Jum\'at',
         'tanggal' => '08 Mei 2026',
         'mapel' => [
-            ['jam_ke' => '1', 'waktu' => '07.00 – 08.30', 'nama' => 'Pendidikan Pancasila', 'pengawas' => ['MS', 'DD', 'WK', 'IQ', 'RF', 'ZN']],
-            ['jam_ke' => '2', 'waktu' => '08.45 – 10.15', 'nama' => 'Bahasa Indonesia', 'pengawas' => ['EV', 'ED', 'JM', 'YO', 'NR', 'IR']]
+            ['jam_ke' => '1', 'waktu' => '07.00 – 08.30', 'nama' => 'Pendidikan Pancasila', 'pengawas' => ['MS', 'SJ', 'DD', 'AS', 'WK', 'AY', 'IQ', 'AI', 'RF', 'DS', 'ZN', 'NS']],
+            ['jam_ke' => '2', 'waktu' => '08.45 – 10.15', 'nama' => 'Bahasa Indonesia', 'pengawas' => ['EV', 'SJ', 'ED', 'AS', 'JM', 'AY', 'YO', 'AI', 'NR', 'DS', 'IR', 'NS']]
         ]
     ]
 ];
@@ -473,7 +473,7 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
                                     <td class="nowrap"><?= $mapel['nama'] ?></td>
                                     <?php 
                                     // Tampilkan pengawas 2 per ruang dengan pemisah |
-                                    for ($ruang = 0; $ruang < 6; $ruang += 2):
+                                    for ($ruang = 0; $ruang < 12; $ruang += 2):
                                         $p1 = isset($mapel['pengawas'][$ruang]) ? $mapel['pengawas'][$ruang] : '';
                                         $p2 = isset($mapel['pengawas'][$ruang + 1]) ? $mapel['pengawas'][$ruang + 1] : '';
                                         $display = ($p1 && $p2) ? "$p1 | $p2" : ($p1 ? $p1 : ($p2 ? $p2 : ''));
