@@ -259,13 +259,20 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
 
         /* ── Legenda ── */
         .legend-table {
-            width: max-content;
+            width: 100%;
+            table-layout: fixed;
             font-size: 7pt;
         }
 
         .legend-table th,
         .legend-table td {
-            padding: 2px 4px;
+            padding: 4px 6px;
+            word-break: break-word;
+            vertical-align: top;
+        }
+
+        .legend-table td {
+            width: 25%;
         }
 
         /* ── Tanda Tangan ── */
@@ -498,9 +505,13 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
             <table class="legend-table">
                 <thead>
                     <tr>
-                        <th colspan="4" style="background:#ddd; font-size:8pt;">DAFTAR KODE PENGAWAS</th>
+                        <th colspan="8" style="background:#ddd; font-size:8pt;">DAFTAR KODE PENGAWAS</th>
                     </tr>
                     <tr>
+                        <th class="nowrap" style="width:25px;">Kode</th>
+                        <th class="nowrap">Nama Guru</th>
+                        <th class="nowrap" style="width:25px;">Kode</th>
+                        <th class="nowrap">Nama Guru</th>
                         <th class="nowrap" style="width:25px;">Kode</th>
                         <th class="nowrap">Nama Guru</th>
                         <th class="nowrap" style="width:25px;">Kode</th>
@@ -510,21 +521,34 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
                 <tbody>
                     <?php
                     $keys = array_keys($gurus);
-                    $half = ceil(count($keys) / 2);
-                    for ($i = 0; $i < $half; $i++):
-                        $k1 = $keys[$i];
-                        $n1 = $gurus[$k1];
-                        $k2 = isset($keys[$i + $half]) ? $keys[$i + $half] : '';
-                        $n2 = isset($keys[$i + $half]) ? $gurus[$keys[$i + $half]] : '';
+                    $quarter = ceil(count($keys) / 4);
+                    for ($i = 0; $i < $quarter; $i++):
+                        $k1 = isset($keys[$i]) ? $keys[$i] : '';
+                        $n1 = $k1 ? $gurus[$k1] : '';
+                        
+                        $k2 = isset($keys[$i + $quarter]) ? $keys[$i + $quarter] : '';
+                        $n2 = $k2 ? $gurus[$k2] : '';
+                        
+                        $k3 = isset($keys[$i + $quarter * 2]) ? $keys[$i + $quarter * 2] : '';
+                        $n3 = $k3 ? $gurus[$k3] : '';
+                        
+                        $k4 = isset($keys[$i + $quarter * 3]) ? $keys[$i + $quarter * 3] : '';
+                        $n4 = $k4 ? $gurus[$k4] : '';
                         
                         $hl1 = ($is_cetak_per_guru && $k1 === $active_guru_code) ? 'highlight-cell' : '';
                         $hl2 = ($is_cetak_per_guru && $k2 === $active_guru_code) ? 'highlight-cell' : '';
+                        $hl3 = ($is_cetak_per_guru && $k3 === $active_guru_code) ? 'highlight-cell' : '';
+                        $hl4 = ($is_cetak_per_guru && $k4 === $active_guru_code) ? 'highlight-cell' : '';
                         ?>
                         <tr>
                             <td class="center nowrap <?= $hl1 ?>"><strong><?= $k1 ?></strong></td>
                             <td class="nowrap <?= $hl1 ?>"><?= $n1 ?></td>
                             <td class="center nowrap <?= $hl2 ?>"><strong><?= $k2 ?></strong></td>
                             <td class="nowrap <?= $hl2 ?>"><?= $n2 ?></td>
+                            <td class="center nowrap <?= $hl3 ?>"><strong><?= $k3 ?></strong></td>
+                            <td class="nowrap <?= $hl3 ?>"><?= $n3 ?></td>
+                            <td class="center nowrap <?= $hl4 ?>"><strong><?= $k4 ?></strong></td>
+                            <td class="nowrap <?= $hl4 ?>"><?= $n4 ?></td>
                         </tr>
                     <?php endfor; ?>
                 </tbody>
