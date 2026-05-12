@@ -206,23 +206,17 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
 
         /* ── Layout Tabel & Legenda ── */
         .content-wrapper {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 15px;
-            /* Jarak aman */
+            display: block;
             width: 100%;
         }
 
         .main-table-container {
-            flex: 1;
-            /* Memastikan tabel utama mengisi semua ruang sisa */
-            min-width: 0;
-            /* Penting untuk mencegah tabel meluap dari flex */
+            width: 100%;
         }
 
         .legend-container {
-            flex: 0 0 auto;
+            width: 100%;
+            margin-top: 12px;
         }
 
         /* ── Tabel Utama ── */
@@ -497,44 +491,44 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
                     </tbody>
                 </table>
             </div>
+        </div>
 
-            <!-- Tabel Legenda Kode Guru -->
-            <div class="legend-container">
-                <table class="legend-table">
-                    <thead>
+        <!-- Tabel Legenda Kode Guru -->
+        <div class="legend-container">
+            <table class="legend-table">
+                <thead>
+                    <tr>
+                        <th colspan="4" style="background:#ddd; font-size:8pt;">DAFTAR KODE PENGAWAS</th>
+                    </tr>
+                    <tr>
+                        <th class="nowrap" style="width:25px;">Kode</th>
+                        <th class="nowrap">Nama Guru</th>
+                        <th class="nowrap" style="width:25px;">Kode</th>
+                        <th class="nowrap">Nama Guru</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $keys = array_keys($gurus);
+                    $half = ceil(count($keys) / 2);
+                    for ($i = 0; $i < $half; $i++):
+                        $k1 = $keys[$i];
+                        $n1 = $gurus[$k1];
+                        $k2 = isset($keys[$i + $half]) ? $keys[$i + $half] : '';
+                        $n2 = isset($keys[$i + $half]) ? $gurus[$keys[$i + $half]] : '';
+                        
+                        $hl1 = ($is_cetak_per_guru && $k1 === $active_guru_code) ? 'highlight-cell' : '';
+                        $hl2 = ($is_cetak_per_guru && $k2 === $active_guru_code) ? 'highlight-cell' : '';
+                        ?>
                         <tr>
-                            <th colspan="4" style="background:#ddd; font-size:8pt;">DAFTAR KODE PENGAWAS</th>
+                            <td class="center nowrap <?= $hl1 ?>"><strong><?= $k1 ?></strong></td>
+                            <td class="nowrap <?= $hl1 ?>"><?= $n1 ?></td>
+                            <td class="center nowrap <?= $hl2 ?>"><strong><?= $k2 ?></strong></td>
+                            <td class="nowrap <?= $hl2 ?>"><?= $n2 ?></td>
                         </tr>
-                        <tr>
-                            <th class="nowrap" style="width:25px;">Kode</th>
-                            <th class="nowrap">Nama Guru</th>
-                            <th class="nowrap" style="width:25px;">Kode</th>
-                            <th class="nowrap">Nama Guru</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $keys = array_keys($gurus);
-                        $half = ceil(count($keys) / 2);
-                        for ($i = 0; $i < $half; $i++):
-                            $k1 = $keys[$i];
-                            $n1 = $gurus[$k1];
-                            $k2 = isset($keys[$i + $half]) ? $keys[$i + $half] : '';
-                            $n2 = isset($keys[$i + $half]) ? $gurus[$keys[$i + $half]] : '';
-                            
-                            $hl1 = ($is_cetak_per_guru && $k1 === $active_guru_code) ? 'highlight-cell' : '';
-                            $hl2 = ($is_cetak_per_guru && $k2 === $active_guru_code) ? 'highlight-cell' : '';
-                            ?>
-                            <tr>
-                                <td class="center nowrap <?= $hl1 ?>"><strong><?= $k1 ?></strong></td>
-                                <td class="nowrap <?= $hl1 ?>"><?= $n1 ?></td>
-                                <td class="center nowrap <?= $hl2 ?>"><strong><?= $k2 ?></strong></td>
-                                <td class="nowrap <?= $hl2 ?>"><?= $n2 ?></td>
-                            </tr>
-                        <?php endfor; ?>
-                    </tbody>
-                </table>
-            </div>
+                    <?php endfor; ?>
+                </tbody>
+            </table>
         </div>
 
         <!-- Tanda Tangan -->
