@@ -118,16 +118,16 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
 
         @page {
             size: A4 landscape;
-            margin: 10mm;
+            margin: 8mm;
         }
 
         .page {
-            width: calc(297mm - 20mm);
-            padding: 10mm;
-            margin: 0 auto 10mm;
+            width: calc(297mm - 16mm);
+            padding: 8mm;
+            margin: 0 auto 8mm;
             background: #fff;
             box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
-            min-height: calc(210mm - 20mm);
+            min-height: calc(210mm - 16mm);
             position: relative;
         }
 
@@ -146,13 +146,12 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
             display: flex;
             align-items: center;
             border-bottom: 3px double #000;
-            padding-bottom: 5px;
-            margin-bottom: 5px;
-            /* Kurangi margin bawah */
+            padding-bottom: 2px;
+            margin-bottom: 2px;
         }
 
         .kop img {
-            height: 60px;
+            height: 50px;
             /* Sedikit dikecilkan agar hemat ruang */
         }
 
@@ -188,7 +187,7 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
         /* ── Judul ── */
         .judul {
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 3px;
         }
 
         .judul h4 {
@@ -273,8 +272,7 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
         .ttd-container {
             display: flex;
             justify-content: flex-end;
-            margin-top: -15px;
-            /* Naikkan tanda tangan ke atas sedikit */
+            margin-top: 5px; /* Hindari tumpang tindih dengan tabel */
             width: 100%;
         }
 
@@ -497,19 +495,29 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
         <!-- Tabel Legenda Kode Guru -->
         <div class="legend-container">
             <table class="legend-table" style="width: 100%;">
+                <colgroup>
+                    <col style="width: 4%;">
+                    <col style="width: 21%;">
+                    <col style="width: 4%;">
+                    <col style="width: 21%;">
+                    <col style="width: 4%;">
+                    <col style="width: 21%;">
+                    <col style="width: 4%;">
+                    <col style="width: 21%;">
+                </colgroup>
                 <thead>
                     <tr>
                         <th colspan="8" style="background:#ddd; font-size:8pt; padding:3px;">DAFTAR KODE PENGAWAS</th>
                     </tr>
                     <tr>
-                        <th class="nowrap" style="width:20px;">Kode</th>
-                        <th class="nowrap">Nama Guru</th>
-                        <th class="nowrap" style="width:20px;">Kode</th>
-                        <th class="nowrap">Nama Guru</th>
-                        <th class="nowrap" style="width:20px;">Kode</th>
-                        <th class="nowrap">Nama Guru</th>
-                        <th class="nowrap" style="width:20px;">Kode</th>
-                        <th class="nowrap">Nama Guru</th>
+                        <th class="center">Kode</th>
+                        <th class="center">Nama Guru</th>
+                        <th class="center">Kode</th>
+                        <th class="center">Nama Guru</th>
+                        <th class="center">Kode</th>
+                        <th class="center">Nama Guru</th>
+                        <th class="center">Kode</th>
+                        <th class="center">Nama Guru</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -536,13 +544,13 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
                         ?>
                         <tr>
                             <td class="center nowrap <?= $hl1 ?>"><strong><?= $k1 ?></strong></td>
-                            <td class="nowrap <?= $hl1 ?>"><?= $n1 ?></td>
+                            <td class="<?= $hl1 ?>"><?= $n1 ?></td>
                             <td class="center nowrap <?= $hl2 ?>"><strong><?= $k2 ?></strong></td>
-                            <td class="nowrap <?= $hl2 ?>"><?= $n2 ?></td>
+                            <td class="<?= $hl2 ?>"><?= $n2 ?></td>
                             <td class="center nowrap <?= $hl3 ?>"><strong><?= $k3 ?></strong></td>
-                            <td class="nowrap <?= $hl3 ?>"><?= $n3 ?></td>
+                            <td class="<?= $hl3 ?>"><?= $n3 ?></td>
                             <td class="center nowrap <?= $hl4 ?>"><strong><?= $k4 ?></strong></td>
-                            <td class="nowrap <?= $hl4 ?>"><?= $n4 ?></td>
+                            <td class="<?= $hl4 ?>"><?= $n4 ?></td>
                         </tr>
                     <?php endfor; ?>
                 </tbody>
