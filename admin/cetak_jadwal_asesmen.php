@@ -502,40 +502,53 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
 
         <!-- Tabel Legenda Kode Guru -->
         <div class="legend-container">
-            <table class="legend-table">
+            <table class="legend-table" style="width: 100%;">
                 <thead>
                     <tr>
-                        <th colspan="4" style="background:#ddd; font-size:8pt;">DAFTAR KODE PENGAWAS</th>
+                        <th colspan="8" style="background:#ddd; font-size:8pt; padding:3px;">DAFTAR KODE PENGAWAS</th>
+                    </tr>
+                    <tr>
+                        <th class="nowrap" style="width:25px;">Kode</th>
+                        <th class="nowrap">Nama Guru</th>
+                        <th class="nowrap" style="width:25px;">Kode</th>
+                        <th class="nowrap">Nama Guru</th>
+                        <th class="nowrap" style="width:25px;">Kode</th>
+                        <th class="nowrap">Nama Guru</th>
+                        <th class="nowrap" style="width:25px;">Kode</th>
+                        <th class="nowrap">Nama Guru</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                    $items = [];
-                    foreach ($gurus as $kode => $nama) {
-                        $hl = ($is_cetak_per_guru && $kode === $active_guru_code) ? 'highlight-cell' : '';
-                        $items[] = [
-                            'content' => '<strong>' . $kode . '</strong><br>' . $nama,
-                            'class' => $hl
-                        ];
-                    }
-                    $cols = 4;
-                    $rows = ceil(count($items) / $cols);
-                    for ($r = 0; $r < $rows; $r++):
+                    $keys = array_keys($gurus);
+                    $quarter = ceil(count($keys) / 4);
+                    for ($i = 0; $i < $quarter; $i++):
+                        $k1 = isset($keys[$i]) ? $keys[$i] : '';
+                        $n1 = $k1 ? $gurus[$k1] : '';
+                        
+                        $k2 = isset($keys[$i + $quarter]) ? $keys[$i + $quarter] : '';
+                        $n2 = $k2 ? $gurus[$k2] : '';
+                        
+                        $k3 = isset($keys[$i + $quarter * 2]) ? $keys[$i + $quarter * 2] : '';
+                        $n3 = $k3 ? $gurus[$k3] : '';
+                        
+                        $k4 = isset($keys[$i + $quarter * 3]) ? $keys[$i + $quarter * 3] : '';
+                        $n4 = $k4 ? $gurus[$k4] : '';
+                        
+                        $hl1 = ($is_cetak_per_guru && $k1 === $active_guru_code) ? 'highlight-cell' : '';
+                        $hl2 = ($is_cetak_per_guru && $k2 === $active_guru_code) ? 'highlight-cell' : '';
+                        $hl3 = ($is_cetak_per_guru && $k3 === $active_guru_code) ? 'highlight-cell' : '';
+                        $hl4 = ($is_cetak_per_guru && $k4 === $active_guru_code) ? 'highlight-cell' : '';
                         ?>
                         <tr>
-                            <?php for ($c = 0; $c < $cols; $c++):
-                                // Menyusun secara vertikal per kolom (down then across)
-                                $index = $r + $c * $rows;
-                                if (isset($items[$index])):
-                                    $content = $items[$index]['content'];
-                                    $class = $items[$index]['class'];
-                                else:
-                                    $content = '&nbsp;';
-                                    $class = '';
-                                endif;
-                            ?>
-                                <td class="nowrap <?= $class ?>" style="padding:4px; text-align:center;"><?= $content ?></td>
-                            <?php endfor; ?>
+                            <td class="center nowrap <?= $hl1 ?>"><strong><?= $k1 ?></strong></td>
+                            <td class="nowrap <?= $hl1 ?>"><?= $n1 ?></td>
+                            <td class="center nowrap <?= $hl2 ?>"><strong><?= $k2 ?></strong></td>
+                            <td class="nowrap <?= $hl2 ?>"><?= $n2 ?></td>
+                            <td class="center nowrap <?= $hl3 ?>"><strong><?= $k3 ?></strong></td>
+                            <td class="nowrap <?= $hl3 ?>"><?= $n3 ?></td>
+                            <td class="center nowrap <?= $hl4 ?>"><strong><?= $k4 ?></strong></td>
+                            <td class="nowrap <?= $hl4 ?>"><?= $n4 ?></td>
                         </tr>
                     <?php endfor; ?>
                 </tbody>
