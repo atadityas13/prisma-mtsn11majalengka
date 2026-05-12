@@ -43,43 +43,43 @@ $jadwal = [
         'hari' => 'Senin',
         'tanggal' => '04 Mei 2026',
         'mapel' => [
-            ['jam_ke' => '1', 'waktu' => '07.30 – 09.00', 'nama' => 'Sejarah Kebudayaan Islam', 'pengawas' => ['JP', 'SJ', 'TM', 'AY', 'IQ', 'SA', 'YO', 'NR', 'RM', 'EN', 'RF', 'DD']],
-            ['jam_ke' => '2', 'waktu' => '09.15 – 10.45', 'nama' => 'Bahasa Arab', 'pengawas' => ['AS', 'TE', 'ZN', 'IQ', 'SR', 'EM', 'MS', 'DJ', 'TS', 'AL', 'IK', 'NK']]
+            ['jam_ke' => '1', 'waktu' => '07.30 – 09.00', 'nama' => 'Sejarah Kebudayaan Islam', 'pengawas' => ['AY', 'NS', 'TE', 'EN', 'TS', 'SR', 'YO', 'TM', 'RM', 'ZN', 'WK', 'MS']],
+            ['jam_ke' => '2', 'waktu' => '09.15 – 10.45', 'nama' => 'Bahasa Arab', 'pengawas' => ['NR', 'SA', 'NK', 'DJ', 'AL', 'ED', 'DD', 'KK', 'EM', 'IK', 'JP', 'RF']]
         ]
     ],
     [
         'hari' => 'Selasa',
         'tanggal' => '05 Mei 2026',
         'mapel' => [
-            ['jam_ke' => '1', 'waktu' => '07.30 – 09.00', 'nama' => 'Bahasa Sunda', 'pengawas' => ['EM', 'AY', 'ZN', 'DJ', 'WK', 'NS', 'RM', 'YO', 'ED', 'RF', 'EV', 'NK']],
-            ['jam_ke' => '2', 'waktu' => '09.15 – 10.45', 'nama' => 'Matematika', 'pengawas' => ['AI', 'RF', 'DS', 'MS', 'EN', 'NR', 'SA', 'ZN', 'TE', 'KK', 'JP', 'IR']],
-            ['jam_ke' => '3', 'waktu' => '11.00 – 12.30', 'nama' => 'Akidah-Akhlak', 'pengawas' => ['KK', 'AY', 'IK', 'IQ', 'IR', 'TE', 'TM', 'EN', 'DD', 'TS', 'SR', 'EV']]
+            ['jam_ke' => '1', 'waktu' => '07.30 – 09.00', 'nama' => 'Bahasa Sunda', 'pengawas' => ['EV', 'IQ', 'IR', 'JM', 'SJ', 'AS', 'AY', 'AI', 'DS', 'NS', 'TE', 'EN']],
+            ['jam_ke' => '2', 'waktu' => '09.15 – 10.45', 'nama' => 'Matematika', 'pengawas' => ['TS', 'SR', 'YO', 'TM', 'RM', 'ZN', 'WK', 'MS', 'NR', 'SA', 'NK', 'DJ']],
+            ['jam_ke' => '3', 'waktu' => '11.00 – 12.30', 'nama' => 'Akidah-Akhlak', 'pengawas' => ['AL', 'ED', 'DD', 'KK', 'EM', 'IK', 'JP', 'RF', 'EV', 'IQ', 'IR', 'JM']]
         ]
     ],
     [
         'hari' => 'Rabu',
         'tanggal' => '06 Mei 2026',
         'mapel' => [
-            ['jam_ke' => '1', 'waktu' => '07.30 – 09.00', 'nama' => 'Ilmu Pengetahuan Alam', 'pengawas' => ['SR', 'YO', 'NR', 'NK', 'EN', 'RF', 'AY', 'RM', 'WK', 'MS', 'JP', 'ED']],
-            ['jam_ke' => '2', 'waktu' => '09.15 – 10.45', 'nama' => 'Fiqih', 'pengawas' => ['SJ', 'TS', 'SA', 'DD', 'DJ', 'TM', 'AY', 'TE', 'NS', 'EV', 'AL', 'NK']],
-            ['jam_ke' => '3', 'waktu' => '11.00 – 12.30', 'nama' => 'Ilmu Pengetahuan Sosial', 'pengawas' => ['DJ', 'WK', 'TM', 'RM', 'JM', 'TE', 'AS', 'EN', 'IQ', 'SA', 'RF', 'ZN']]
+            ['jam_ke' => '1', 'waktu' => '07.30 – 09.00', 'nama' => 'Ilmu Pengetahuan Alam', 'pengawas' => ['SJ', 'AS', 'AY', 'AI', 'DS', 'NS', 'TE', 'EN', 'TS', 'SR', 'YO', 'TM']],
+            ['jam_ke' => '2', 'waktu' => '09.15 – 10.45', 'nama' => 'Fiqih', 'pengawas' => ['RM', 'ZN', 'WK', 'MS', 'NR', 'SA', 'NK', 'DJ', 'AL', 'ED', 'DD', 'KK']],
+            ['jam_ke' => '3', 'waktu' => '11.00 – 12.30', 'nama' => 'Ilmu Pengetahuan Sosial', 'pengawas' => ['EM', 'IK', 'JP', 'RF', 'EV', 'IQ', 'IR', 'JM', 'SJ', 'AS', 'AY', 'AI']]
         ]
     ],
     [
         'hari' => 'Kamis',
         'tanggal' => '07 Mei 2026',
         'mapel' => [
-            ['jam_ke' => '1', 'waktu' => '07.30 – 09.00', 'nama' => 'Al-qur\'an-Hadits', 'pengawas' => ['ED', 'AL', 'RM', 'AY', 'TE', 'NS', 'EN', 'YO', 'DD', 'IK', 'EV', 'MS']],
-            ['jam_ke' => '2', 'waktu' => '09.15 – 10.45', 'nama' => 'Bahasa Inggris', 'pengawas' => ['EV', 'AL', 'KK', 'IK', 'NK', 'DS', 'AY', 'TE', 'SA', 'ZN', 'JP', 'RF']],
-            ['jam_ke' => '3', 'waktu' => '11.00 – 12.30', 'nama' => 'Seni Budaya', 'pengawas' => ['AL', 'ED', 'TS', 'SA', 'NK', 'MS', 'AI', 'EN', 'RM', 'WK', 'NR', 'IR']]
+            ['jam_ke' => '1', 'waktu' => '07.30 – 09.00', 'nama' => 'Al-qur\'an-Hadits', 'pengawas' => ['DS', 'NS', 'TE', 'EN', 'TS', 'SR', 'YO', 'TM', 'RM', 'ZN', 'WK', 'MS']],
+            ['jam_ke' => '2', 'waktu' => '09.15 – 10.45', 'nama' => 'Bahasa Inggris', 'pengawas' => ['NR', 'SA', 'NK', 'DJ', 'AL', 'ED', 'DD', 'KK', 'EM', 'IK', 'JP', 'RF']],
+            ['jam_ke' => '3', 'waktu' => '11.00 – 12.30', 'nama' => 'Seni Budaya', 'pengawas' => ['EV', 'IQ', 'IR', 'JM', 'SJ', 'AS', 'AY', 'AI', 'DS', 'NS', 'TE', 'EN']]
         ]
     ],
     [
         'hari' => 'Jum\'at',
         'tanggal' => '08 Mei 2026',
         'mapel' => [
-            ['jam_ke' => '1', 'waktu' => '07.00 – 08.30', 'nama' => 'Pendidikan Pancasila', 'pengawas' => ['MS', 'DD', 'WK', 'IQ', 'RF', 'ZN', 'AS', 'AY', 'TE', 'SA', 'JP', 'EM']],
-            ['jam_ke' => '2', 'waktu' => '08.45 – 10.15', 'nama' => 'Bahasa Indonesia', 'pengawas' => ['EV', 'ED', 'JM', 'YO', 'NR', 'IR', 'DS', 'AY', 'TM', 'EN', 'SA', 'IQ']]
+            ['jam_ke' => '1', 'waktu' => '07.00 – 08.30', 'nama' => 'Pendidikan Pancasila', 'pengawas' => ['TS', 'SR', 'YO', 'TM', 'RM', 'ZN', 'WK', 'MS', 'NR', 'SA', 'NK', 'DJ']],
+            ['jam_ke' => '2', 'waktu' => '08.45 – 10.15', 'nama' => 'Bahasa Indonesia', 'pengawas' => ['AL', 'ED', 'DD', 'KK', 'EM', 'IK', 'JP', 'RF', 'EV', 'IQ', 'IR', 'JM']]
         ]
     ]
 ];
