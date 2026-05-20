@@ -139,7 +139,7 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
 
         body {
             font-family: 'Times New Roman', Times, serif;
-            font-size: 9.5pt;
+            font-size: 10pt;
             background: #f0f0f0;
             color: #000;
         }
@@ -151,7 +151,7 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
 
         .page {
             width: calc(210mm - 10mm);
-            padding: 3mm 5mm;
+            padding: 4mm 5mm;
             margin: 0 auto 4mm;
             background: #fff;
             box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
@@ -174,62 +174,62 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
             display: flex;
             align-items: center;
             border-bottom: 3px double #000;
-            padding-bottom: 1px;
-            margin-bottom: 2px;
+            padding-bottom: 2px;
+            margin-bottom: 4px;
         }
 
         .kop img {
-            height: 45px;
-            /* Sedikit dikecilkan agar hemat ruang */
+            height: 58px;
+            /* Diperbesar agar proporsional */
         }
 
         .kop-text {
             flex: 1;
             text-align: center;
-            line-height: 1.1;
+            line-height: 1.15;
         }
 
         .kop-text h3 {
-            font-size: 11pt;
+            font-size: 11.5pt;
             text-transform: uppercase;
             margin-bottom: 1px;
         }
 
         .kop-text h4 {
-            font-size: 9pt;
+            font-size: 9.5pt;
             text-transform: uppercase;
             margin-bottom: 1px;
         }
 
         .kop-text h2 {
-            font-size: 13pt;
+            font-size: 14pt;
             font-weight: 900;
             text-transform: uppercase;
             margin-bottom: 1px;
         }
 
         .kop-text p {
-            font-size: 7.5pt;
+            font-size: 8pt;
         }
 
         /* ── Judul ── */
         .judul {
             text-align: center;
-            margin-bottom: 4px;
+            margin-bottom: 8px;
         }
 
         .judul h4 {
-            font-size: 11pt;
+            font-size: 11.5pt;
             font-weight: 700;
             letter-spacing: 0.5px;
             margin: 0;
-            line-height: 1.15;
+            line-height: 1.2;
         }
 
         .judul p {
-            font-size: 9pt;
+            font-size: 9.5pt;
             color: #333;
-            margin-top: 1px;
+            margin-top: 2px;
         }
 
         /* ── Layout Tabel & Legenda ── */
@@ -240,13 +240,13 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
 
         .main-table-container {
             width: 100%;
-            margin-bottom: 3px;
+            margin-bottom: 8px;
         }
 
         .legend-container {
             width: 100%;
-            margin-top: 3px;
-            margin-bottom: 3px;
+            margin-top: 8px;
+            margin-bottom: 8px;
         }
 
         /* ── Tabel Utama ── */
@@ -258,9 +258,9 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
 
         .main-table {
             width: 100%;
-            font-size: 8pt;
-            /* Teks diperkecil agar pas dengan kolom */
-            line-height: 1.15;
+            font-size: 8.5pt;
+            /* Teks diperjelas agar pas dengan kolom */
+            line-height: 1.2;
         }
 
         table th,
@@ -271,7 +271,7 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
 
         .main-table th,
         .main-table td {
-            padding: 1.5px 3px; /* Padding diperkecil agar baris lebih rapat */
+            padding: 2.5px 3px; /* Padding ditingkatkan agar lebih lega */
         }
 
         table thead th {
@@ -291,13 +291,13 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
         /* ── Legenda ── */
         .legend-table {
             width: 100%;
-            font-size: 6.8pt;
-            line-height: 1.1;
+            font-size: 7.2pt;
+            line-height: 1.2;
         }
 
         .legend-table th,
         .legend-table td {
-            padding: 1px 2px; /* Padding diminimalkan */
+            padding: 2px 3px; /* Padding nyaman untuk dibaca */
             vertical-align: middle;
         }
 
@@ -305,7 +305,7 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
         .ttd-container {
             display: flex;
             justify-content: flex-end;
-            margin-top: 5px; /* Hindari tumpang tindih dengan tabel */
+            margin-top: 8px; /* Ruang pisah dari legenda */
             width: 100%;
         }
 
@@ -315,34 +315,34 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
         }
 
         .ttd-box p {
-            margin: 1px 0;
-            font-size: 9pt;
+            margin: 1.5px 0;
+            font-size: 9.5pt;
             position: relative;
             z-index: 5;
-            line-height: 1.15;
+            line-height: 1.2;
         }
 
         .sig-overlay {
             position: relative;
-            height: 52px;
-            margin-top: 0;
+            height: 55px;
+            margin-top: 2px;
             margin-bottom: 2px;
         }
 
         .img-cap {
             position: absolute;
-            top: -22px;
+            top: -20px;
             left: -65px;
-            width: 95px;
+            width: 100px;
             z-index: 2;
             opacity: 0.9;
         }
 
         .img-ttd {
             position: absolute;
-            top: -12px;
-            left: -12px;
-            width: 115px;
+            top: -10px;
+            left: -10px;
+            width: 120px;
             z-index: 3;
         }
 
@@ -537,24 +537,20 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
         <div class="legend-container">
             <table class="legend-table" style="width: 100%;">
                 <colgroup>
-                    <col style="width: 4%;">
-                    <col style="width: 16%;">
-                    <col style="width: 4%;">
-                    <col style="width: 16%;">
-                    <col style="width: 4%;">
-                    <col style="width: 16%;">
-                    <col style="width: 4%;">
-                    <col style="width: 16%;">
-                    <col style="width: 4%;">
-                    <col style="width: 16%;">
+                    <col style="width: 5%;">
+                    <col style="width: 20%;">
+                    <col style="width: 5%;">
+                    <col style="width: 20%;">
+                    <col style="width: 5%;">
+                    <col style="width: 20%;">
+                    <col style="width: 5%;">
+                    <col style="width: 20%;">
                 </colgroup>
                 <thead>
                     <tr>
-                        <th colspan="10" style="background:#ddd; font-size:7pt; padding:1.5px;">DAFTAR KODE PENGAWAS</th>
+                        <th colspan="8" style="background:#ddd; font-size:8pt; padding:3px;">DAFTAR KODE PENGAWAS</th>
                     </tr>
                     <tr>
-                        <th class="center">Kode</th>
-                        <th class="center">Nama Guru</th>
                         <th class="center">Kode</th>
                         <th class="center">Nama Guru</th>
                         <th class="center">Kode</th>
@@ -568,41 +564,20 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
                 <tbody>
                     <?php
                     $keys = array_keys($gurus);
-                    $cols = 5;
+                    $cols = 4;
                     $rows_count = ceil(count($keys) / $cols);
                     for ($i = 0; $i < $rows_count; $i++):
-                        $k1 = isset($keys[$i]) ? $keys[$i] : '';
-                        $n1 = $k1 ? $gurus[$k1] : '';
-                        
-                        $k2 = isset($keys[$i + $rows_count]) ? $keys[$i + $rows_count] : '';
-                        $n2 = $k2 ? $gurus[$k2] : '';
-                        
-                        $k3 = isset($keys[$i + $rows_count * 2]) ? $keys[$i + $rows_count * 2] : '';
-                        $n3 = $k3 ? $gurus[$k3] : '';
-                        
-                        $k4 = isset($keys[$i + $rows_count * 3]) ? $keys[$i + $rows_count * 3] : '';
-                        $n4 = $k4 ? $gurus[$k4] : '';
-                        
-                        $k5 = isset($keys[$i + $rows_count * 4]) ? $keys[$i + $rows_count * 4] : '';
-                        $n5 = $k5 ? $gurus[$k5] : '';
-                        
-                        $hl1 = ($is_cetak_per_guru && $k1 === $active_guru_code) ? 'highlight-cell' : '';
-                        $hl2 = ($is_cetak_per_guru && $k2 === $active_guru_code) ? 'highlight-cell' : '';
-                        $hl3 = ($is_cetak_per_guru && $k3 === $active_guru_code) ? 'highlight-cell' : '';
-                        $hl4 = ($is_cetak_per_guru && $k4 === $active_guru_code) ? 'highlight-cell' : '';
-                        $hl5 = ($is_cetak_per_guru && $k5 === $active_guru_code) ? 'highlight-cell' : '';
                         ?>
                         <tr>
-                            <td class="center nowrap <?= $hl1 ?>"><strong><?= $k1 ?></strong></td>
-                            <td class="<?= $hl1 ?>"><?= $n1 ?></td>
-                            <td class="center nowrap <?= $hl2 ?>"><strong><?= $k2 ?></strong></td>
-                            <td class="<?= $hl2 ?>"><?= $n2 ?></td>
-                            <td class="center nowrap <?= $hl3 ?>"><strong><?= $k3 ?></strong></td>
-                            <td class="<?= $hl3 ?>"><?= $n3 ?></td>
-                            <td class="center nowrap <?= $hl4 ?>"><strong><?= $k4 ?></strong></td>
-                            <td class="<?= $hl4 ?>"><?= $n4 ?></td>
-                            <td class="center nowrap <?= $hl5 ?>"><strong><?= $k5 ?></strong></td>
-                            <td class="<?= $hl5 ?>"><?= $n5 ?></td>
+                            <?php for ($c = 0; $c < $cols; $c++): 
+                                $idx = $i + $c * $rows_count;
+                                $k = isset($keys[$idx]) ? $keys[$idx] : '';
+                                $n = $k ? $gurus[$k] : '';
+                                $hl = ($is_cetak_per_guru && $k === $active_guru_code) ? 'highlight-cell' : '';
+                            ?>
+                                <td class="center nowrap <?= $hl ?>"><strong><?= $k ?></strong></td>
+                                <td class="<?= $hl ?>"><?= $n ?></td>
+                            <?php endfor; ?>
                         </tr>
                     <?php endfor; ?>
                 </tbody>
