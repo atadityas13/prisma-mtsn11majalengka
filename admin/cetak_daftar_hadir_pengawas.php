@@ -137,7 +137,7 @@ $bulan_ind_to_eng = [
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Daftar Hadir Pengawas Asesmen — <?= SCHOOL_NAME ?></title>
+    <title>Daftar Hadir Pengawas Sumatif Akhir Tahun — <?= SCHOOL_NAME ?></title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Times New Roman', Times, serif; font-size: 11pt; background: #f0f0f0; color: #000; }
@@ -253,7 +253,7 @@ $session_no = 1;
 
     <!-- Judul -->
     <div class="judul">
-        <h4>Daftar Hadir Pengawas Asesmen</h4>
+        <h4>Daftar Hadir Pengawas<br>Sumatif Akhir Tahun</h4>
     </div>
 
     <!-- Tabel Hadir -->
