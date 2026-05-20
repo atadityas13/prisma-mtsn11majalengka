@@ -129,7 +129,7 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
 
 <head>
     <meta charset="UTF-8">
-    <title>Jadwal Asesmen Akhir Madrasah — <?= SCHOOL_NAME ?></title>
+    <title>Jadwal Sumatif Akhir Tahun — <?= SCHOOL_NAME ?></title>
     <style>
         * {
             box-sizing: border-box;
@@ -196,7 +196,7 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
         }
 
         .kop-text h4 {
-            font-size: 12.5pt;
+            font-size: 14pt;
             text-transform: uppercase;
             margin-bottom: 1px;
         }
