@@ -146,16 +146,16 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
 
         @page {
             size: A4 portrait;
-            margin: 5mm;
+            margin: 8mm;
         }
 
         .page {
-            width: calc(210mm - 10mm);
-            padding: 5mm;
-            margin: 0 auto 5mm;
+            width: calc(210mm - 16mm);
+            padding: 8mm;
+            margin: 0 auto 8mm;
             background: #fff;
             box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
-            min-height: calc(297mm - 10mm);
+            min-height: calc(297mm - 16mm);
             position: relative;
         }
 
@@ -215,7 +215,7 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
         /* ── Judul ── */
         .judul {
             text-align: center;
-            margin-bottom: 3px;
+            margin-bottom: 12px;
         }
 
         .judul h4 {
@@ -239,11 +239,13 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
 
         .main-table-container {
             width: 100%;
+            margin-bottom: 15px;
         }
 
         .legend-container {
             width: 100%;
-            margin-top: 5px; /* Margin atas dikurangi untuk hemat ruang vertikal */
+            margin-top: 15px;
+            margin-bottom: 20px;
         }
 
         /* ── Tabel Utama ── */
@@ -255,7 +257,7 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
 
         .main-table {
             width: 100%;
-            font-size: 8pt;
+            font-size: 9.5pt;
             /* Teks diperkecil agar pas dengan kolom */
         }
 
@@ -267,7 +269,7 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
 
         .main-table th,
         .main-table td {
-            padding: 2px 3px; /* Padding diperkecil agar baris lebih rapat */
+            padding: 4px 4px; /* Padding diperkecil agar baris lebih rapat */
         }
 
         table thead th {
@@ -287,12 +289,12 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
         /* ── Legenda ── */
         .legend-table {
             width: 100%;
-            font-size: 7pt;
+            font-size: 8.5pt;
         }
 
         .legend-table th,
         .legend-table td {
-            padding: 2px 4px; /* Padding diminimalkan */
+            padding: 3px 5px; /* Padding diminimalkan */
             vertical-align: middle;
         }
 
@@ -300,7 +302,7 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
         .ttd-container {
             display: flex;
             justify-content: flex-end;
-            margin-top: 5px; /* Hindari tumpang tindih dengan tabel */
+            margin-top: 25px; /* Hindari tumpang tindih dengan tabel */
             width: 100%;
         }
 
@@ -544,7 +546,7 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
                 </colgroup>
                 <thead>
                     <tr>
-                        <th colspan="10" style="background:#ddd; font-size:7.5pt; padding:2px;">DAFTAR KODE PENGAWAS</th>
+                        <th colspan="10" style="background:#ddd; font-size:8.5pt; padding:3px;">DAFTAR KODE PENGAWAS</th>
                     </tr>
                     <tr>
                         <th class="center">Kode</th>
