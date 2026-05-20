@@ -176,11 +176,12 @@ $bulan_ind_to_eng = [
         table.hadir tbody tr { min-height: 24px; }
         .day-group { page-break-inside: avoid; break-inside: avoid; }
         table.hadir th:nth-child(1), table.hadir td:nth-child(1) { width: 32px; }
-        table.hadir th:nth-child(2), table.hadir td:nth-child(2) { width: 160px; }
-        table.hadir th:nth-child(3), table.hadir td:nth-child(3) { width: 48px; }
-        table.hadir th:nth-child(4), table.hadir td:nth-child(4) { width: 42px; }
-        table.hadir th:nth-child(5), table.hadir td:nth-child(5) { width: auto; }
-        table.hadir th:nth-child(6), table.hadir td:nth-child(6) { width: 145px; }
+        table.hadir th:nth-child(2), table.hadir td:nth-child(2) { width: 140px; }
+        table.hadir th:nth-child(3), table.hadir td:nth-child(3) { width: 55px; }
+        table.hadir th:nth-child(4), table.hadir td:nth-child(4) { width: 48px; }
+        table.hadir th:nth-child(5), table.hadir td:nth-child(5) { width: 42px; }
+        table.hadir th:nth-child(6), table.hadir td:nth-child(6) { width: auto; }
+        table.hadir th:nth-child(7), table.hadir td:nth-child(7) { width: 145px; }
 
         /* ── TTD ── */
         .ttd { margin-top: 18px; display: flex; justify-content: flex-end; }
@@ -259,6 +260,7 @@ $session_no = 1;
             <tr>
                 <th>Hari ke</th>
                 <th>Hari / Tanggal</th>
+                <th>Sesi</th>
                 <th>Jam ke</th>
                 <th>Ruang</th>
                 <th>Nama Pengawas</th>
@@ -299,13 +301,13 @@ $session_no = 1;
             $first_day_row = true;
             ?>
             <tbody class="day-group">
-                <?php foreach ($day['sessions'] as $session): ?>
+                <?php foreach ($day['sessions'] as $session_idx => $session): ?>
                     <?php
                     $pengawas_list = array_map(function($kode) use ($gurus) {
                         return isset($gurus[$kode]) ? $gurus[$kode] : $kode;
                     }, $session['pengawas']);
                     $session_rows = count($pengawas_list);
-                    $jam_label = htmlspecialchars($session['jam_ke']);
+                    $jam_label = htmlspecialchars(trim(explode('(', $session['jam_ke'])[0]));
                     ?>
                     <?php foreach ($pengawas_list as $index => $nama): ?>
                         <tr>
@@ -313,6 +315,14 @@ $session_no = 1;
                                 <td class="center" rowspan="<?= $day_rows ?>"><?= $day_number ?></td>
                                 <td rowspan="<?= $day_rows ?>"><?= $tgl_fmt ?></td>
                                 <?php $first_day_row = false; ?>
+                            <?php endif; ?>
+                            
+                            <?php if ($index === 0): ?>
+                                <?php if ($session_idx === 0): ?>
+                                    <td class="center" rowspan="12">Sesi 1</td>
+                                <?php elseif ($session_idx === 2): ?>
+                                    <td class="center" rowspan="12">Sesi 2</td>
+                                <?php endif; ?>
                             <?php endif; ?>
                             
                             <?php if ($index === 0): ?>

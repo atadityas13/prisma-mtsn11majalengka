@@ -442,7 +442,8 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
 
         <!-- Judul -->
         <div class="judul">
-            <h4>JADWAL PENGAWAS ASESMEN AKHIR MADRASAH</h4>
+            <h4>JADWAL SUMATIF AKHIR TAHUN</h4>
+            <h4>SEMESTER II (GENAP)</h4>
             <h4>TAHUN AJARAN <?= DEFAULT_YEAR ?></h4>
         </div>
 
@@ -452,10 +453,11 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
                 <table class="main-table">
                     <colgroup>
                         <!-- Mengatur lebar persentase agar tabel pas 100% dan tidak tumpang tindih -->
-                        <col style="width: 17%;">
-                        <col style="width: 5%;">
+                        <col style="width: 14%;">
+                        <col style="width: 6%;">
+                        <col style="width: 4%;">
                         <col style="width: 13%;">
-                        <col style="width: 23%;">
+                        <col style="width: 21%;">
                         <col style="width: 7%;">
                         <col style="width: 7%;">
                         <col style="width: 7%;">
@@ -466,6 +468,7 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
                     <thead>
                         <tr>
                             <th rowspan="2">Hari, Tanggal</th>
+                            <th rowspan="2">Sesi</th>
                             <th rowspan="2">Jam</th>
                             <th rowspan="2">Waktu</th>
                             <th rowspan="2">Mata Pelajaran</th>
@@ -486,7 +489,7 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
                             $rowspan = count($hari['mapel']);
                             $first = true;
                             ?>
-                            <?php foreach ($hari['mapel'] as $mapel): ?>
+                            <?php foreach ($hari['mapel'] as $mapel_idx => $mapel): ?>
                                 <tr>
                                     <?php if ($first): ?>
                                         <td rowspan="<?= $rowspan ?>" class="center nowrap">
@@ -495,9 +498,15 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
                                         <?php $first = false; ?>
                                     <?php endif; ?>
 
-                                    <td class="center"><?= $mapel['jam_ke'] ?></td>
+                                    <?php if ($mapel_idx === 0): ?>
+                                        <td rowspan="2" class="center nowrap">Sesi 1</td>
+                                    <?php elseif ($mapel_idx === 2): ?>
+                                        <td rowspan="2" class="center nowrap">Sesi 2</td>
+                                    <?php endif; ?>
+
+                                    <td class="center"><?= trim(explode('(', $mapel['jam_ke'])[0]) ?></td>
                                     <td class="center nowrap"><?= $mapel['waktu'] ?></td>
-                                    <td class="nowrap"><?= $mapel['nama'] ?></td>
+                                    <td class="nowrap"><?= str_replace([' (Sesi 1)', ' (Sesi 2)'], '', $mapel['nama']) ?></td>
                                     <?php 
                                     // Tampilkan pengawas 1 per ruang
                                     for ($ruang = 0; $ruang < 6; $ruang++):
