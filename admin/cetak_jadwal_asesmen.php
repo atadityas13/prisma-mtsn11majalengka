@@ -145,17 +145,17 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
         }
 
         @page {
-            size: A4 landscape;
-            margin: 8mm;
+            size: A4 portrait;
+            margin: 5mm;
         }
 
         .page {
-            width: calc(297mm - 16mm);
-            padding: 8mm;
-            margin: 0 auto 8mm;
+            width: calc(210mm - 10mm);
+            padding: 5mm;
+            margin: 0 auto 5mm;
             background: #fff;
             box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
-            min-height: calc(210mm - 16mm);
+            min-height: calc(297mm - 10mm);
             position: relative;
         }
 
@@ -255,7 +255,7 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
 
         .main-table {
             width: 100%;
-            font-size: 9pt;
+            font-size: 8pt;
             /* Teks diperkecil agar pas dengan kolom */
         }
 
@@ -267,7 +267,7 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
 
         .main-table th,
         .main-table td {
-            padding: 3px 4px; /* Padding diperkecil agar baris lebih rapat */
+            padding: 2px 3px; /* Padding diperkecil agar baris lebih rapat */
         }
 
         table thead th {
@@ -453,17 +453,17 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
                 <table class="main-table">
                     <colgroup>
                         <!-- Mengatur lebar persentase agar tabel pas 100% dan tidak tumpang tindih -->
-                        <col style="width: 14%;">
-                        <col style="width: 6%;">
+                        <col style="width: 16%;">
+                        <col style="width: 7%;">
                         <col style="width: 4%;">
                         <col style="width: 13%;">
-                        <col style="width: 21%;">
-                        <col style="width: 7%;">
-                        <col style="width: 7%;">
-                        <col style="width: 7%;">
-                        <col style="width: 7%;">
-                        <col style="width: 7%;">
-                        <col style="width: 7%;">
+                        <col style="width: 24%;">
+                        <col style="width: 6%;">
+                        <col style="width: 6%;">
+                        <col style="width: 6%;">
+                        <col style="width: 6%;">
+                        <col style="width: 6%;">
+                        <col style="width: 6%;">
                     </colgroup>
                     <thead>
                         <tr>
@@ -532,19 +532,23 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
             <table class="legend-table" style="width: 100%;">
                 <colgroup>
                     <col style="width: 4%;">
-                    <col style="width: 21%;">
+                    <col style="width: 16%;">
                     <col style="width: 4%;">
-                    <col style="width: 21%;">
+                    <col style="width: 16%;">
                     <col style="width: 4%;">
-                    <col style="width: 21%;">
+                    <col style="width: 16%;">
                     <col style="width: 4%;">
-                    <col style="width: 21%;">
+                    <col style="width: 16%;">
+                    <col style="width: 4%;">
+                    <col style="width: 16%;">
                 </colgroup>
                 <thead>
                     <tr>
-                        <th colspan="8" style="background:#ddd; font-size:8pt; padding:3px;">DAFTAR KODE PENGAWAS</th>
+                        <th colspan="10" style="background:#ddd; font-size:7.5pt; padding:2px;">DAFTAR KODE PENGAWAS</th>
                     </tr>
                     <tr>
+                        <th class="center">Kode</th>
+                        <th class="center">Nama Guru</th>
                         <th class="center">Kode</th>
                         <th class="center">Nama Guru</th>
                         <th class="center">Kode</th>
@@ -558,24 +562,29 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
                 <tbody>
                     <?php
                     $keys = array_keys($gurus);
-                    $quarter = ceil(count($keys) / 4);
-                    for ($i = 0; $i < $quarter; $i++):
+                    $cols = 5;
+                    $rows_count = ceil(count($keys) / $cols);
+                    for ($i = 0; $i < $rows_count; $i++):
                         $k1 = isset($keys[$i]) ? $keys[$i] : '';
                         $n1 = $k1 ? $gurus[$k1] : '';
                         
-                        $k2 = isset($keys[$i + $quarter]) ? $keys[$i + $quarter] : '';
+                        $k2 = isset($keys[$i + $rows_count]) ? $keys[$i + $rows_count] : '';
                         $n2 = $k2 ? $gurus[$k2] : '';
                         
-                        $k3 = isset($keys[$i + $quarter * 2]) ? $keys[$i + $quarter * 2] : '';
+                        $k3 = isset($keys[$i + $rows_count * 2]) ? $keys[$i + $rows_count * 2] : '';
                         $n3 = $k3 ? $gurus[$k3] : '';
                         
-                        $k4 = isset($keys[$i + $quarter * 3]) ? $keys[$i + $quarter * 3] : '';
+                        $k4 = isset($keys[$i + $rows_count * 3]) ? $keys[$i + $rows_count * 3] : '';
                         $n4 = $k4 ? $gurus[$k4] : '';
+                        
+                        $k5 = isset($keys[$i + $rows_count * 4]) ? $keys[$i + $rows_count * 4] : '';
+                        $n5 = $k5 ? $gurus[$k5] : '';
                         
                         $hl1 = ($is_cetak_per_guru && $k1 === $active_guru_code) ? 'highlight-cell' : '';
                         $hl2 = ($is_cetak_per_guru && $k2 === $active_guru_code) ? 'highlight-cell' : '';
                         $hl3 = ($is_cetak_per_guru && $k3 === $active_guru_code) ? 'highlight-cell' : '';
                         $hl4 = ($is_cetak_per_guru && $k4 === $active_guru_code) ? 'highlight-cell' : '';
+                        $hl5 = ($is_cetak_per_guru && $k5 === $active_guru_code) ? 'highlight-cell' : '';
                         ?>
                         <tr>
                             <td class="center nowrap <?= $hl1 ?>"><strong><?= $k1 ?></strong></td>
@@ -586,6 +595,8 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
                             <td class="<?= $hl3 ?>"><?= $n3 ?></td>
                             <td class="center nowrap <?= $hl4 ?>"><strong><?= $k4 ?></strong></td>
                             <td class="<?= $hl4 ?>"><?= $n4 ?></td>
+                            <td class="center nowrap <?= $hl5 ?>"><strong><?= $k5 ?></strong></td>
+                            <td class="<?= $hl5 ?>"><?= $n5 ?></td>
                         </tr>
                     <?php endfor; ?>
                 </tbody>
