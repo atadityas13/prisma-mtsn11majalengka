@@ -14,7 +14,7 @@ $gurus = [
     'EN' => 'Hj.ELIN NURLINA, S.Pd.',
     'TS' => 'Hj.TIN SUMARTINI, S.Pd.',
     'SR' => 'SRI RAHAYU, S.Pd.',
-    'WA' => 'Hj. Wiwin W. Aziz, S.Pd.',
+    'WA' => 'HJ. WIWIN W. AZIZ, S.Pd.',
     'YO' => 'YENI OKTAVIA, S.Pd.',
     'TM' => 'TETI MULYATI, S.Pd.',
     'RM' => 'RIYAN MARDIYANA, S.Pd.',
@@ -55,9 +55,9 @@ $jadwal = [
         'tanggal' => '26 Mei 2026',
         'mapel' => [
             ['jam_ke' => '1 (Sesi 1)', 'waktu' => '07.30 – 08.30', 'nama' => 'Matematika (Sesi 1)', 'pengawas' => ['IQ', 'NK', 'KK', 'AS', 'DS', 'WK']],
-            ['jam_ke' => '2 (Sesi 1)', 'waktu' => '08.45 – 09.45', 'nama' => 'Penjaskes (Sesi 1)', 'pengawas' => ['DJ', 'DD', 'TM', 'ZN', 'NK', 'ED']],
+            ['jam_ke' => '2 (Sesi 1)', 'waktu' => '08.45 – 09.45', 'nama' => 'Pendidikan Jasmani Olahraga dan Kesehatan (Sesi 1)', 'pengawas' => ['DJ', 'DD', 'TM', 'ZN', 'NK', 'ED']],
             ['jam_ke' => '1 (Sesi 2)', 'waktu' => '10.15 – 11.15', 'nama' => 'Matematika (Sesi 2)', 'pengawas' => ['JM', 'SA', 'AY', 'AI', 'NS', 'TS']],
-            ['jam_ke' => '2 (Sesi 2)', 'waktu' => '11.30 – 12.30', 'nama' => 'Penjaskes (Sesi 2)', 'pengawas' => ['MS', 'SR', 'EM', 'DS', 'DD', 'AS']]
+            ['jam_ke' => '2 (Sesi 2)', 'waktu' => '11.30 – 12.30', 'nama' => 'Pendidikan Jasmani Olahraga dan Kesehatan (Sesi 2)', 'pengawas' => ['MS', 'SR', 'EM', 'DS', 'DD', 'AS']]
         ]
     ],
     [
@@ -65,9 +65,9 @@ $jadwal = [
         'tanggal' => '29 Mei 2026',
         'mapel' => [
             ['jam_ke' => '1 (Sesi 1)', 'waktu' => '07.00 – 08.00', 'nama' => 'IPA (Sesi 1)', 'pengawas' => ['IR', 'JP', 'YO', 'DJ', 'IQ', 'EV']],
-            ['jam_ke' => '2 (Sesi 1)', 'waktu' => '08.15 – 09.15', 'nama' => 'Seni Budaya (Sesi 1)', 'pengawas' => ['WA', 'KK', 'IK', 'NR', 'WK', 'TE']],
-            ['jam_ke' => '1 (Sesi 2)', 'waktu' => '09.45 – 10.45', 'nama' => 'IPA (Sesi 2)', 'pengawas' => ['RM', 'AL', 'TM', 'SJ', 'RF', 'EN']],
-            ['jam_ke' => '2 (Sesi 2)', 'waktu' => '11.00 – 12.00', 'nama' => 'Seni Budaya (Sesi 2)', 'pengawas' => ['KK', 'AL', 'JP', 'NS', 'IK', 'SA']]
+            ['jam_ke' => '2 (Sesi 1)', 'waktu' => '08.10 – 09.10', 'nama' => 'Seni Budaya (Sesi 1)', 'pengawas' => ['WA', 'KK', 'IK', 'NR', 'WK', 'TE']],
+            ['jam_ke' => '1 (Sesi 2)', 'waktu' => '09.20 – 10.20', 'nama' => 'IPA (Sesi 2)', 'pengawas' => ['RM', 'AL', 'TM', 'SJ', 'RF', 'EN']],
+            ['jam_ke' => '2 (Sesi 2)', 'waktu' => '10.30 – 11.30', 'nama' => 'Seni Budaya (Sesi 2)', 'pengawas' => ['KK', 'AL', 'JP', 'NS', 'IK', 'SA']]
         ]
     ],
     [
@@ -105,9 +105,9 @@ $jadwal = [
         'tanggal' => '05 Juni 2026',
         'mapel' => [
             ['jam_ke' => '1 (Sesi 1)', 'waktu' => '07.00 – 08.00', 'nama' => 'Informatika (Sesi 1)', 'pengawas' => ['ZN', 'DD', 'IQ', 'DS', 'EV', 'SJ']],
-            ['jam_ke' => '2 (Sesi 1)', 'waktu' => '08.15 – 09.15', 'nama' => 'Bahasa Indonesia (Sesi 1)', 'pengawas' => ['JP', 'DJ', 'EN', 'AS', 'YO', 'WK']],
-            ['jam_ke' => '1 (Sesi 2)', 'waktu' => '09.45 – 10.45', 'nama' => 'Informatika (Sesi 2)', 'pengawas' => ['SR', 'IR', 'TE', 'AL', 'AI', 'JM']],
-            ['jam_ke' => '2 (Sesi 2)', 'waktu' => '11.00 – 12.00', 'nama' => 'Bahasa Indonesia (Sesi 2)', 'pengawas' => ['NS', 'WA', 'NR', 'IR', 'KK', 'SR']]
+            ['jam_ke' => '2 (Sesi 1)', 'waktu' => '08.10 – 09.10', 'nama' => 'Bahasa Indonesia (Sesi 1)', 'pengawas' => ['JP', 'DJ', 'EN', 'AS', 'YO', 'WK']],
+            ['jam_ke' => '1 (Sesi 2)', 'waktu' => '09.20 – 10.20', 'nama' => 'Informatika (Sesi 2)', 'pengawas' => ['SR', 'IR', 'TE', 'AL', 'AI', 'JM']],
+            ['jam_ke' => '2 (Sesi 2)', 'waktu' => '10.30 – 11.30', 'nama' => 'Bahasa Indonesia (Sesi 2)', 'pengawas' => ['NS', 'WA', 'NR', 'IR', 'KK', 'SR']]
         ]
     ]
 ];
@@ -291,7 +291,7 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
         /* ── Legenda ── */
         .legend-table {
             width: 100%;
-            font-size: 7.2pt;
+            font-size: 6.5pt;
             line-height: 1.2;
         }
 
@@ -324,16 +324,16 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
 
         .sig-overlay {
             position: relative;
-            height: 55px;
+            height: 70px;
             margin-top: 2px;
-            margin-bottom: 2px;
+            margin-bottom: 4px;
         }
 
         .img-cap {
             position: absolute;
-            top: -20px;
+            top: -18px;
             left: -65px;
-            width: 100px;
+            width: 110px;
             z-index: 2;
             opacity: 0.9;
         }
@@ -341,8 +341,8 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
         .img-ttd {
             position: absolute;
             top: -10px;
-            left: -10px;
-            width: 120px;
+            left: -15px;
+            width: 130px;
             z-index: 3;
         }
 
@@ -478,7 +478,7 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
                             <th rowspan="2">Jam</th>
                             <th rowspan="2">Waktu</th>
                             <th rowspan="2">Mata Pelajaran</th>
-                            <th colspan="6">Ruang Pengawas</th>
+                            <th colspan="6">Ruang</th>
                         </tr>
                         <tr>
                             <th>01</th>
