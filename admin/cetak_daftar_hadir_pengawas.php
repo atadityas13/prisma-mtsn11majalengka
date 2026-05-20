@@ -14,6 +14,7 @@ $gurus = [
     'EN' => 'Hj.ELIN NURLINA, S.Pd.',
     'TS' => 'Hj.TIN SUMARTINI, S.Pd.',
     'SR' => 'SRI RAHAYU, S.Pd.',
+    'WA' => 'Hj. Wiwin W. Aziz, S.Pd.',
     'YO' => 'YENI OKTAVIA, S.Pd.',
     'TM' => 'TETI MULYATI, S.Pd.',
     'RM' => 'RIYAN MARDIYANA, S.Pd.',
@@ -41,45 +42,72 @@ $gurus = [
 $jadwal = [
     [
         'hari' => 'Senin',
-        'tanggal' => '04 Mei 2026',
+        'tanggal' => '25 Mei 2026',
         'mapel' => [
-            ['jam_ke' => '1', 'waktu' => '07.30 – 09.00', 'nama' => 'Sejarah Kebudayaan Islam', 'pengawas' => ['AY', 'NS', 'TE', 'EN', 'TS', 'SR', 'YO', 'TM', 'RM', 'ZN', 'WK', 'MS']],
-            ['jam_ke' => '2', 'waktu' => '09.15 – 10.45', 'nama' => 'Bahasa Arab', 'pengawas' => ['NR', 'SA', 'NK', 'DJ', 'AL', 'ED', 'DD', 'KK', 'EM', 'IK', 'JP', 'RF']]
+            ['jam_ke' => '1 (Sesi 1)', 'waktu' => '08.00 – 09.00', 'nama' => 'Sejarah Kebudayaan Islam (Sesi 1)', 'pengawas' => ['RF', 'EV', 'JM', 'RM', 'TS', 'ED']],
+            ['jam_ke' => '2 (Sesi 1)', 'waktu' => '09.15 – 10.15', 'nama' => 'Bahasa Arab (Sesi 1)', 'pengawas' => ['MS', 'ZN', 'AI', 'IK', 'IR', 'NS']],
+            ['jam_ke' => '1 (Sesi 2)', 'waktu' => '10.45 – 11.45', 'nama' => 'Sejarah Kebudayaan Islam (Sesi 2)', 'pengawas' => ['WA', 'AY', 'EM', 'JP', 'YO', 'AL']],
+            ['jam_ke' => '2 (Sesi 2)', 'waktu' => '12.00 – 13.00', 'nama' => 'Bahasa Arab (Sesi 2)', 'pengawas' => ['EN', 'SJ', 'SA', 'TE', 'NR', 'SR']]
         ]
     ],
     [
         'hari' => 'Selasa',
-        'tanggal' => '05 Mei 2026',
+        'tanggal' => '26 Mei 2026',
         'mapel' => [
-            ['jam_ke' => '1', 'waktu' => '07.30 – 09.00', 'nama' => 'Bahasa Sunda', 'pengawas' => ['EV', 'IQ', 'IR', 'JM', 'SJ', 'AS', 'AY', 'AI', 'DS', 'NS', 'TE', 'EN']],
-            ['jam_ke' => '2', 'waktu' => '09.15 – 10.45', 'nama' => 'Matematika', 'pengawas' => ['TS', 'SR', 'YO', 'TM', 'RM', 'ZN', 'WK', 'MS', 'NR', 'SA', 'NK', 'DJ']],
-            ['jam_ke' => '3', 'waktu' => '11.00 – 12.30', 'nama' => 'Akidah-Akhlak', 'pengawas' => ['AL', 'ED', 'DD', 'KK', 'EM', 'IK', 'JP', 'RF', 'EV', 'IQ', 'IR', 'JM']]
+            ['jam_ke' => '1 (Sesi 1)', 'waktu' => '07.30 – 08.30', 'nama' => 'Matematika (Sesi 1)', 'pengawas' => ['IQ', 'NK', 'KK', 'AS', 'DS', 'WK']],
+            ['jam_ke' => '2 (Sesi 1)', 'waktu' => '08.45 – 09.45', 'nama' => 'Penjaskes (Sesi 1)', 'pengawas' => ['DJ', 'DD', 'TM', 'ZN', 'NK', 'ED']],
+            ['jam_ke' => '1 (Sesi 2)', 'waktu' => '10.15 – 11.15', 'nama' => 'Matematika (Sesi 2)', 'pengawas' => ['JM', 'SA', 'AY', 'AI', 'NS', 'TS']],
+            ['jam_ke' => '2 (Sesi 2)', 'waktu' => '11.30 – 12.30', 'nama' => 'Penjaskes (Sesi 2)', 'pengawas' => ['MS', 'SR', 'EM', 'DS', 'DD', 'AS']]
+        ]
+    ],
+    [
+        'hari' => "Jum'at",
+        'tanggal' => '29 Mei 2026',
+        'mapel' => [
+            ['jam_ke' => '1 (Sesi 1)', 'waktu' => '07.00 – 08.00', 'nama' => 'IPA (Sesi 1)', 'pengawas' => ['IR', 'JP', 'YO', 'DJ', 'IQ', 'EV']],
+            ['jam_ke' => '2 (Sesi 1)', 'waktu' => '08.15 – 09.15', 'nama' => 'Seni Budaya (Sesi 1)', 'pengawas' => ['WA', 'KK', 'IK', 'NR', 'WK', 'TE']],
+            ['jam_ke' => '1 (Sesi 2)', 'waktu' => '09.45 – 10.45', 'nama' => 'IPA (Sesi 2)', 'pengawas' => ['RM', 'AL', 'TM', 'SJ', 'RF', 'EN']],
+            ['jam_ke' => '2 (Sesi 2)', 'waktu' => '11.00 – 12.00', 'nama' => 'Seni Budaya (Sesi 2)', 'pengawas' => ['KK', 'AL', 'JP', 'NS', 'IK', 'SA']]
+        ]
+    ],
+    [
+        'hari' => 'Selasa',
+        'tanggal' => '02 Juni 2026',
+        'mapel' => [
+            ['jam_ke' => '1 (Sesi 1)', 'waktu' => '07.30 – 08.30', 'nama' => 'Fiqih (Sesi 1)', 'pengawas' => ['SJ', 'NK', 'TE', 'AY', 'DS', 'AI']],
+            ['jam_ke' => '2 (Sesi 1)', 'waktu' => '08.45 – 09.45', 'nama' => 'Bahasa Inggris (Sesi 1)', 'pengawas' => ['ZN', 'IQ', 'IR', 'JM', 'EM', 'EV']],
+            ['jam_ke' => '1 (Sesi 2)', 'waktu' => '10.15 – 11.15', 'nama' => 'Fiqih (Sesi 2)', 'pengawas' => ['TM', 'WA', 'DJ', 'NR', 'AS', 'YO']],
+            ['jam_ke' => '2 (Sesi 2)', 'waktu' => '11.30 – 12.30', 'nama' => 'Bahasa Inggris (Sesi 2)', 'pengawas' => ['SR', 'DD', 'MS', 'WK', 'EN', 'RF']]
         ]
     ],
     [
         'hari' => 'Rabu',
-        'tanggal' => '06 Mei 2026',
+        'tanggal' => '03 Juni 2026',
         'mapel' => [
-            ['jam_ke' => '1', 'waktu' => '07.30 – 09.00', 'nama' => 'Ilmu Pengetahuan Alam', 'pengawas' => ['SJ', 'AS', 'AY', 'AI', 'DS', 'NS', 'TE', 'EN', 'TS', 'SR', 'YO', 'TM']],
-            ['jam_ke' => '2', 'waktu' => '09.15 – 10.45', 'nama' => 'Fiqih', 'pengawas' => ['RM', 'ZN', 'WK', 'MS', 'NR', 'SA', 'NK', 'DJ', 'AL', 'ED', 'DD', 'KK']],
-            ['jam_ke' => '3', 'waktu' => '11.00 – 12.30', 'nama' => 'Ilmu Pengetahuan Sosial', 'pengawas' => ['EM', 'IK', 'JP', 'RF', 'EV', 'IQ', 'IR', 'JM', 'SJ', 'AS', 'AY', 'AI']]
+            ['jam_ke' => '1 (Sesi 1)', 'waktu' => '07.30 – 08.30', 'nama' => 'Pendidikan Pancasila (Sesi 1)', 'pengawas' => ['RM', 'ED', 'TS', 'TE', 'JP', 'WA']],
+            ['jam_ke' => '2 (Sesi 1)', 'waktu' => '08.45 – 09.45', 'nama' => 'Akidah-Akhlak (Sesi 1)', 'pengawas' => ['DJ', 'RM', 'JM', 'AY', 'KK', 'EN']],
+            ['jam_ke' => '1 (Sesi 2)', 'waktu' => '10.15 – 11.15', 'nama' => 'Pendidikan Pancasila (Sesi 2)', 'pengawas' => ['IQ', 'SA', 'MS', 'EM', 'DS', 'NS']],
+            ['jam_ke' => '2 (Sesi 2)', 'waktu' => '11.30 – 12.30', 'nama' => 'Akidah-Akhlak (Sesi 2)', 'pengawas' => ['AS', 'ED', 'NR', 'TS', 'AI', 'ZN']]
         ]
     ],
     [
         'hari' => 'Kamis',
-        'tanggal' => '07 Mei 2026',
+        'tanggal' => '04 Juni 2026',
         'mapel' => [
-            ['jam_ke' => '1', 'waktu' => '07.30 – 09.00', 'nama' => 'Al-qur\'an-Hadits', 'pengawas' => ['DS', 'NS', 'TE', 'EN', 'TS', 'SR', 'YO', 'TM', 'RM', 'ZN', 'WK', 'MS']],
-            ['jam_ke' => '2', 'waktu' => '09.15 – 10.45', 'nama' => 'Bahasa Inggris', 'pengawas' => ['NR', 'SA', 'NK', 'DJ', 'AL', 'ED', 'DD', 'KK', 'EM', 'IK', 'JP', 'RF']],
-            ['jam_ke' => '3', 'waktu' => '11.00 – 12.30', 'nama' => 'Seni Budaya', 'pengawas' => ['EV', 'IQ', 'IR', 'JM', 'SJ', 'AS', 'AY', 'AI', 'DS', 'NS', 'TE', 'EN']]
+            ['jam_ke' => '1 (Sesi 1)', 'waktu' => '07.30 – 08.30', 'nama' => 'Bahasa Sunda (Sesi 1)', 'pengawas' => ['NK', 'DD', 'SJ', 'IR', 'TM', 'YO']],
+            ['jam_ke' => '2 (Sesi 1)', 'waktu' => '08.45 – 09.45', 'nama' => "Alqur'an-Hadits (Sesi 1)", 'pengawas' => ['WK', 'SR', 'EV', 'IK', 'RF', 'AL']],
+            ['jam_ke' => '1 (Sesi 2)', 'waktu' => '10.15 – 11.15', 'nama' => 'Bahasa Sunda (Sesi 2)', 'pengawas' => ['EM', 'AY', 'TM', 'MS', 'NK', 'KK']],
+            ['jam_ke' => '2 (Sesi 2)', 'waktu' => '11.30 – 12.30', 'nama' => "Alqur'an-Hadits (Sesi 2)", 'pengawas' => ['ED', 'SA', 'RM', 'RF', 'TS', 'IK']]
         ]
     ],
     [
-        'hari' => 'Jum\'at',
-        'tanggal' => '08 Mei 2026',
+        'hari' => "Jum'at",
+        'tanggal' => '05 Juni 2026',
         'mapel' => [
-            ['jam_ke' => '1', 'waktu' => '07.00 – 08.30', 'nama' => 'Pendidikan Pancasila', 'pengawas' => ['TS', 'SR', 'YO', 'TM', 'RM', 'ZN', 'WK', 'MS', 'NR', 'SA', 'NK', 'DJ']],
-            ['jam_ke' => '2', 'waktu' => '08.45 – 10.15', 'nama' => 'Bahasa Indonesia', 'pengawas' => ['AL', 'ED', 'DD', 'KK', 'EM', 'IK', 'JP', 'RF', 'EV', 'IQ', 'IR', 'JM']]
+            ['jam_ke' => '1 (Sesi 1)', 'waktu' => '07.00 – 08.00', 'nama' => 'Informatika (Sesi 1)', 'pengawas' => ['ZN', 'DD', 'IQ', 'DS', 'EV', 'SJ']],
+            ['jam_ke' => '2 (Sesi 1)', 'waktu' => '08.15 – 09.15', 'nama' => 'Bahasa Indonesia (Sesi 1)', 'pengawas' => ['JP', 'DJ', 'EN', 'AS', 'YO', 'WK']],
+            ['jam_ke' => '1 (Sesi 2)', 'waktu' => '09.45 – 10.45', 'nama' => 'Informatika (Sesi 2)', 'pengawas' => ['SR', 'IR', 'TE', 'AL', 'AI', 'JM']],
+            ['jam_ke' => '2 (Sesi 2)', 'waktu' => '11.00 – 12.00', 'nama' => 'Bahasa Indonesia (Sesi 2)', 'pengawas' => ['NS', 'WA', 'NR', 'IR', 'KK', 'SR']]
         ]
     ]
 ];
@@ -291,10 +319,7 @@ $session_no = 1;
                                 <td class="center" rowspan="<?= $session_rows ?>"><?= $jam_label ?></td>
                             <?php endif; ?>
                             
-                            <!-- Membuat 1 Ruang menampung 2 pengawas -->
-                            <?php if ($index % 2 === 0): ?>
-                                <td class="center" rowspan="2"><?= floor($index / 2) + 1 ?></td>
-                            <?php endif; ?>
+                            <td class="center"><?= $index + 1 ?></td>
                             
                             <td><?= htmlspecialchars($nama) ?></td>
                             <td></td>
