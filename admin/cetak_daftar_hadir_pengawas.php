@@ -162,7 +162,7 @@ $bulan_ind_to_eng = [
         .kop { display: flex; align-items: center; border-bottom: 3px double #000; padding-bottom: 9px; margin-bottom: 10px; }
         .kop img { height: 85px; }
         .kop-text { flex: 1; text-align: center; line-height: 1.2; }
-        .kop-text h3 { font-size: 15pt; text-transform: uppercase; margin-bottom: 2px; }
+        .kop-text h3 { font-size: 13.5pt; text-transform: uppercase; margin-bottom: 2px; }
         .kop-text h2 { font-size: 17.5pt; font-weight: 900; text-transform: uppercase; margin-bottom: 2px; }
         .kop-text p  { font-size: 11pt; }
 
