@@ -139,23 +139,23 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
 
         body {
             font-family: 'Times New Roman', Times, serif;
-            font-size: 10pt;
+            font-size: 9.5pt;
             background: #f0f0f0;
             color: #000;
         }
 
         @page {
             size: A4 portrait;
-            margin: 8mm;
+            margin: 4mm 5mm;
         }
 
         .page {
-            width: calc(210mm - 16mm);
-            padding: 8mm;
-            margin: 0 auto 8mm;
+            width: calc(210mm - 10mm);
+            padding: 3mm 5mm;
+            margin: 0 auto 4mm;
             background: #fff;
             box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
-            min-height: calc(297mm - 16mm);
+            min-height: calc(297mm - 8mm);
             position: relative;
         }
 
@@ -174,12 +174,12 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
             display: flex;
             align-items: center;
             border-bottom: 3px double #000;
-            padding-bottom: 2px;
+            padding-bottom: 1px;
             margin-bottom: 2px;
         }
 
         .kop img {
-            height: 50px;
+            height: 45px;
             /* Sedikit dikecilkan agar hemat ruang */
         }
 
@@ -190,45 +190,46 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
         }
 
         .kop-text h3 {
-            font-size: 12pt;
+            font-size: 11pt;
             text-transform: uppercase;
-            margin-bottom: 2px;
+            margin-bottom: 1px;
         }
 
         .kop-text h4 {
-            font-size: 10pt;
+            font-size: 9pt;
             text-transform: uppercase;
-            margin-bottom: 2px;
+            margin-bottom: 1px;
         }
 
         .kop-text h2 {
-            font-size: 14pt;
+            font-size: 13pt;
             font-weight: 900;
             text-transform: uppercase;
-            margin-bottom: 2px;
+            margin-bottom: 1px;
         }
 
         .kop-text p {
-            font-size: 8pt;
+            font-size: 7.5pt;
         }
 
         /* ── Judul ── */
         .judul {
             text-align: center;
-            margin-bottom: 12px;
+            margin-bottom: 4px;
         }
 
         .judul h4 {
-            font-size: 12pt;
+            font-size: 11pt;
             font-weight: 700;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             margin: 0;
+            line-height: 1.15;
         }
 
         .judul p {
-            font-size: 10pt;
+            font-size: 9pt;
             color: #333;
-            margin-top: 2px;
+            margin-top: 1px;
         }
 
         /* ── Layout Tabel & Legenda ── */
@@ -239,13 +240,13 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
 
         .main-table-container {
             width: 100%;
-            margin-bottom: 15px;
+            margin-bottom: 3px;
         }
 
         .legend-container {
             width: 100%;
-            margin-top: 15px;
-            margin-bottom: 20px;
+            margin-top: 3px;
+            margin-bottom: 3px;
         }
 
         /* ── Tabel Utama ── */
@@ -257,8 +258,9 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
 
         .main-table {
             width: 100%;
-            font-size: 9.5pt;
+            font-size: 8pt;
             /* Teks diperkecil agar pas dengan kolom */
+            line-height: 1.15;
         }
 
         table th,
@@ -269,7 +271,7 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
 
         .main-table th,
         .main-table td {
-            padding: 4px 4px; /* Padding diperkecil agar baris lebih rapat */
+            padding: 1.5px 3px; /* Padding diperkecil agar baris lebih rapat */
         }
 
         table thead th {
@@ -289,12 +291,13 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
         /* ── Legenda ── */
         .legend-table {
             width: 100%;
-            font-size: 8.5pt;
+            font-size: 6.8pt;
+            line-height: 1.1;
         }
 
         .legend-table th,
         .legend-table td {
-            padding: 3px 5px; /* Padding diminimalkan */
+            padding: 1px 2px; /* Padding diminimalkan */
             vertical-align: middle;
         }
 
@@ -302,43 +305,44 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
         .ttd-container {
             display: flex;
             justify-content: flex-end;
-            margin-top: 25px; /* Hindari tumpang tindih dengan tabel */
+            margin-top: 5px; /* Hindari tumpang tindih dengan tabel */
             width: 100%;
         }
 
         .ttd-box {
-            width: 250px;
+            width: 230px;
             text-align: left;
         }
 
         .ttd-box p {
             margin: 1px 0;
-            font-size: 10pt;
+            font-size: 9pt;
             position: relative;
             z-index: 5;
+            line-height: 1.15;
         }
 
         .sig-overlay {
             position: relative;
-            height: 70px;
+            height: 52px;
             margin-top: 0;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
         }
 
         .img-cap {
             position: absolute;
-            top: -20px;
-            left: -70px;
-            width: 110px;
+            top: -22px;
+            left: -65px;
+            width: 95px;
             z-index: 2;
             opacity: 0.9;
         }
 
         .img-ttd {
             position: absolute;
-            top: -10px;
-            left: -15px;
-            width: 130px;
+            top: -12px;
+            left: -12px;
+            width: 115px;
             z-index: 3;
         }
 
@@ -546,7 +550,7 @@ if (isset($_GET['guru']) && $_GET['guru'] !== '') {
                 </colgroup>
                 <thead>
                     <tr>
-                        <th colspan="10" style="background:#ddd; font-size:8.5pt; padding:3px;">DAFTAR KODE PENGAWAS</th>
+                        <th colspan="10" style="background:#ddd; font-size:7pt; padding:1.5px;">DAFTAR KODE PENGAWAS</th>
                     </tr>
                     <tr>
                         <th class="center">Kode</th>
